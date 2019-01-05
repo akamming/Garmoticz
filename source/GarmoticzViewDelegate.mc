@@ -44,10 +44,11 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
         var Coordinates=clickEvent.getCoordinates();
         var x=Coordinates[0];
         var y=Coordinates[1];
-        if (y<Height/3) {
+        // if (y<Height/3) {
+        if (y<System.getDeviceSettings().screenHeight/3) {
         	// click was in upper part of screen
         	notify.invoke(PREVIOUSITEM);
-    	} else if (y>Height/3*2) {
+    	} else if (y>System.getDeviceSettings().screenHeight/3*2) {
     		// click was in lower part of screen
     		notify.invoke(NEXTITEM);
 		} else {

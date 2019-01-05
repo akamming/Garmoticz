@@ -6,15 +6,11 @@ using Toybox.Application as App;
 using Toybox.Timer as Timer;
 
 // Commands sent by delegate handler
-var NEXTITEM=1;
-var PREVIOUSITEM=2;
-var SELECT=3;
-var BACK=4;
-var MENU=5;
-
-// global vats
-var Height;
-var Width;
+const NEXTITEM=1;
+const PREVIOUSITEM=2;
+const SELECT=3;
+const BACK=4;
+const MENU=5;
 
 class GarmoticzView extends WatchUi.View {
 	// Global vars
@@ -22,9 +18,7 @@ class GarmoticzView extends WatchUi.View {
 	var Line1="";
 	var Line2="";
 	var Line3="";
-	var Line1Status="";
 	var Line2Status="";
-	var Line3Status="";
 	
 	var DevicesName;
 	var DevicesIdx;
@@ -54,14 +48,14 @@ class GarmoticzView extends WatchUi.View {
 	var Domoticz_Roomplan;
 
 	// jsoncommands
-	var GETROOMS=1; 
-	var GETDEVICES=2;
-	var GETDEVICESTATUS=3;
-	var SENDONCOMMAND=4;
-	var SENDOFFCOMMAND=5;
-	var GETSCENESTATUS=6;
-	var SWITCHONGROUP=7;
-	var SWITCHOFFGROUP=8;
+	const GETROOMS=1; 
+	const GETDEVICES=2;
+	const GETDEVICESTATUS=3;
+	const SENDONCOMMAND=4;
+	const SENDOFFCOMMAND=5;
+	const GETSCENESTATUS=6;
+	const SWITCHONGROUP=7;
+	const SWITCHOFFGROUP=8;
 
     function initialize() {
     	// Get the configured settings
@@ -77,8 +71,6 @@ class GarmoticzView extends WatchUi.View {
     function onLayout(dc) {
     
     	// Set Height en Width
-    	Height=dc.getHeight();
-    	Width=dc.getWidth();
         
         setLayout(Rez.Layouts.MainLayout(dc));
     }
