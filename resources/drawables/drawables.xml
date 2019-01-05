@@ -1,0 +1,4 @@
+<drawables>
+    <bitmap id="LauncherIcon" filename="launcher_icon.png" />
+    <bitmap id="DomoticzLogo" filename="domoticz_logo.png"/>
+</drawables>

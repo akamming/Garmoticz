@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<debugInfo>
+<pcToLineNum>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzApp.mc" id="3" lineNum="9" pc="268435456" symbol="initialize"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzApp.mc" id="3" lineNum="10" pc="268435460" symbol="initialize"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzApp.mc" id="4" lineNum="14" pc="268435479" symbol="onStart"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzApp.mc" id="5" lineNum="18" pc="268435484" symbol="onStop"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzApp.mc" id="6" lineNum="22" pc="268435489" symbol="onSettingsChanged"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzApp.mc" id="6" lineNum="23" pc="268435493" symbol="onSettingsChanged"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzApp.mc" id="7" lineNum="28" pc="268435508" symbol="getInitialView"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzApp.mc" id="7" lineNum="29" pc="268435512" symbol="getInitialView"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzApp.mc" id="7" lineNum="30" pc="268435542" symbol="getInitialView"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="9" lineNum="19" pc="268435618" symbol="onMenu"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="9" lineNum="21" pc="268435622" symbol="onMenu"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="9" lineNum="22" pc="268435648" symbol="onMenu"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="10" lineNum="25" pc="268435652" symbol="onBack"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="10" lineNum="26" pc="268435656" symbol="onBack"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="10" lineNum="27" pc="268435682" symbol="onBack"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="11" lineNum="30" pc="268435686" symbol="onSwipe"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="11" lineNum="31" pc="268435690" symbol="onSwipe"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="11" lineNum="33" pc="268435703" symbol="onSwipe"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="11" lineNum="34" pc="268435717" symbol="onSwipe"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="11" lineNum="35" pc="268435746" symbol="onSwipe"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="11" lineNum="36" pc="268435760" symbol="onSwipe"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="11" lineNum="37" pc="268435789" symbol="onSwipe"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="11" lineNum="38" pc="268435803" symbol="onSwipe"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="11" lineNum="40" pc="268435832" symbol="onSwipe"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="12" lineNum="43" pc="268435836" symbol="onTap"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="12" lineNum="44" pc="268435840" symbol="onTap"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="12" lineNum="45" pc="268435853" symbol="onTap"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="12" lineNum="46" pc="268435863" symbol="onTap"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="12" lineNum="47" pc="268435873" symbol="onTap"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="12" lineNum="49" pc="268435893" symbol="onTap"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="12" lineNum="50" pc="268435922" symbol="onTap"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="12" lineNum="52" pc="268435948" symbol="onTap"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="12" lineNum="55" pc="268435977" symbol="onTap"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="12" lineNum="57" pc="268436003" symbol="onTap"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="13" lineNum="60" pc="268436007" symbol="onLongPress"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="13" lineNum="61" pc="268436011" symbol="onLongPress"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="13" lineNum="62" pc="268436021" symbol="onLongPress"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="13" lineNum="63" pc="268436041" symbol="onLongPress"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="14" lineNum="67" pc="268436071" symbol="onKeyPressed"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="14" lineNum="69" pc="268436075" symbol="onKeyPressed"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="14" lineNum="72" pc="268436094" symbol="onKeyPressed"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="14" lineNum="75" pc="268436104" symbol="onKeyPressed"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="14" lineNum="76" pc="268436145" symbol="onKeyPressed"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="15" lineNum="80" pc="268436149" symbol="onKeyReleased"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="15" lineNum="82" pc="268436153" symbol="onKeyReleased"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="15" lineNum="84" pc="268436171" symbol="onKeyReleased"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="15" lineNum="91" pc="268436185" symbol="onKeyReleased"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="15" lineNum="93" pc="268436204" symbol="onKeyReleased"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="15" lineNum="94" pc="268436224" symbol="onKeyReleased"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="15" lineNum="95" pc="268436235" symbol="onKeyReleased"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="15" lineNum="97" pc="268436264" symbol="onKeyReleased"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="15" lineNum="99" pc="268436293" symbol="onKeyReleased"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="15" lineNum="100" pc="268436313" symbol="onKeyReleased"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="15" lineNum="101" pc="268436342" symbol="onKeyReleased"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="15" lineNum="102" pc="268436362" symbol="onKeyReleased"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="15" lineNum="104" pc="268436391" symbol="onKeyReleased"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="15" lineNum="107" pc="268436394" symbol="onKeyReleased"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="16" lineNum="111" pc="268436398" symbol="initialize"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="16" lineNum="114" pc="268436402" symbol="initialize"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="16" lineNum="117" pc="268436436" symbol="initialize"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="16" lineNum="118" pc="268436453" symbol="initialize"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="16" lineNum="121" pc="268436469" symbol="initialize"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzViewDelegate.mc" id="16" lineNum="122" pc="268436491" symbol="initialize"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="18" lineNum="66" pc="268436502" symbol="initialize"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="18" lineNum="68" pc="268436506" symbol="initialize"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="18" lineNum="71" pc="268436518" symbol="initialize"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="18" lineNum="73" pc="268436552" symbol="initialize"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="19" lineNum="77" pc="268436571" symbol="onLayout"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="19" lineNum="80" pc="268436575" symbol="onLayout"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="19" lineNum="81" pc="268436594" symbol="onLayout"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="19" lineNum="83" pc="268436613" symbol="onLayout"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="89" pc="268436651" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="92" pc="268436655" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="93" pc="268436674" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="94" pc="268436698" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="95" pc="268436722" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="96" pc="268436746" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="97" pc="268436770" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="98" pc="268436794" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="101" pc="268436818" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="102" pc="268436831" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="104" pc="268436847" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="105" pc="268436860" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="107" pc="268436876" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="108" pc="268436889" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="110" pc="268436905" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="111" pc="268436918" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="113" pc="268436934" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="114" pc="268436947" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="118" pc="268436963" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="119" pc="268436988" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="120" pc="268437001" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="122" pc="268437024" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="20" lineNum="123" pc="268437037" symbol="onShow"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="21" lineNum="128" pc="268437058" symbol="retrieveSettings"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="21" lineNum="130" pc="268437062" symbol="retrieveSettings"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="21" lineNum="131" pc="268437099" symbol="retrieveSettings"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="21" lineNum="132" pc="268437136" symbol="retrieveSettings"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="21" lineNum="133" pc="268437174" symbol="retrieveSettings"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="21" lineNum="135" pc="268437190" symbol="retrieveSettings"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="21" lineNum="137" pc="268437203" symbol="retrieveSettings"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="21" lineNum="138" pc="268437240" symbol="retrieveSettings"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="22" lineNum="142" pc="268437278" symbol="HandleCommand"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="22" lineNum="145" pc="268437282" symbol="HandleCommand"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="22" lineNum="147" pc="268437300" symbol="HandleCommand"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="22" lineNum="148" pc="268437314" symbol="HandleCommand"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="22" lineNum="149" pc="268437329" symbol="HandleCommand"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="22" lineNum="150" pc="268437343" symbol="HandleCommand"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="22" lineNum="151" pc="268437358" symbol="HandleCommand"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="22" lineNum="152" pc="268437372" symbol="HandleCommand"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="22" lineNum="153" pc="268437387" symbol="HandleCommand"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="22" lineNum="154" pc="268437401" symbol="HandleCommand"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="23" lineNum="158" pc="268437417" symbol="ResetApplication"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="23" lineNum="161" pc="268437421" symbol="ResetApplication"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="23" lineNum="162" pc="268437434" symbol="ResetApplication"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="23" lineNum="163" pc="268437454" symbol="ResetApplication"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="24" lineNum="166" pc="268437471" symbol="NextItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="24" lineNum="169" pc="268437475" symbol="NextItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="24" lineNum="170" pc="268437500" symbol="NextItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="24" lineNum="171" pc="268437519" symbol="NextItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="24" lineNum="173" pc="268437548" symbol="NextItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="24" lineNum="175" pc="268437564" symbol="NextItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="24" lineNum="176" pc="268437589" symbol="NextItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="24" lineNum="177" pc="268437614" symbol="NextItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="24" lineNum="178" pc="268437655" symbol="NextItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="24" lineNum="180" pc="268437674" symbol="NextItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="24" lineNum="181" pc="268437699" symbol="NextItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="24" lineNum="182" pc="268437718" symbol="NextItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="24" lineNum="184" pc="268437747" symbol="NextItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="24" lineNum="186" pc="268437763" symbol="NextItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="24" lineNum="187" pc="268437788" symbol="NextItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="25" lineNum="193" pc="268437808" symbol="PreviousItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="25" lineNum="196" pc="268437812" symbol="PreviousItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="25" lineNum="197" pc="268437837" symbol="PreviousItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="25" lineNum="198" pc="268437856" symbol="PreviousItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="25" lineNum="200" pc="268437873" symbol="PreviousItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="25" lineNum="202" pc="268437907" symbol="PreviousItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="25" lineNum="203" pc="268437932" symbol="PreviousItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="25" lineNum="204" pc="268437957" symbol="PreviousItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="25" lineNum="205" pc="268437998" symbol="PreviousItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="25" lineNum="206" pc="268438017" symbol="PreviousItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="25" lineNum="207" pc="268438042" symbol="PreviousItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="25" lineNum="208" pc="268438061" symbol="PreviousItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="25" lineNum="210" pc="268438078" symbol="PreviousItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="25" lineNum="212" pc="268438112" symbol="PreviousItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="25" lineNum="213" pc="268438137" symbol="PreviousItem"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="217" pc="268438157" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="219" pc="268438161" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="220" pc="268438186" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="222" pc="268438208" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="226" pc="268438242" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="229" pc="268438255" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="230" pc="268438289" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="231" pc="268438311" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="233" pc="268438334" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="234" pc="268438356" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="238" pc="268438376" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="241" pc="268438398" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="243" pc="268438432" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="246" pc="268438445" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="247" pc="268438479" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="248" pc="268438501" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="250" pc="268438524" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="251" pc="268438546" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="255" pc="268438566" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="258" pc="268438585" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="260" pc="268438619" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="262" pc="268438632" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="263" pc="268438654" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="266" pc="268438674" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="268" pc="268438696" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="269" pc="268438721" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="270" pc="268438734" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="271" pc="268438747" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="26" lineNum="272" pc="268438767" symbol="Select"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="27" lineNum="276" pc="268438787" symbol="SetRoomCursor"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="27" lineNum="278" pc="268438791" symbol="SetRoomCursor"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="27" lineNum="279" pc="268438804" symbol="SetRoomCursor"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="27" lineNum="280" pc="268438834" symbol="SetRoomCursor"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="27" lineNum="281" pc="268438865" symbol="SetRoomCursor"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="27" lineNum="284" pc="268438891" symbol="SetRoomCursor"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="28" lineNum="288" pc="268438917" symbol="SetDeviceCursor"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="28" lineNum="289" pc="268438921" symbol="SetDeviceCursor"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="28" lineNum="290" pc="268438934" symbol="SetDeviceCursor"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="28" lineNum="291" pc="268438964" symbol="SetDeviceCursor"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="28" lineNum="292" pc="268439029" symbol="SetDeviceCursor"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="28" lineNum="295" pc="268439055" symbol="SetDeviceCursor"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="28" lineNum="296" pc="268439080" symbol="SetDeviceCursor"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="300" pc="268439106" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="303" pc="268439110" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="304" pc="268439125" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="305" pc="268439139" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="308" pc="268439154" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="309" pc="268439167" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="310" pc="268439180" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="312" pc="268439196" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="313" pc="268439221" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="314" pc="268439234" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="317" pc="268439250" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="318" pc="268439250" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="321" pc="268439356" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="323" pc="268439370" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="324" pc="268439392" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="326" pc="268439406" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="327" pc="268439437" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="329" pc="268439451" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="330" pc="268439464" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="332" pc="268439478" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="333" pc="268439491" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="335" pc="268439505" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="336" pc="268439542" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="338" pc="268439556" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="339" pc="268439593" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="341" pc="268439607" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="342" pc="268439644" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="344" pc="268439658" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="346" pc="268439695" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="29" lineNum="350" pc="268439702" symbol="makeWebRequest"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="366" pc="268439769" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="369" pc="268439773" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="373" pc="268439784" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="374" pc="268439798" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="375" pc="268439823" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="376" pc="268439848" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="378" pc="268439861" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="379" pc="268439874" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="380" pc="268439900" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="381" pc="268439926" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="382" pc="268439952" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="383" pc="268439978" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="384" pc="268440004" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="386" pc="268440034" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="387" pc="268440062" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="388" pc="268440078" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="389" pc="268440094" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="390" pc="268440120" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="391" pc="268440148" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="393" pc="268440167" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="394" pc="268440235" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="398" pc="268440264" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="400" pc="268440279" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="401" pc="268440292" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="403" pc="268440308" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="406" pc="268440333" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="407" pc="268440346" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="408" pc="268440376" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="409" pc="268440419" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="410" pc="268440450" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="413" pc="268440500" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="415" pc="268440553" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="416" pc="268440566" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="417" pc="268440588" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="418" pc="268440603" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="420" pc="268440628" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="422" pc="268440641" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="423" pc="268440667" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="425" pc="268440693" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="426" pc="268440723" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="427" pc="268440751" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="430" pc="268440792" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="431" pc="268440804" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="435" pc="268440820" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="436" pc="268440833" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="438" pc="268440849" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="440" pc="268440874" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="441" pc="268440887" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="443" pc="268440900" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="444" pc="268440930" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="445" pc="268440976" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="446" pc="268441010" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="451" pc="268441063" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="452" pc="268441076" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="455" pc="268441092" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="456" pc="268441105" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="459" pc="268441121" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="460" pc="268441134" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="464" pc="268441159" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="465" pc="268441172" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="467" pc="268441188" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="469" pc="268441206" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="470" pc="268441219" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="471" pc="268441235" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="473" pc="268441253" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="474" pc="268441266" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="475" pc="268441282" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="477" pc="268441300" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="478" pc="268441313" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="479" pc="268441329" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="481" pc="268441347" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="482" pc="268441360" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="483" pc="268441376" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="485" pc="268441387" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="486" pc="268441400" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="489" pc="268441416" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="490" pc="268441429" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="30" lineNum="492" pc="268441445" symbol="onReceive"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="496" pc="268441462" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="498" pc="268441466" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="499" pc="268441491" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="500" pc="268441504" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="501" pc="268441517" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="502" pc="268441533" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="503" pc="268441586" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="504" pc="268441599" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="505" pc="268441612" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="506" pc="268441628" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="507" pc="268441653" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="508" pc="268441666" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="509" pc="268441682" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="510" pc="268441698" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="512" pc="268441779" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="514" pc="268441796" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="516" pc="268441839" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="519" pc="268441870" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="520" pc="268441895" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="522" pc="268441920" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="524" pc="268441955" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="526" pc="268441980" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="528" pc="268442014" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="529" pc="268442039" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="531" pc="268442056" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="533" pc="268442099" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="536" pc="268442130" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="537" pc="268442155" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="539" pc="268442168" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="541" pc="268442203" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="543" pc="268442228" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="546" pc="268442262" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="547" pc="268442275" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="548" pc="268442291" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="552" pc="268442304" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="553" pc="268442344" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="554" pc="268442356" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="557" pc="268442396" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="560" pc="268442477" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="561" pc="268442514" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="564" pc="268442556" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="570" pc="268442647" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="571" pc="268442709" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="574" pc="268442783" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="575" pc="268442816" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="576" pc="268442849" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="578" pc="268442940" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="580" pc="268442965" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="583" pc="268443053" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="584" pc="268443141" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="586" pc="268443229" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="589" pc="268443320" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="31" lineNum="591" pc="268443345" symbol="onUpdate"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="32" lineNum="596" pc="268443390" symbol="getDeviceStatus"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="32" lineNum="598" pc="268443394" symbol="getDeviceStatus"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="32" lineNum="600" pc="268443428" symbol="getDeviceStatus"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="32" lineNum="603" pc="268443451" symbol="getDeviceStatus"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="33" lineNum="610" pc="268443472" symbol="onHide"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="33" lineNum="612" pc="268443476" symbol="onHide"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="33" lineNum="613" pc="268443495" symbol="onHide"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="33" lineNum="614" pc="268443520" symbol="onHide"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="33" lineNum="615" pc="268443545" symbol="onHide"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="33" lineNum="616" pc="268443570" symbol="onHide"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="33" lineNum="617" pc="268443595" symbol="onHide"/>
+<entry filename="C:\\Users\\kammi493\\eclipse-workspace\\Garmoticz\\source\\GarmoticzView.mc" id="33" lineNum="618" pc="268443620" symbol="onHide"/>
+<entry filename="Rez" id="40" lineNum="30" pc="268443646" symbol="MainLayout"/>
+<entry filename="Rez" id="40" lineNum="34" pc="268443658" symbol="MainLayout"/>
+<entry filename="Rez" id="40" lineNum="35" pc="268443789" symbol="MainLayout"/>
+<entry filename="Rez" id="40" lineNum="36" pc="268443841" symbol="MainLayout"/>
+<entry filename="Rez" id="40" lineNum="39" pc="268443893" symbol="MainLayout"/>
+</pcToLineNum>
+<symbolTable>
+<entry field="true" id="18" symbol="Width"/>
+<entry field="true" id="14" symbol="SELECT"/>
+<entry id="8388644" module="true" symbol="System"/>
+<entry id="8389101" method="true" symbol="onSwipe"/>
+<entry field="true" id="41" symbol="Domoticz_UserName"/>
+<entry field="true" id="54" symbol="SWITCHOFFGROUP"/>
+<entry id="19" object="true" symbol="GarmoticzView"/>
+<entry field="true" id="50" symbol="SENDONCOMMAND"/>
+<entry field="true" id="48" symbol="GETDEVICES"/>
+<entry id="8389124" method="true" symbol="onUpdate"/>
+<entry field="true" id="32" symbol="RoomsIdx"/>
+<entry field="true" id="51" symbol="SENDOFFCOMMAND"/>
+<entry id="60" method="true" symbol="Select"/>
+<entry field="true" id="33" symbol="RoomsName"/>
+<entry field="true" id="17" symbol="Height"/>
+<entry field="true" id="8388611" module="true" symbol="Toybox"/>
+<entry id="68" method="true" symbol="onLongPress"/>
+<entry field="true" id="8389673" symbol="isTouchScreen"/>
+<entry field="true" id="52" symbol="GETSCENESTATUS"/>
+<entry field="true" id="43" symbol="Domoticz_Protocol"/>
+<entry id="8388770" module="true" object="true" symbol="Strings"/>
+<entry field="true" id="76" symbol="title_port"/>
+<entry field="true" id="47" symbol="GETROOMS"/>
+<entry field="true" id="71" symbol="DomoticzLogo"/>
+<entry id="57" method="true" symbol="ResetApplication"/>
+<entry field="true" id="26" symbol="Line3Status"/>
+<entry id="8389280" method="true" symbol="getInitialView"/>
+<entry field="true" id="25" symbol="Line2Status"/>
+<entry id="8388639" module="true" symbol="Graphics"/>
+<entry id="74" method="true" symbol="MainLayout"/>
+<entry field="true" id="81" symbol="title_password"/>
+<entry id="8388769" module="true" object="true" symbol="Rez"/>
+<entry id="8389123" method="true" symbol="onShow"/>
+<entry id="8389835" method="true" symbol="makeWebRequest"/>
+<entry id="8389098" method="true" symbol="onTap"/>
+<entry id="62" method="true" symbol="SetDeviceCursor"/>
+<entry field="true" id="28" symbol="DevicesIdx"/>
+<entry id="8388702" method="true" symbol="initialize"/>
+<entry id="8389554" method="true" symbol="onKeyReleased"/>
+<entry field="true" id="82" symbol="AppName"/>
+<entry field="true" id="79" symbol="HTTP"/>
+<entry field="true" id="40" symbol="delayTimer"/>
+<entry id="8389080" method="true" symbol="onMenu"/>
+<entry field="true" id="30" symbol="DevicesData"/>
+<entry field="true" id="8390522" symbol="key"/>
+<entry id="58" method="true" symbol="NextItem"/>
+<entry field="true" id="83" symbol="title_protocol"/>
+<entry id="11" object="true" symbol="GarmoticzViewDelegate"/>
+<entry field="true" id="67" symbol="LongPressOccurred"/>
+<entry field="true" id="73" symbol="LauncherIcon"/>
+<entry id="55" method="true" symbol="retrieveSettings"/>
+<entry id="8388646" module="true" object="true" symbol="Timer"/>
+<entry field="true" id="27" symbol="DevicesName"/>
+<entry id="8389683" method="true" symbol="onSettingsChanged"/>
+<entry id="8389081" method="true" symbol="onBack"/>
+<entry id="59" method="true" symbol="PreviousItem"/>
+<entry id="8388648" module="true" symbol="WatchUi"/>
+<entry field="true" id="13" symbol="PREVIOUSITEM"/>
+<entry id="8389553" method="true" symbol="onKeyPressed"/>
+<entry id="8389281" method="true" symbol="onStop"/>
+<entry field="true" id="78" symbol="title_adress"/>
+<entry field="true" id="53" symbol="SWITCHONGROUP"/>
+<entry field="true" id="8389065" symbol="locY"/>
+<entry field="true" id="8389064" symbol="locX"/>
+<entry id="8388771" module="true" object="true" symbol="Drawables"/>
+<entry field="true" id="46" symbol="Domoticz_Roomplan"/>
+<entry id="8389122" method="true" symbol="onLayout"/>
+<entry id="8389279" method="true" symbol="onStart"/>
+<entry field="true" id="75" symbol="title_username"/>
+<entry field="true" id="72" symbol="id_monkey"/>
+<entry field="true" id="65" symbol="notify"/>
+<entry field="true" id="16" symbol="MENU"/>
+<entry field="true" id="39" symbol="status"/>
+<entry field="true" id="66" symbol="keyTimer"/>
+<entry id="64" method="true" symbol="getDeviceStatus"/>
+<entry field="true" id="29" symbol="DevicesSwitchType"/>
+<entry field="true" id="35" symbol="devicecursor"/>
+<entry field="true" id="20" symbol="StatusText"/>
+<entry field="true" id="80" symbol="title_roomplan_idx"/>
+<entry field="true" id="15" symbol="BACK"/>
+<entry field="true" id="36" symbol="roomidx"/>
+<entry field="true" id="34" symbol="roomcursor"/>
+<entry field="true" id="31" symbol="DevicesType"/>
+<entry id="70" module="true" symbol="Layouts"/>
+<entry id="8389125" method="true" symbol="onHide"/>
+<entry id="61" method="true" symbol="SetRoomCursor"/>
+<entry id="8389345" symbol="rezId"/>
+<entry id="8390088" module="true" object="true" symbol="JsonData"/>
+<entry field="true" id="44" symbol="Domoticz_Adress"/>
+<entry field="true" id="8389063" symbol="identifier"/>
+<entry field="true" id="49" symbol="GETDEVICESTATUS"/>
+<entry field="true" id="45" symbol="Domoticz_Port"/>
+<entry field="true" id="38" symbol="devicetype"/>
+<entry id="69" module="true" symbol="Menus"/>
+<entry field="true" id="12" symbol="NEXTITEM"/>
+<entry id="63" method="true" symbol="onReceive"/>
+<entry field="true" id="37" symbol="deviceidx"/>
+<entry field="true" id="24" symbol="Line1Status"/>
+<entry field="true" id="77" symbol="HTTPS"/>
+<entry field="true" id="42" symbol="Domoticz_Password"/>
+<entry id="8388772" module="true" object="true" symbol="Fonts"/>
+<entry id="10" object="true" symbol="GarmoticzApp"/>
+<entry id="56" method="true" symbol="HandleCommand"/>
+<entry field="true" id="84" symbol="mView"/>
+<entry id="8388635" module="true" symbol="Application"/>
+<entry field="true" id="23" symbol="Line3"/>
+<entry field="true" id="22" symbol="Line2"/>
+<entry field="true" id="21" symbol="Line1"/>
+<entry field="true" id="9" symbol="gSettingsChanged"/>
+</symbolTable>
+<localVars>
+<entry endPc="268435484" name="state" stackId="1" startPc="268435479"/>
+<entry endPc="268435489" name="state" stackId="1" startPc="268435484"/>
+<entry endPc="268435835" name="swipe" stackId="2" startPc="268435690"/>
+<entry endPc="268435836" name="evt" stackId="1" startPc="268435686"/>
+<entry endPc="268436006" name="x" stackId="3" startPc="268435840"/>
+<entry endPc="268436006" name="Coordinates" stackId="2" startPc="268435840"/>
+<entry endPc="268436006" name="y" stackId="4" startPc="268435840"/>
+<entry endPc="268436007" name="clickEvent" stackId="1" startPc="268435836"/>
+<entry endPc="268436149" name="evt" stackId="1" startPc="268436071"/>
+<entry endPc="268436398" name="evt" stackId="1" startPc="268436149"/>
+<entry endPc="268436501" name="mySettings" stackId="2" startPc="268436402"/>
+<entry endPc="268436502" name="handler" stackId="1" startPc="268436398"/>
+<entry endPc="268436651" name="dc" stackId="1" startPc="268436571"/>
+<entry endPc="268437057" name="app" stackId="1" startPc="268436655"/>
+<entry endPc="268437417" name="data" stackId="1" startPc="268437278"/>
+<entry endPc="268438891" name="i" stackId="1" startPc="268438834"/>
+<entry endPc="268439055" name="i" stackId="1" startPc="268438964"/>
+<entry endPc="268439768" name="url" stackId="2" startPc="268439250"/>
+<entry endPc="268439768" name="prefix" stackId="3" startPc="268439250"/>
+<entry endPc="268439769" name="action" stackId="1" startPc="268439106"/>
+<entry endPc="268440264" name="i" stackId="3" startPc="268440034"/>
+<entry endPc="268440497" name="i" stackId="4" startPc="268440376"/>
+<entry endPc="268440792" name="i" stackId="5" startPc="268440723"/>
+<entry endPc="268441060" name="i" stackId="6" startPc="268440930"/>
+<entry endPc="268441462" name="responseCode" stackId="1" startPc="268439769"/>
+<entry endPc="268441462" name="data" stackId="2" startPc="268439769"/>
+<entry endPc="268442644" name="image" stackId="2" startPc="268442477"/>
+<entry endPc="268443320" name="large_offset" stackId="4" startPc="268442647"/>
+<entry endPc="268443320" name="medium_offset" stackId="3" startPc="268442647"/>
+<entry endPc="268443390" name="dc" stackId="1" startPc="268441462"/>
+<entry endPc="268443645" name="app" stackId="1" startPc="268443476"/>
+<entry endPc="268443910" name="rez_cmp_local_bitmap_id_monkey" stackId="2" startPc="268443658"/>
+<entry endPc="268443911" name="dc" stackId="1" startPc="268443646"/>
+</localVars>
+<annotations/>
+<functions>
+<functionEntry accessMode="public" name="initialize" parent="GarmoticzApp">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="onStart" parent="GarmoticzApp">
+<param id="state"/>
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="onStop" parent="GarmoticzApp">
+<param id="state"/>
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="onSettingsChanged" parent="GarmoticzApp">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="getInitialView" parent="GarmoticzApp">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="onMenu" parent="GarmoticzViewDelegate">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="onBack" parent="GarmoticzViewDelegate">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="onSwipe" parent="GarmoticzViewDelegate">
+<param id="evt"/>
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="onTap" parent="GarmoticzViewDelegate">
+<param id="clickEvent"/>
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="onLongPress" parent="GarmoticzViewDelegate">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="onKeyPressed" parent="GarmoticzViewDelegate">
+<param id="evt"/>
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="onKeyReleased" parent="GarmoticzViewDelegate">
+<param id="evt"/>
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="initialize" parent="GarmoticzViewDelegate">
+<param id="handler"/>
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="initialize" parent="GarmoticzView">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="onLayout" parent="GarmoticzView">
+<param id="dc"/>
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="onShow" parent="GarmoticzView">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="retrieveSettings" parent="GarmoticzView">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="HandleCommand" parent="GarmoticzView">
+<param id="data"/>
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="ResetApplication" parent="GarmoticzView">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="NextItem" parent="GarmoticzView">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="PreviousItem" parent="GarmoticzView">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="Select" parent="GarmoticzView">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="SetRoomCursor" parent="GarmoticzView">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="SetDeviceCursor" parent="GarmoticzView">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="makeWebRequest" parent="GarmoticzView">
+<param id="action"/>
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="onReceive" parent="GarmoticzView">
+<param id="responseCode"/>
+<param id="data"/>
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="onUpdate" parent="GarmoticzView">
+<param id="dc"/>
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="getDeviceStatus" parent="GarmoticzView">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="onHide" parent="GarmoticzView">
+<documentation/>
+</functionEntry>
+<functionEntry accessMode="public" name="MainLayout" parent="Layouts">
+<param id="dc"/>
+<documentation><![CDATA[<div class="description"> Draw the layout<br/> param The context<br/></div>]]></documentation>
+</functionEntry>
+</functions>
+<dataEntryOffsetMappings>
+<dataEntry offset="87" parentId="" symbolId="globals" type="module"/>
+<dataEntry offset="246" parentId="globals" symbolId="GarmoticzView" type="class"/>
+<dataEntry offset="693" parentId="globals" symbolId="GarmoticzViewDelegate" type="class"/>
+<dataEntry offset="836" parentId="globals" symbolId="Rez" type="module"/>
+<dataEntry offset="915" parentId="Rez" symbolId="Drawables" type="module"/>
+<dataEntry offset="970" parentId="Rez" symbolId="Menus" type="module"/>
+<dataEntry offset="1001" parentId="Rez" symbolId="Fonts" type="module"/>
+<dataEntry offset="1032" parentId="Rez" symbolId="JsonData" type="module"/>
+<dataEntry offset="1063" parentId="Rez" symbolId="Layouts" type="module"/>
+<dataEntry offset="1102" parentId="Rez" symbolId="Strings" type="module"/>
+<dataEntry offset="1205" parentId="globals" symbolId="GarmoticzApp" type="class"/>
+</dataEntryOffsetMappings>
+</debugInfo>
