@@ -17,3 +17,5 @@ For devices without a touchscreen:
 - press menu to get beck to the previous menu
 
 Please be aware that this is an initial release and may contain bugs. I rely on user feedback to further increase the functionality and quality. If you find bugs or problems, please do not give me bad ratings, but send me email and i will try to fix in a next version.
+
+the widget is published at https://apps.garmin.com/en-US/apps/43f29073-d198-4471-aea8-6805c9eb7255
