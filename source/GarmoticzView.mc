@@ -6,11 +6,14 @@ using Toybox.Application as App;
 using Toybox.Timer as Timer;
 
 // Commands sent by delegate handler
-const NEXTITEM=1;
-const PREVIOUSITEM=2;
-const SELECT=3;
-const BACK=4;
-const MENU=5;
+enum { 
+	NEXTITEM,
+	PREVIOUSITEM,
+	SELECT,
+	BACK,
+	MENU
+}
+
 
 class GarmoticzView extends WatchUi.View {
 	// Global vars
@@ -38,6 +41,7 @@ class GarmoticzView extends WatchUi.View {
 	
 	// Timer to prevent too many url's when scrolling through devices
 	var delayTimer;
+	const delayTime=1000;
 	
 	// Config (using garmin express)
 	var Domoticz_UserName;
@@ -45,18 +49,19 @@ class GarmoticzView extends WatchUi.View {
 	var Domoticz_Protocol;
 	var Domoticz_Adress;
 	var Domoticz_Port;
-	var Domoticz_Roomplan;
-
-	// jsoncommands
-	const GETROOMS=1; 
-	const GETDEVICES=2;
-	const GETDEVICESTATUS=3;
-	const SENDONCOMMAND=4;
-	const SENDOFFCOMMAND=5;
-	const GETSCENESTATUS=6;
-	const SWITCHONGROUP=7;
-	const SWITCHOFFGROUP=8;
-
+	
+	// commands from viewhandler
+	enum { 
+		GETROOMS,  
+		GETDEVICES,
+		GETDEVICESTATUS,
+		SENDONCOMMAND,
+		SENDOFFCOMMAND,
+		GETSCENESTATUS,
+		SWITCHONGROUP,
+		SWITCHOFFGROUP
+	}
+		
     function initialize() {
     	// Get the configured settings
         retrieveSettings();   
@@ -89,7 +94,7 @@ class GarmoticzView extends WatchUi.View {
         devicetype = app.getProperty("devicetype");       
 		status=app.getProperty("status");       
 		
-        // Reset values to readable if they are null       
+        // Reset values to readable if they are null  to prevent exceptions
         if (devicecursor==null) {
        		devicecursor=0; 
         }
@@ -103,17 +108,97 @@ class GarmoticzView extends WatchUi.View {
        		roomidx=0;
         }
    		if (status==null) {
-   			status="Fetching Rooms";
-       }
-       
-       // set correct state based on previous state
-       if (status.equals("ShowDeviceState")) {
-       		status="Fetching Devices";
-	    	makeWebRequest(GETDEVICES);
-       } else {
-       		status="Fetching Rooms";
-        	makeWebRequest(GETROOMS);
-       }       
+   			// no status saved  or saved in malicious state, setting the app to an initial state.
+        	status="Fetching Rooms";
+   			
+	    	makeWebRequest(GETROOMS);
+        	
+        } else {
+	       // try to set correct state based on previous state
+	       if (status.equals("ShowDeviceState")) {
+
+	       		// See if we have rooms stored on the watch
+	       		var Error=false; // for error handling
+	       		var SizeOfDevices=app.getProperty("SizeOfDevices");
+	       		
+	       		if (SizeOfDevices==0 or SizeOfDevices==null) {
+	       			// No config
+	       			Error=true;
+	       		} else {
+	       			// Devices were saved, initialize arrays
+	       			DevicesIdx = new [SizeOfDevices];	
+	       			DevicesName = new [SizeOfDevices];
+					DevicesSwitchType = new [SizeOfDevices];
+					DevicesData = new [SizeOfDevices];
+					DevicesType = new [SizeOfDevices];
+					
+					// populate array
+	       			for (var i=0;i<SizeOfDevices;i++) {
+	       				DevicesIdx[i]=app.getProperty("DevicesIdx"+i);
+	       				DevicesName[i]=app.getProperty("DevicesName"+i);
+	       				DevicesSwitchType[i]="Loading...";
+	       				DevicesData[i]=app.getProperty("DevicesData"+i);
+	       				DevicesType[i]=app.getProperty("DevicesType"+i);
+	       				
+	       				// check for errors
+	       				if (DevicesIdx[i]==null or DevicesName[i]==null or DevicesType[i]==null or DevicesData[i]==null) {
+	       					Error=true;
+	       				} 
+	       			}	
+	       		}
+	       		
+	       		if (Error) {
+	       			// there was an error, get the rooms from the domoticz instance
+			    	makeWebRequest(GETDEVICES);
+		        	status="Fetching Devices";
+	        	} else {
+	        		// we have retrieved a valid config
+	        		status="ShowDevices";
+	        		
+    		        // make sure the shown device will be updated to latest status (using delay to prevent too many updates in case of fast scrolling)
+        			delayTimer.start(method(:getDeviceStatus),delayTime,false);
+	    		}
+
+	       } else if (status.equals("ShowRooms")) {
+	       		// See if we have rooms stored on the watch
+	       		var Error=false; // for error handling
+	       		var SizeOfRooms=app.getProperty("SizeOfRooms");
+	       		
+	       		if (SizeOfRooms==0 or SizeOfRooms==null) {
+	       			// No config
+	       			Error=true;
+	       		} else {
+	       			// Rooms were saved, initialize array
+	       			RoomsIdx = new [SizeOfRooms];	
+	       			RoomsName = new [SizeOfRooms];
+	       			
+	       			//populate array
+	       			for (var i=0;i<SizeOfRooms;i++) {
+	       				RoomsIdx[i]=app.getProperty("RoomsIdx"+i);
+	       				RoomsName[i]=app.getProperty("RoomsName"+i);
+	       				
+	       				// check for errors
+	       				if (RoomsIdx[i]==null or RoomsName[i]==null) {
+	       					Error=true;
+	       				} 
+	       			}	
+	       		}
+	       		
+	       		if (Error) {
+	       			// there was an error, get the rooms from the domoticz instance
+		        	status="Fetching Rooms";
+			    	makeWebRequest(GETROOMS);
+	        	} else {
+	        		// we have retrieved a valid config
+	        		status="ShowRooms";
+	    		}
+	        } else {
+	        	
+	        	// unknown state, go to initial state
+	        	status="Fetching Rooms";
+		    	makeWebRequest(GETROOMS);
+	        }
+        }
     }
     
     
@@ -166,7 +251,7 @@ class GarmoticzView extends WatchUi.View {
 			}
 			deviceidx=DevicesIdx[devicecursor];
 			devicetype=DevicesType[devicecursor];
-			delayTimer.start(method(:getDeviceStatus),500,false);	            	
+			delayTimer.start(method(:getDeviceStatus),delayTime,false);	            	
 			Ui.requestUpdate(); 
 			
 		} else if (status.equals("ShowRooms")) {
@@ -193,7 +278,7 @@ class GarmoticzView extends WatchUi.View {
 			}
 			deviceidx=DevicesIdx[devicecursor];
 			devicetype=DevicesType[devicecursor];
-			delayTimer.start(method(:getDeviceStatus),500,false);	            	
+			delayTimer.start(method(:getDeviceStatus),delayTime,false);	            	
 			Ui.requestUpdate();
 		} else if (status.equals("ShowRooms")) {
 			roomcursor--;
@@ -208,7 +293,8 @@ class GarmoticzView extends WatchUi.View {
 	
 	function Select()
 	{
-		if (status.equals("ShowDeviceState")) {
+		if (status.equals("ShowDeviceState") or status.equals("ShowDevices")) {
+			// check if we have to flip a switch
 			if (DevicesSwitchType[devicecursor]!=null) {
 				// Device is a switch
 				if (DevicesSwitchType[devicecursor].equals("On/Off")) {
@@ -258,6 +344,7 @@ class GarmoticzView extends WatchUi.View {
 				Ui.requestUpdate();
 			}
 		} else if (status.equals("ShowRooms")) {
+			// room selected, fetch devices
 			devicecursor=0;
 			status="Fetching Devices";
 			makeWebRequest(GETDEVICES);
@@ -297,201 +384,216 @@ class GarmoticzView extends WatchUi.View {
 			retrieveSettings();
 		}
 		
+		
 		if (Domoticz_Adress==null) {
 			status="Error";
 			StatusText="Invalid connection settings";
+		} if (Domoticz_Adress.equals("")) {
+			status="Error";
+			StatusText="Invalid connection settings";
 		} else {
-			if (Domoticz_Adress.equals("")) {
-				status="Error";
-				StatusText="Invalid connection settings";
-			} else {
-		    	//needed vars
-		    	var url;
-		    	var prefix=Domoticz_Protocol+"://"+Domoticz_Adress+":"+Domoticz_Port+"/json.htm?username="+Su.encodeBase64(Domoticz_UserName)+"&password="+Su.encodeBase64(Domoticz_Password)+"&";
-		        
-		    	// create url
-		    	if (action==GETDEVICES) {
-		    		// build url to get the list of decices in the room
-			    	url=prefix+"type=command&param=getplandevices&idx="+roomidx; // get roomplan connectiq
-		    	}	else if (action==GETDEVICESTATUS) {
-		    		// build url to get the status of the current device
-		    		url=prefix+"type=devices&rid="+DevicesIdx[devicecursor]; // get device info
-		    	}	else if (action==GETSCENESTATUS) {
-		    		// build url to get the status of the current scene
-		    		url=prefix+"type=scenes"; // get device info
-		    	}	else if (action==GETROOMS) {
-		    		// build url to get all roomplans
-		    		url=prefix+"type=plans&order=Order&used=true"; // get device info
-		    	}	else if (action==SENDONCOMMAND) {
-		    		// build url to switch on device
-		    		url=prefix+"type=command&param=switchlight&idx="+DevicesIdx[devicecursor]+"&switchcmd=On"; // Send on command
-		    	}	else if (action==SENDOFFCOMMAND) {
-		    		// build url to switch off device
-		    		url=prefix+"type=command&param=switchlight&idx="+DevicesIdx[devicecursor]+"&switchcmd=Off"; // Send off command
-		    	}	else if (action==SWITCHOFFGROUP) {
-		    		// build url to switch off group/scene
-		    		url=prefix+"type=command&param=switchscene&idx="+DevicesIdx[devicecursor]+"&switchcmd=Off"; // Send off command
-		    	}	else if (action==SWITCHONGROUP) {
-		    		// build url to switch on group/scene
-		    		url=prefix+"type=command&param=switchscene&idx="+DevicesIdx[devicecursor]+"&switchcmd=On"; // Send off command
-		    	} else {
-		    		url="unknown url";
-		    	}
-		
-				// Make the request
-		        Comm.makeWebRequest(
-		            url,
-		            {
-		            },
-		            {
-		                "Content-Type" => Comm.REQUEST_CONTENT_TYPE_URL_ENCODED
-		            },
-			            method(:onReceive)
-			     );
-			}
+	    	//needed vars
+	    	var url;
+	    	var prefix=Domoticz_Protocol+"://"+Domoticz_Adress+":"+Domoticz_Port+"/json.htm?username="+Su.encodeBase64(Domoticz_UserName)+"&password="+Su.encodeBase64(Domoticz_Password)+"&";
+	        
+	    	// create url
+	    	if (action==GETDEVICES) {
+	    		// build url to get the list of decices in the room
+		    	url=prefix+"type=command&param=getplandevices&idx="+roomidx; // get roomplan connectiq
+	    	}	else if (action==GETDEVICESTATUS) {
+	    		// build url to get the status of the current device
+	    		url=prefix+"type=devices&rid="+DevicesIdx[devicecursor]; // get device info
+	    	}	else if (action==GETSCENESTATUS) {
+	    		// build url to get the status of the current scene
+	    		url=prefix+"type=scenes"; // get device info
+	    	}	else if (action==GETROOMS) {
+	    		// build url to get all roomplans
+	    		url=prefix+"type=plans&order=Order&used=true"; // get device info
+	    	}	else if (action==SENDONCOMMAND) {
+	    		// build url to switch on device
+	    		url=prefix+"type=command&param=switchlight&idx="+DevicesIdx[devicecursor]+"&switchcmd=On"; // Send on command
+	    	}	else if (action==SENDOFFCOMMAND) {
+	    		// build url to switch off device
+	    		url=prefix+"type=command&param=switchlight&idx="+DevicesIdx[devicecursor]+"&switchcmd=Off"; // Send off command
+	    	}	else if (action==SWITCHOFFGROUP) {
+	    		// build url to switch off group/scene
+	    		url=prefix+"type=command&param=switchscene&idx="+DevicesIdx[devicecursor]+"&switchcmd=Off"; // Send off command
+	    	}	else if (action==SWITCHONGROUP) {
+	    		// build url to switch on group/scene
+	    		url=prefix+"type=command&param=switchscene&idx="+DevicesIdx[devicecursor]+"&switchcmd=On"; // Send off command
+	    	} else {
+	    		url="unknown url";
+	    	}
+	    	
+	
+			// Make the request
+	        Comm.makeWebRequest(
+	            url,
+	            {
+	            },
+	            {
+	                "Content-Type" => Comm.REQUEST_CONTENT_TYPE_URL_ENCODED
+	            },
+		            method(:onReceive)
+		     );
 		}
-    
-    
+	
     }
     
     // Receive the data from the web request
     function onReceive(responseCode, data) 
     {
-       // Check responsecode
-       if (responseCode==200)
-       {
-       		// Make sure no error is shown	
-           // ShowError=false;       
-           if (data instanceof Dictionary) {	            
-				if (data["status"].equals("OK")) {
-	            	if (data["title"].equals("GetPlanDevices")) {
-						if (data["result"]!=null) {
-							// devices/scenes/groups received: Create a devices list.
-			            	status="ShowDevices";
-			            	DevicesName=new [data["result"].size()];
-			            	DevicesIdx=new [data["result"].size()];
-			            	DevicesSwitchType=new [data["result"].size()];
-			            	DevicesData=new [data["result"].size()];
-			            	DevicesType=new [data["result"].size()];
-			            	for (var i=0;i<data["result"].size();i++) {
-			            		// Check if it is a device or a scene
-	       						DevicesIdx[i]=data["result"][i]["devidx"];
-	       						DevicesSwitchType[i]="Loading...";
-	       						DevicesData[i]="Loading...";
-			            		if (data["result"][i]["type"]==0) {
-		       						DevicesName[i]=data["result"][i]["Name"];
-		       						DevicesType[i]="Device";
-		            			} else {
-		       						DevicesName[i]=data["result"][i]["Name"].substring(8,data["result"][i]["Name"].length());
-			       					DevicesType[i]="Scene";
+		try {
+		
+	       // Check responsecode
+	       if (responseCode==200)
+	       {
+	       		// Make sure no error is shown	
+	           	// ShowError=false;       
+	           	if (data instanceof Dictionary) {	            
+					if (data["status"].equals("OK")) {
+		            	if (data["title"].equals("GetPlanDevices")) {
+							if (data["result"]!=null) {
+								// devices/scenes/groups received: Create a devices list.
+				            	status="ShowDevices";
+				            	DevicesName=new [data["result"].size()];
+				            	DevicesIdx=new [data["result"].size()];
+				            	DevicesSwitchType=new [data["result"].size()];
+				            	DevicesData=new [data["result"].size()];
+				            	DevicesType=new [data["result"].size()];
+				            	for (var i=0;i<data["result"].size();i++) {
+				            		// Check if it is a device or a scene
+		       						DevicesIdx[i]=data["result"][i]["devidx"];
+		       						DevicesSwitchType[i]="Loading...";
+		       						DevicesData[i]="Loading...";
+				            		if (data["result"][i]["type"]==0) {
+			       						DevicesName[i]=data["result"][i]["Name"];
+			       						DevicesType[i]="Device";
+			            			} else {
+			       						DevicesName[i]=data["result"][i]["Name"].substring(8,data["result"][i]["Name"].length());
+				       					DevicesType[i]="Scene";
+			   						}
+			        			}
+			        			// Check if we remember were we were the last time;
+			        			SetDeviceCursor();	
+		        			} else { 
+		        				status="Error";
+		        				StatusText="Room has no devices";
+	        				}	    				
+		    			} else if (data["title"].equals("Devices")) {
+		    			
+		    				// device info received, update the device
+		    				if (status.equals("ShowDevices")) {
+				            	status="ShowDeviceState";
+		    				}
+			            	for (var i=0;i<DevicesIdx.size();i++) {
+			            	    if (DevicesIdx[i].equals(data["result"][0]["idx"])) {
+			   						DevicesData[i]=data["result"][0]["Data"];
+			   						DevicesSwitchType[i]=data["result"][0]["SwitchType"];
 		   						}
-		        			}
-		        			// Check if we remember were we were the last time;
-		        			SetDeviceCursor();	
-	        			} else { 
-	        				status="Error";
-	        				StatusText="Room has no devices";
-        				}	    				
-	    			} else if (data["title"].equals("Devices")) {
-	    			
-	    				// device info received, update the device
-		            	status="ShowDeviceState";
-		            	for (var i=0;i<DevicesIdx.size();i++) {
-		            	    if (DevicesIdx[i].equals(data["result"][0]["idx"])) {
-		   						DevicesData[i]=data["result"][0]["Data"];
-		   						DevicesSwitchType[i]=data["result"][0]["SwitchType"];
-	   						}
-	            		}
-					} else if (data["title"].equals("SwitchLight") or data["title"].equals("SwitchScene")) {
-						// a scene, group of light was switched. Update the device status
-		            	status="ShowDeviceState";
-			           	DevicesData[devicecursor]="Command OK";
-			            getDeviceStatus();	            	
-	            	} else if (data["title"].equals("Plans")) {
-						// Roomplans received, populate the roomlist.
-		            	if (data["result"]!=null) {
-		            		// we have rooms to populate!
-			            	RoomsIdx=new [data["result"].size()];
-			            	RoomsName=new [data["result"].size()];
-			            	
-			            	for (var i=0;i<data["result"].size();i++) {
-			            		RoomsIdx[i]=data["result"][i]["idx"];
-			            		RoomsName[i]=data["result"][i]["Name"];
-			            	}
-			            	// Set Room Cursor
-			            	SetRoomCursor();
-			            	status="ShowRooms";
-		            				            	
-	            		} else {
-	            			// no roomplans in domoticz instance
-	            			status="Error";
-	            			StatusText="No roomplans configured";
-            			}
-        			} else if (data["title"].equals("Scenes")) {
-        				// Scene(s) status(es) received, update the devicelist.
-        				status="ShowDeviceState";
-		            	if (data["result"]!=null) {
-		            		// we cannot select on a specific scene, so cycle through the results
-		            		for (var i=0;i<data["result"].size();i++) {
-		            			if (data["result"][i]["idx"].equals(DevicesIdx[devicecursor])) {
-		            				DevicesData[devicecursor]=data["result"][i]["Status"];
-		            				DevicesType[devicecursor]=data["result"][i]["Type"];
-		            			}
 		            		}
-		            	} else {
-		            		// no scenes/groups returned
-		            		status = "Error";
-		            		StatusText="No scenes/groups";
-		            	}
-					} else {
-						status="Error";
-						StatusText="Unknown HTTP Response";
-	        		}
-            	} else {
-            		status="Error";
-	            	StatusText="Domoticz Error: "+data["status"];
-            	}            		
+						} else if (data["title"].equals("SwitchLight") or data["title"].equals("SwitchScene")) {
+							// a scene, group of light was switched. Update the device status
+			            	status="ShowDeviceState";
+				           	DevicesData[devicecursor]="Command OK";
+				            getDeviceStatus();	            	
+		            	} else if (data["title"].equals("Plans")) {
+							// Roomplans received, populate the roomlist.
+			            	if (data["result"]!=null) {
+			            		// we have rooms to populate!
+				            	RoomsIdx=new [data["result"].size()];
+				            	RoomsName=new [data["result"].size()];
+				            	
+				            	for (var i=0;i<data["result"].size();i++) {
+				            		RoomsIdx[i]=data["result"][i]["idx"];
+				            		RoomsName[i]=data["result"][i]["Name"];
+				            	}
+				            	// Set Room Cursor
+				            	SetRoomCursor();
+				            	status="ShowRooms";
+			            				            	
+		            		} else {
+		            			// no roomplans in domoticz instance
+		            			status="Error";
+		            			StatusText="No roomplans configured";
+	            			}
+	        			} else if (data["title"].equals("Scenes")) {
+	        				// Scene(s) status(es) received, update the devicelist.
+	        				if (status.equals("ShowDevices")) {
+	        					status="ShowDeviceState";
+        					}
+			            	if (data["result"]!=null) {
+			            		// we cannot select on a specific scene, so cycle through the results
+			            		for (var i=0;i<data["result"].size();i++) {
+			            			if (data["result"][i]["idx"].equals(DevicesIdx[devicecursor])) {
+			            				DevicesData[devicecursor]=data["result"][i]["Status"];
+			            				DevicesType[devicecursor]=data["result"][i]["Type"];
+			            			}
+			            		}
+			            	} else {
+			            		// no scenes/groups returned
+			            		status = "Error";
+			            		StatusText="No scenes/groups";
+			            	}
+						} else {
+							status="Error";
+							StatusText="Unknown HTTP Response";
+		        		}
+	            	} else {
+	            		status="Error";
+		            	StatusText="Domoticz Error: "+data["status"];
+	            	}            		
+		       } else {
+		            // not parsable
+		            status="Error";
+		            StatusText="Not Parsable (Proxy?)";
+		       }
+		   } else if (responseCode==Comm.BLE_HOST_TIMEOUT) {
+	       		// Bluetooth timeout
+	       		status="Error";
+	       		StatusText="Bluetooth host timeout";
+		   } else if (responseCode==Comm.BLE_CONNECTION_UNAVAILABLE) {
+		        // bluetooth not connected
+		        status="Error";
+		        StatusText="No Bluetooth";
+		   } else if (responseCode==Comm.SECURE_CONNECTION_REQUIRED) {
+		        // Some handsites require https
+		        status="Error";
+		        StatusText="phone requires HTTPS";
+		   } else if (responseCode==Comm.INVALID_HTTP_BODY_IN_NETWORK_RESPONSE) {
+	       		status="Error";
+	       		StatusText="Authentication Error"; 
+		   } else if (responseCode==Comm.NETWORK_REQUEST_TIMED_OUT ) {
+	       		// No Internet
+	       		status="Error";
+	       		StatusText="No Internet";
+	   		} else if (responseCode==404) {
+	   			// Inavlid adress
+	   			status="Error";
+	   			StatusText="Invalid connection settings";		 
 	       } else {
-	            // not parsable
-	            status="Error";
-	            StatusText="Not Parsable (Proxy?)";
-	       }
-	   } else if (responseCode==Comm.BLE_CONNECTION_UNAVAILABLE) {
-	        // bluetooth not connected
-	        status="Error";
-	        StatusText="No Bluetooth";
-	   } else if (responseCode==Comm.SECURE_CONNECTION_REQUIRED) {
-	        // Some handsites require https
-	        status="Error";
-	        StatusText="phone requires HTTPS";
-	   } else if (responseCode==Comm.INVALID_HTTP_BODY_IN_NETWORK_RESPONSE) {
-       		// Invalid API key
-       		status="Error";
-       		StatusText="Authentication Error"; 
-	   } else if (responseCode==Comm.NETWORK_REQUEST_TIMED_OUT ) {
-       		// No Internet
-       		status="Error";
-       		StatusText="No Internet";
-   		} else if (responseCode==404) {
-   			// Inavlid adress
-   			status="Error";
-   			StatusText="Invalid connection settings";		 
-       } else {
-       		// general Error
-       		status="Error";
-       		StatusText="Error "+responseCode;
-	    }
+	       		// general Error
+	       		status="Error";
+	       		StatusText="Error "+responseCode;
+		    }
+	    } catch (ex) {
+	    	System.println("Unhandled exception: "+ex.getErrorMessage());
+	    	 ex.printStackTrace();
+	    	 status="Error";
+	    	 StatusText=ex.getErrorMessage();
+	    } 
     	Ui.requestUpdate();
 	}
     
     // Update the view
     function onUpdate(dc) {
+	
     
         if (status.equals("Fetching Devices")) {
 	    	Line1="";
 	    	Line2="Loading devices";
 	    	Line3="";
-        } else if (status.equals("Fetching Rooms") or status.equals("FetchingDeviceState")) {
+        } else if (status.equals("Fetching Rooms")) {
 	    	Line1="";
 	    	Line2="Loading rooms";
 	    	Line3="";
@@ -499,7 +601,7 @@ class GarmoticzView extends WatchUi.View {
 	    	Line1="Error";
 	    	Line2=StatusText;
 	    	Line3="";
-    	} else if (status.equals("ShowDevices") or status.equals("ShowDeviceState") or status.equals("Sending Command")) {
+    	} else if (status.equals("ShowDeviceState") or status.equals("ShowDevices") or status.equals("Sending Command")) {
     	
     		if (devicecursor==0) 
     		{
@@ -580,12 +682,13 @@ class GarmoticzView extends WatchUi.View {
         	        
         if (status.equals("ShowDevices")) {
         	// make sure the shown device will be updated to latest status
-        	delayTimer.start(method(:getDeviceStatus),500,false);
+        	delayTimer.start(method(:getDeviceStatus),delayTime,false);
         }
         
     }
     
     function getDeviceStatus() {
+
     
     	if (DevicesType[devicecursor].equals("Device")) {
     		// current device is a device
@@ -607,9 +710,24 @@ class GarmoticzView extends WatchUi.View {
         app.setProperty("deviceidx",deviceidx);       
         app.setProperty("devicetype",devicetype);       
         app.setProperty("roomidx", roomidx);       
-        app.setProperty("status", status);     
-          
-       
+        app.setProperty("status", status);
+        
+        if (status.equals("ShowRooms")) {
+        	// save rooms, so they do not need to be retrieved at startup
+        	app.setProperty("SizeOfRooms", RoomsIdx.size());
+        	for (var i=0;i<RoomsIdx.size();i++) {
+        		app.setProperty("RoomsIdx"+i,RoomsIdx[i]);
+        		app.setProperty("RoomsName"+i,RoomsName[i]);
+        	}
+        } else if (status.equals("ShowDeviceState")) {
+        	// save rooms, so they do not need to be retrieved at startup
+        	app.setProperty("SizeOfDevices", DevicesIdx.size());
+        	for (var i=0;i<DevicesIdx.size();i++) {
+        		app.setProperty("DevicesIdx"+i,DevicesIdx[i]);
+        		app.setProperty("DevicesName"+i,DevicesName[i]);
+	       		app.setProperty("DevicesType"+i,DevicesType[i]);
+	       		app.setProperty("DevicesData"+i,DevicesData[i]);
+        	}
+        }
     }
-
 }
