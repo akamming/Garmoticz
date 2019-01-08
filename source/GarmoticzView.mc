@@ -17,10 +17,6 @@ enum {
 // DeviceTypes
 enum {
 	ONOFF,
-	GAS,
-	ENERGY,
-	TEXT,
-	KWH,
 	GROUP,
 	SCENE,
 	DEVICE
@@ -55,10 +51,10 @@ class GarmoticzView extends WatchUi.View {
 	
 	var DevicesName;
 	var DevicesIdx;
-	var DevicesSwitchType;
+//	var DevicesSwitchType;
 	var DevicesData;
 	var DevicesType;
-	var DevicesSubType;
+//	var DevicesSubType;
 
 	var RoomsIdx;
 	var RoomsName;
@@ -159,22 +155,22 @@ class GarmoticzView extends WatchUi.View {
 	       			// Devices were saved, initialize arrays
 	       			DevicesIdx = new [SizeOfDevices];	
 	       			DevicesName = new [SizeOfDevices];
-					DevicesSwitchType = new [SizeOfDevices];
+					// DevicesSwitchType = new [SizeOfDevices];
 					DevicesData = new [SizeOfDevices];
 					DevicesType = new [SizeOfDevices];
-					DevicesSubType = new [SizeOfDevices];
+					// DevicesSubType = new [SizeOfDevices];
 					
 					// populate array
 	       			for (var i=0;i<SizeOfDevices;i++) {
 	       				DevicesIdx[i]=app.getProperty("DevicesIdx"+i);
 	       				DevicesName[i]=app.getProperty("DevicesName"+i);
-	       				DevicesSwitchType[i]="Loading...";
+	       				// DevicesSwitchType[i]="Loading...";
 	       				DevicesData[i]=app.getProperty("DevicesData"+i);
 	       				DevicesType[i]=app.getProperty("DevicesType"+i);
-	       				DevicesSubType[i]=app.getProperty("DevicesSubType"+i);
+	       				// DevicesSubType[i]=app.getProperty("DevicesSubType"+i);
 	       				
 	       				// check for errors
-	       				if (DevicesIdx[i]==null or DevicesName[i]==null or DevicesType[i]==null or DevicesSubType[i]==null or DevicesData[i]==null) {
+	       				if (DevicesIdx[i]==null or DevicesName[i]==null or DevicesType[i]==null or DevicesData[i]==null) {
 	       					Error=true;
 	       				} 
 	       			}	
@@ -327,28 +323,25 @@ class GarmoticzView extends WatchUi.View {
 	{
 		if (status.equals("ShowDeviceState") or status.equals("ShowDevices")) {
 			// check if we have to flip a switch
-			if (DevicesSwitchType[devicecursor]!=null) {
-				// Device is a switch
-				if (DevicesSwitchType[devicecursor].equals("On/Off")) {
-					// Device is switchable
+			if (DevicesType[devicecursor]==ONOFF) {
+				// Device is a switchable device
 
-			    	// communicate status
-			    	status="Sending Command";	
+		    	// communicate status
+		    	status="Sending Command";	
 
-					// handle differently of on and off
-					if (DevicesData[devicecursor].equals(Ui.loadResource(Rez.Strings.ON))) {
-						DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_OFF);
-						makeWebRequest(SENDOFFCOMMAND);
-					} else {
-						DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_ON);
-						makeWebRequest(SENDONCOMMAND);
-					}
-					
-					// update the UI
-					Ui.requestUpdate();
+				// handle differently of on and off
+				if (DevicesData[devicecursor].equals(Ui.loadResource(Rez.Strings.ON))) {
+					DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_OFF);
+					makeWebRequest(SENDOFFCOMMAND);
+				} else {
+					DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_ON);
+					makeWebRequest(SENDONCOMMAND);
 				}
+				
+				// update the UI
+				Ui.requestUpdate();
 			} 
-			if (DevicesType[devicecursor].equals("Group")) {
+			if (DevicesType[devicecursor]==GROUP) {
 		    	// communicate status
 		    	status="Sending Command";	
 
@@ -365,11 +358,11 @@ class GarmoticzView extends WatchUi.View {
 				Ui.requestUpdate();
 
 			} 
-			if (DevicesType[devicecursor].equals("Scene")) {
+			if (DevicesType[devicecursor]==SCENE) {
 		    	// communicate status
 		    	status="Sending Command";	
 
-				DevicesData[devicecursor]="Ui.loadResource(Rez.Strings.STATUS_ACTIVATING_SCENE)";
+				DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_ACTIVATING_SCENE);
 				makeWebRequest(SWITCHONGROUP);
 				
 				// update the UI
@@ -459,7 +452,6 @@ class GarmoticzView extends WatchUi.View {
 	    		url="unknown url";
 	    	}
 	    	
-	    	
 	
 			// Make the request
 	        Comm.makeWebRequest(
@@ -492,24 +484,24 @@ class GarmoticzView extends WatchUi.View {
 			            	status="ShowDevices";
 			            	DevicesName=new [data["result"].size()];
 			            	DevicesIdx=new [data["result"].size()];
-			            	DevicesSwitchType=new [data["result"].size()];
+			            	// DevicesSwitchType=new [data["result"].size()];
 			            	DevicesData=new [data["result"].size()];
 			            	DevicesType=new [data["result"].size()];
-			            	DevicesSubType=new [data["result"].size()];
+			            	// DevicesSubType=new [data["result"].size()];
 			            				            	
 			            	for (var i=0;i<data["result"].size();i++) {
 			            		
 			            		// Check if it is a device or a scene
 	       						DevicesIdx[i]=data["result"][i]["devidx"];
-	       						DevicesSwitchType[i]=Ui.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING);
+	       						// DevicesSwitchType[i]=Ui.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING);
 	       						DevicesData[i]=Ui.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING);
-	       						DevicesSubType[i]=Ui.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING);
+	       						// DevicesSubType[i]=Ui.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING);
 			            		if (data["result"][i]["type"]==0) {
 		       						DevicesName[i]=data["result"][i]["Name"];
-		       						DevicesType[i]="Device";
+		       						DevicesType[i]=DEVICE;
 		            			} else {
 		       						DevicesName[i]=data["result"][i]["Name"].substring(8,data["result"][i]["Name"].length());
-			       					DevicesType[i]="Scene";
+			       					DevicesType[i]=SCENE; // can be scene or group, but this will be corrected when the def devices is loaded
 		   						}
 		        			}
 		        			// Check if we remember were we were the last time;
@@ -528,9 +520,11 @@ class GarmoticzView extends WatchUi.View {
 	    				
 		            	for (var i=0;i<DevicesIdx.size();i++) {
 		            	    if (DevicesIdx[i].equals(data["result"][0]["idx"])) {
-		   						DevicesSwitchType[i]=data["result"][0]["SwitchType"];
-	       						DevicesSubType[i]=data["result"][0]["SubType"];
-	       						if (DevicesSubType[i].equals("Switch") or DevicesSubType[i].equals("X10")) {  // Device is a switch
+		            	    	// device i is the device to update!
+	       						if ( data["result"][0]["SubType"].equals("Switch") or data["result"][0]["SubType"].equals("X10") ) {  // Device is a switch
+	       							if (data["result"][0]["SwitchType"].equals("On/Off")) { // switch can be controlled by user
+	       								DevicesType[i]=ONOFF;
+       								}	       							
 	       							if (data["result"][0]["Data"].equals("On")) {
 	       								// switch is on
 	       								DevicesData[i]=Ui.loadResource(Rez.Strings.ON);
@@ -540,19 +534,20 @@ class GarmoticzView extends WatchUi.View {
 	       							} else {
 	       								DevicesData[i]=data["result"][0]["Data"]; // this should not happen. 
 	       							}
-       							} else if (DevicesSubType[i].equals("kWh")) {  // kwh device: take the daily counter + usage as data
+       							} else if (data["result"][0]["SubType"].equals("kWh")) {  // kwh device: take the daily counter + usage as data
 	       							DevicesData[i]=data["result"][0]["CounterToday"]+", "+data["result"][0]["Usage"];
-	       						} else if (DevicesSubType[i].equals("Gas")) {  // gas device: take the daily counter as data
+	       						} else if (data["result"][0]["SubType"].equals("Gas")) {  // gas device: take the daily counter as data
 	       							DevicesData[i]=data["result"][0]["CounterToday"];
-       							} else if (DevicesSubType[i].equals("Energy")) { // Smart meter: take the daily counters for usage and delivery and add current usage
+       							} else if (data["result"][0]["SubType"].equals("Energy")) { // Smart meter: take the daily counters for usage and delivery and add current usage
        									DevicesData[i]=data["result"][0]["CounterToday"].substring(0,data["result"][0]["CounterToday"].length()-4)+", "+data["result"][0]["CounterDelivToday"]+", "+data["result"][0]["Usage"];
-       							} else if (DevicesSubType[i].equals("Text")) { // a text device: make sure max length=25
+       							} else if (data["result"][0]["SubType"].equals("Text")) { // a text device: make sure max length=25
 										if (data["result"][0]["Data"].length()>25) {
 				   							DevicesData[i]=data["result"][0]["Data"].substring(0,24); 
 										} else {
 				   							DevicesData[i]=data["result"][0]["Data"];
 										}
 	       						} else { // The rest
+	       						
 		   							DevicesData[i]=data["result"][0]["Data"];
 		   						}
 	   						}
@@ -592,7 +587,11 @@ class GarmoticzView extends WatchUi.View {
 		            		// we cannot select on a specific scene, so cycle through the results
 		            		for (var i=0;i<data["result"].size();i++) {
 		            			if (data["result"][i]["idx"].equals(DevicesIdx[devicecursor])) {
-		            				DevicesType[devicecursor]=data["result"][i]["Type"];
+		            			    if (data["result"][i]["Type"].equals("Scene")) {
+		            			    	DevicesType[devicecursor]=SCENE;
+		            			    } else {
+		            			    	DevicesType[devicecursor]=GROUP;
+		            			    }
 	       							if (data["result"][i]["Status"].equals("On")) {
 	       								DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.ON);
 	       							} else if (data["result"][i]["Status"].equals("Off")) {
@@ -746,9 +745,7 @@ class GarmoticzView extends WatchUi.View {
     }
     
     function getDeviceStatus() {
-
-    
-    	if (DevicesType[devicecursor].equals("Device")) {
+    	if (DevicesType[devicecursor]==DEVICE or DevicesType[devicecursor]==ONOFF) {
     		// current device is a device
     		makeWebRequest(GETDEVICESTATUS);
     	} else {
@@ -784,7 +781,7 @@ class GarmoticzView extends WatchUi.View {
         		app.setProperty("DevicesIdx"+i,DevicesIdx[i]);
         		app.setProperty("DevicesName"+i,DevicesName[i]);
 	       		app.setProperty("DevicesType"+i,DevicesType[i]);
-	       		app.setProperty("DevicesSubType"+i,DevicesSubType[i]);
+	       		// app.setProperty("DevicesSubType"+i,DevicesSubType[i]);
 	       		app.setProperty("DevicesData"+i,DevicesData[i]);
         	}
         }
