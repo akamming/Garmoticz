@@ -14,6 +14,36 @@ enum {
 	MENU
 }
 
+// DeviceTypes
+enum {
+	ONOFF,
+	GAS,
+	ENERGY,
+	TEXT,
+	KWH,
+	GROUP,
+	SCENE,
+	DEVICE
+}
+
+// mapping of technical errors (source: https://developer.garmin.com/downloads/connect-iq/monkey-c/doc/Toybox/Communications.html) to friendly user text.
+// Every not mapped number is matched to 
+
+const ConnectionErrorMessages = {
+	-1001 => Rez.Strings.ERROR_HANDSET_REQUIRES_HTTPS,
+	
+	-403 => Rez.Strings.ERROR_TOO_MUCH_DATA,
+	-402 => Rez.Strings.ERROR_TOO_MUCH_DATA,
+	
+	-401 => Rez.Strings.ERROR_INVALID_CONNECTION_SETTING ,
+	404 => Rez.Strings.ERROR_INVALID_CONNECTION_SETTING,
+	
+	-104 => Rez.Strings.ERROR_BLE_CONNECTION_UNAVAILABLE,
+	
+	-3 => Rez.Strings.ERROR_BLE_TIMEOUT,
+	-2 => Rez.Strings.ERROR_BLE_TIMEOUT
+};
+
 
 class GarmoticzView extends WatchUi.View {
 	// Global vars
@@ -28,6 +58,7 @@ class GarmoticzView extends WatchUi.View {
 	var DevicesSwitchType;
 	var DevicesData;
 	var DevicesType;
+	var DevicesSubType;
 
 	var RoomsIdx;
 	var RoomsName;
@@ -77,7 +108,7 @@ class GarmoticzView extends WatchUi.View {
     
     	// Set Height en Width
         
-        setLayout(Rez.Layouts.MainLayout(dc));
+        // setLayout(Rez.Layouts.MainLayout(dc));
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -131,6 +162,7 @@ class GarmoticzView extends WatchUi.View {
 					DevicesSwitchType = new [SizeOfDevices];
 					DevicesData = new [SizeOfDevices];
 					DevicesType = new [SizeOfDevices];
+					DevicesSubType = new [SizeOfDevices];
 					
 					// populate array
 	       			for (var i=0;i<SizeOfDevices;i++) {
@@ -139,9 +171,10 @@ class GarmoticzView extends WatchUi.View {
 	       				DevicesSwitchType[i]="Loading...";
 	       				DevicesData[i]=app.getProperty("DevicesData"+i);
 	       				DevicesType[i]=app.getProperty("DevicesType"+i);
+	       				DevicesSubType[i]=app.getProperty("DevicesSubType"+i);
 	       				
 	       				// check for errors
-	       				if (DevicesIdx[i]==null or DevicesName[i]==null or DevicesType[i]==null or DevicesData[i]==null) {
+	       				if (DevicesIdx[i]==null or DevicesName[i]==null or DevicesType[i]==null or DevicesSubType[i]==null or DevicesData[i]==null) {
 	       					Error=true;
 	       				} 
 	       			}	
@@ -236,6 +269,7 @@ class GarmoticzView extends WatchUi.View {
     {
     	// Reset the application
     	status="Fetching Rooms";
+    	
     	makeWebRequest(GETROOMS);
     	Ui.requestUpdate();    	
     }
@@ -261,10 +295,8 @@ class GarmoticzView extends WatchUi.View {
 				roomcursor=0;
 			}
 			roomidx=RoomsIdx[roomcursor];
-			Ui.requestUpdate(); 
-					
+			Ui.requestUpdate();			
 		} 
-		
 	}
 	
 	function PreviousItem()
@@ -304,11 +336,11 @@ class GarmoticzView extends WatchUi.View {
 			    	status="Sending Command";	
 
 					// handle differently of on and off
-					if (DevicesData[devicecursor].equals("On")) {
-						DevicesData[devicecursor]="Switching Off";
+					if (DevicesData[devicecursor].equals(Ui.loadResource(Rez.Strings.ON))) {
+						DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_OFF);
 						makeWebRequest(SENDOFFCOMMAND);
 					} else {
-						DevicesData[devicecursor]="Switching On";
+						DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_ON);
 						makeWebRequest(SENDONCOMMAND);
 					}
 					
@@ -321,11 +353,11 @@ class GarmoticzView extends WatchUi.View {
 		    	status="Sending Command";	
 
 				// handle differently of on and off
-				if (DevicesData[devicecursor].equals("On")) {
-					DevicesData[devicecursor]="Switching Off";
+				if (DevicesData[devicecursor].equals(Ui.loadResource(Rez.Strings.ON))) {
+					DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_OFF);
 					makeWebRequest(SWITCHOFFGROUP);
 				} else {
-					DevicesData[devicecursor]="Switching On";
+					DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_ON);
 					makeWebRequest(SWITCHONGROUP);
 				}
 				
@@ -337,7 +369,7 @@ class GarmoticzView extends WatchUi.View {
 		    	// communicate status
 		    	status="Sending Command";	
 
-				DevicesData[devicecursor]="Activating Scene";
+				DevicesData[devicecursor]="Ui.loadResource(Rez.Strings.STATUS_ACTIVATING_SCENE)";
 				makeWebRequest(SWITCHONGROUP);
 				
 				// update the UI
@@ -346,6 +378,8 @@ class GarmoticzView extends WatchUi.View {
 		} else if (status.equals("ShowRooms")) {
 			// room selected, fetch devices
 			devicecursor=0;
+			RoomsIdx=null;
+			RoomsName=null;
 			status="Fetching Devices";
 			makeWebRequest(GETDEVICES);
 			Ui.requestUpdate();
@@ -387,10 +421,10 @@ class GarmoticzView extends WatchUi.View {
 		
 		if (Domoticz_Adress==null) {
 			status="Error";
-			StatusText="Invalid connection settings";
+			StatusText=Ui.loadResource(Rez.Strings.ERROR_INVALID_CONNECTION_SETTING);
 		} if (Domoticz_Adress.equals("")) {
 			status="Error";
-			StatusText="Invalid connection settings";
+			StatusText=Ui.loadResource(Rez.Strings.ERROR_INVALID_CONNECTION_SETTING);
 		} else {
 	    	//needed vars
 	    	var url;
@@ -425,6 +459,7 @@ class GarmoticzView extends WatchUi.View {
 	    		url="unknown url";
 	    	}
 	    	
+	    	
 	
 			// Make the request
 	        Comm.makeWebRequest(
@@ -446,6 +481,7 @@ class GarmoticzView extends WatchUi.View {
        // Check responsecode
        if (responseCode==200)
        {
+       		
        		// Make sure no error is shown	
            	// ShowError=false;       
            	if (data instanceof Dictionary) {	            
@@ -459,11 +495,15 @@ class GarmoticzView extends WatchUi.View {
 			            	DevicesSwitchType=new [data["result"].size()];
 			            	DevicesData=new [data["result"].size()];
 			            	DevicesType=new [data["result"].size()];
+			            	DevicesSubType=new [data["result"].size()];
+			            				            	
 			            	for (var i=0;i<data["result"].size();i++) {
+			            		
 			            		// Check if it is a device or a scene
 	       						DevicesIdx[i]=data["result"][i]["devidx"];
-	       						DevicesSwitchType[i]="Loading...";
-	       						DevicesData[i]="Loading...";
+	       						DevicesSwitchType[i]=Ui.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING);
+	       						DevicesData[i]=Ui.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING);
+	       						DevicesSubType[i]=Ui.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING);
 			            		if (data["result"][i]["type"]==0) {
 		       						DevicesName[i]=data["result"][i]["Name"];
 		       						DevicesType[i]="Device";
@@ -476,7 +516,7 @@ class GarmoticzView extends WatchUi.View {
 		        			SetDeviceCursor();	
 	        			} else { 
 	        				status="Error";
-	        				StatusText="Room has no devices";
+	        				StatusText=Ui.loadResource(Rez.Strings.STATUS_ROOM_HAS_NO_DEVICES);
         				}	    				
 	    			} else if (data["title"].equals("Devices")) {
 	    			
@@ -484,16 +524,44 @@ class GarmoticzView extends WatchUi.View {
 	    				if (status.equals("ShowDevices")) {
 			            	status="ShowDeviceState";
 	    				}
+	    				
+	    				
 		            	for (var i=0;i<DevicesIdx.size();i++) {
 		            	    if (DevicesIdx[i].equals(data["result"][0]["idx"])) {
-		   						DevicesData[i]=data["result"][0]["Data"];
 		   						DevicesSwitchType[i]=data["result"][0]["SwitchType"];
+	       						DevicesSubType[i]=data["result"][0]["SubType"];
+	       						if (DevicesSubType[i].equals("Switch") or DevicesSubType[i].equals("X10")) {  // Device is a switch
+	       							if (data["result"][0]["Data"].equals("On")) {
+	       								// switch is on
+	       								DevicesData[i]=Ui.loadResource(Rez.Strings.ON);
+	       							} else if (data["result"][0]["Data"].equals("Off")) {
+	       								// switch is off
+	       								DevicesData[i]=Ui.loadResource(Rez.Strings.OFF);
+	       							} else {
+	       								DevicesData[i]=data["result"][0]["Data"]; // this should not happen. 
+	       							}
+       							} else if (DevicesSubType[i].equals("kWh")) {  // kwh device: take the daily counter + usage as data
+	       							DevicesData[i]=data["result"][0]["CounterToday"]+", "+data["result"][0]["Usage"];
+	       						} else if (DevicesSubType[i].equals("Gas")) {  // gas device: take the daily counter as data
+	       							DevicesData[i]=data["result"][0]["CounterToday"];
+       							} else if (DevicesSubType[i].equals("Energy")) { // Smart meter: take the daily counters for usage and delivery and add current usage
+       									DevicesData[i]=data["result"][0]["CounterToday"].substring(0,data["result"][0]["CounterToday"].length()-4)+", "+data["result"][0]["CounterDelivToday"]+", "+data["result"][0]["Usage"];
+       							} else if (DevicesSubType[i].equals("Text")) { // a text device: make sure max length=25
+										if (data["result"][0]["Data"].length()>25) {
+				   							DevicesData[i]=data["result"][0]["Data"].substring(0,24); 
+										} else {
+				   							DevicesData[i]=data["result"][0]["Data"];
+										}
+	       						} else { // The rest
+		   							DevicesData[i]=data["result"][0]["Data"];
+		   						}
 	   						}
 	            		}
+	            		
 					} else if (data["title"].equals("SwitchLight") or data["title"].equals("SwitchScene")) {
 						// a scene, group of light was switched. Update the device status
 		            	status="ShowDeviceState";
-			           	DevicesData[devicecursor]="Command OK";
+			           	DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_COMMAND_EXECUTED_OK);
 			            getDeviceStatus();	            	
 	            	} else if (data["title"].equals("Plans")) {
 						// Roomplans received, populate the roomlist.
@@ -513,7 +581,7 @@ class GarmoticzView extends WatchUi.View {
 	            		} else {
 	            			// no roomplans in domoticz instance
 	            			status="Error";
-	            			StatusText="No roomplans configured";
+	            			StatusText=Ui.loadResource(Rez.Strings.STATUS_NO_ROOMPLAN_CONFIGURED);
             			}
         			} else if (data["title"].equals("Scenes")) {
         				// Scene(s) status(es) received, update the devicelist.
@@ -524,40 +592,47 @@ class GarmoticzView extends WatchUi.View {
 		            		// we cannot select on a specific scene, so cycle through the results
 		            		for (var i=0;i<data["result"].size();i++) {
 		            			if (data["result"][i]["idx"].equals(DevicesIdx[devicecursor])) {
-		            				DevicesData[devicecursor]=data["result"][i]["Status"];
 		            				DevicesType[devicecursor]=data["result"][i]["Type"];
+	       							if (data["result"][i]["Status"].equals("On")) {
+	       								DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.ON);
+	       							} else if (data["result"][i]["Status"].equals("Off")) {
+	       								DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.OFF);
+       								} else if (data["result"][i]["Status"].equals("Mixed")) {
+	       								DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.MIXED);       								
+	       							} else {
+			            				DevicesData[devicecursor]=data["result"][i]["Status"];
+	       							}
 		            			}
 		            		}
 		            	} else {
 		            		// no scenes/groups returned
 		            		status = "Error";
-		            		StatusText="No scenes/groups";
+		            		StatusText=Ui.loadResource(Rez.Strings.STATUS_NO_SCENESORGROUPS);
 		            	}
 					} else {
 						status="Error";
-						StatusText="Unknown HTTP Response";
+						StatusText=Ui.loadResource(Rez.Strings.STATUS_UNKNOWN_HTTP_RESPONSE);
 	        		}
             	} else {
             		status="Error";
-	            	StatusText="Domoticz Error: "+data["status"];
+	            	StatusText=Ui.loadResource(Rez.Strings.STATUS_DOMOTICZ_ERROR)+data["status"];
             	}            		
 	       } else {
 	            // not parsable
 	            status="Error";
-	            StatusText="Not Parsable (Proxy?)";
+	            StatusText=Ui.loadResource(Rez.Strings.STATUS_NOT_PARSABLE);
 	       }
 	   } else {
-	   	    // assume general Error
 	   		status="Error";
-	   		StatusText="Connection Error ("+responseCode+")";
-			if (responseCode==-1001) {
+	   	    if (ConnectionErrorMessages[responseCode]==null) {
+		   	    // assume general Error, since it was not logged. Also show  the number for debugging purposes..
+		   		status="Error";
+		   		StatusText=Ui.loadResource(Rez.Strings.ERROR_GENERAL_CONNECTION_ERROR)+" ("+responseCode+")";
+			} else {
+				// specific error
 	       		status="Error";
-	       		StatusText="Handset requires HTTPS"; 
-		   } else if (responseCode==404 or responseCode==-401) {
-	   			// Inavlid adress
-	   			status="Error";
-	   			StatusText="Invalid connection settings";		 
-	   		}
+	       		StatusText=Ui.loadResource(ConnectionErrorMessages[responseCode]); 
+       		}
    		}
    		Ui.requestUpdate();
 	}
@@ -566,11 +641,11 @@ class GarmoticzView extends WatchUi.View {
     function onUpdate(dc) {
         if (status.equals("Fetching Devices")) {
 	    	Line1="";
-	    	Line2="Loading devices";
+	    	Line2=Ui.loadResource(Rez.Strings.STATUS_LOADING_DEVICES);
 	    	Line3="";
         } else if (status.equals("Fetching Rooms")) {
 	    	Line1="";
-	    	Line2="Loading rooms";
+	    	Line2=Ui.loadResource(Rez.Strings.STATUS_LOADING_ROOMS);
 	    	Line3="";
 	    } else if (status.equals("Error")) {
 	    	Line1="Error";
@@ -612,7 +687,7 @@ class GarmoticzView extends WatchUi.View {
 	    	    Line3=RoomsName[roomcursor+1];
     	    }	    	
     	}	 else {
-    	   Line1="Unknown status";
+    	   Line1=Ui.loadResource(Rez.Strings.STATUS_UNKNOWN_STATUS);
     	   Line2=status;
     	   Line3="";
 		}       
@@ -649,8 +724,16 @@ class GarmoticzView extends WatchUi.View {
 		        dc.drawText(dc.getWidth()/2,dc.getHeight()/2-large_offset,Graphics.FONT_LARGE,Line2,Graphics.TEXT_JUSTIFY_CENTER);
 	        } else {
 	        	// two lines
-	        	dc.drawText(dc.getWidth()/2,dc.getHeight()*2/8,Graphics.FONT_LARGE,Line2,Graphics.TEXT_JUSTIFY_CENTER);
-		        dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8,Graphics.FONT_LARGE,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
+	        	if (dc.getTextWidthInPixels(Line2,Graphics.FONT_LARGE)>dc.getWidth()) { // smaller font is bigger than screen
+		        	dc.drawText(dc.getWidth()/2,dc.getHeight()*2/8,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+	        	} else {
+		        	dc.drawText(dc.getWidth()/2,dc.getHeight()*2/8,Graphics.FONT_LARGE,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+	        	}
+	        	if (dc.getTextWidthInPixels(Line2Status, Graphics.FONT_LARGE)>dc.getWidth()) { // small font if bigger than screen
+			        dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8,Graphics.FONT_MEDIUM,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
+		        } else {
+			        dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8,Graphics.FONT_LARGE,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
+		        }
         	}
 	        dc.drawText(dc.getWidth()/2,dc.getHeight()*7/8-medium_offset,Graphics.FONT_MEDIUM,Line3,Graphics.TEXT_JUSTIFY_CENTER);
         }
@@ -701,6 +784,7 @@ class GarmoticzView extends WatchUi.View {
         		app.setProperty("DevicesIdx"+i,DevicesIdx[i]);
         		app.setProperty("DevicesName"+i,DevicesName[i]);
 	       		app.setProperty("DevicesType"+i,DevicesType[i]);
+	       		app.setProperty("DevicesSubType"+i,DevicesSubType[i]);
 	       		app.setProperty("DevicesData"+i,DevicesData[i]);
         	}
         }

@@ -6,8 +6,32 @@
     <string id="title_protocol">Protocol</string>
     <string id="title_adress">IP Adress or Domainname</string>
     <string id="title_port">port number</string>
-    <string id="title_roomplan_idx">IDX of Roomplan</string>
     <string id="HTTP">HTTP</string>
     <string id="HTTPS">HTTPS</string>
     
+    <string id="ERROR_GENERAL_CONNECTION_ERROR">Connection Error</string>
+    <string id="ERROR_INVALID_CONNECTION_SETTING">Invalid connection settings</string>
+    <string id="ERROR_HANDSET_REQUIRES_HTTPS">Handset requires HTTPS</string>
+    <string id="ERROR_BLE_CONNECTION_UNAVAILABLE">No Bluetooth</string>
+    <string id="ERROR_BLE_TIMEOUT">Timeout</string>
+    <string id="ERROR_TOO_MUCH_DATA">Response too big</string> 
+
+    <string id="STATUS_ROOM_HAS_NO_DEVICES">Room has no devices</string>
+    <string id="STATUS_NO_ROOMPLAN_CONFIGURED">No roomplans configured</string>
+    <string id="STATUS_NO_SCENESORGROUPS">No scenes/groups></string>
+    <string id="STATUS_UNKNOWN_HTTP_RESPONSE">Unknown HTTP Response</string>
+    <string id="STATUS_DOMOTICZ_ERROR">Domoticz Error: </string>
+    <string id="STATUS_NOT_PARSABLE">Not Parsable (Proxy?)</string>
+    <string id="STATUS_LOADING_DEVICES">Loading Devices</string>
+    <string id="STATUS_LOADING_ROOMS">Loading Rooms</string>
+    <string id="STATUS_UNKNOWN_STATUS">Unknown status</string>
+    <string id="STATUS_SWITCHING_ON">Switching On</string>
+    <string id="STATUS_SWITCHING_OFF">Switching Off</string>
+    <string id="STATUS_ACTIVATING_SCENE">Activating Scene</string>
+    <string id="STATUS_DEVICE_STATUS_LOADING">Loading...</string>
+    <string id="STATUS_COMMAND_EXECUTED_OK">Command OK</string>
+    
+    <string id="ON">On</string>
+    <string id="OFF">Off</string>
+    <string id="MIXED">Mixed</string>
 </strings>
