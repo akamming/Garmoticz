@@ -34,4 +34,6 @@
     <string id="ON">Aan</string>
     <string id="OFF">Uit</string>
     <string id="MIXED">Gemixt</string>    
+    <string id="OPEN">Open</string>
+    <string id="CLOSED">Gesloten</string>
 </strings>

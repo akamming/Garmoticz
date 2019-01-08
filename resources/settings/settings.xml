@@ -8,10 +8,10 @@
 	</properties>
 	<settings>
 		<setting propertyKey="@Properties.PROP_USERNAME" title="@Strings.title_username">
-			<settingConfig type="AlphaNumeric" required="true"></settingConfig>
+			<settingConfig type="AlphaNumeric"></settingConfig>
 		</setting>
 		<setting propertyKey="@Properties.PROP_PASSWORD" title="@Strings.title_password">
-			<settingConfig type="AlphaNumeric" required="true"></settingConfig>
+			<settingConfig type="AlphaNumeric"></settingConfig>
 		</setting>
 		<setting propertyKey="@Properties.PROP_PROTOCOL" title="@Strings.title_protocol">
 			<settingConfig type="list" required="true">

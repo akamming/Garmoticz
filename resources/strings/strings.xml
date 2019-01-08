@@ -34,4 +34,6 @@
     <string id="ON">On</string>
     <string id="OFF">Off</string>
     <string id="MIXED">Mixed</string>
+    <string id="OPEN">Open</string>
+    <string id="CLOSED">Closed</string>
 </strings>
