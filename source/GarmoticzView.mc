@@ -71,11 +71,11 @@ class GarmoticzView extends WatchUi.View {
 	const delayTime=1000;
 	
 	// Config (using garmin express)
-	var Domoticz_UserName;
-	var Domoticz_Password;
-	var Domoticz_Protocol;
-	var Domoticz_Adress;
-	var Domoticz_Port;
+	// var Domoticz_UserName;
+	// var Domoticz_Password;
+	// var Domoticz_Protocol;
+	// var Domoticz_Adress;
+	// var Domoticz_Port;
 	
 	// commands from viewhandler
 	enum { 
@@ -90,9 +90,6 @@ class GarmoticzView extends WatchUi.View {
 	}
 		
     function initialize() {
-    	// Get the configured settings
-        retrieveSettings();   
-        
         // initializez timer
         delayTimer=new Timer.Timer();
         
@@ -230,20 +227,6 @@ class GarmoticzView extends WatchUi.View {
         }
     }
     
-    
-   function retrieveSettings() {
-	    // Get variables From settings
-	    Domoticz_UserName = App.getApp().getProperty("PROP_USERNAME");
-		Domoticz_Password= App.getApp().getProperty("PROP_PASSWORD");
-		if (App.getApp().getProperty("PROP_PROTOCOL")==0) {
-			Domoticz_Protocol="http";
-		} else {
-			Domoticz_Protocol="https";
-		}
-		Domoticz_Adress= App.getApp().getProperty("PROP_ADRESS");
-		Domoticz_Port= App.getApp().getProperty("PROP_PORT");
-	}
-	
 	    // Handle Command from Delegate view
     function HandleCommand (data)
     {
@@ -406,70 +389,83 @@ class GarmoticzView extends WatchUi.View {
     function makeWebRequest(action) {
 
 		// If settings were change, get new settings before we try again
-        if ($.gSettingsChanged) {
-			$.gSettingsChanged = false;
-			retrieveSettings();
+        // if ($.gSettingsChanged) {
+			//$.gSettingsChanged = false;
+			//retrieveSettings();
+		//}
+		
+		var Domoticz_UserName = App.getApp().getProperty("PROP_USERNAME");
+		var Domoticz_Password= App.getApp().getProperty("PROP_PASSWORD");
+		var Domoticz_Protocol=App.getApp().getProperty("PROP_PROTOCOL");
+		if (App.getApp().getProperty("PROP_PROTOCOL")==0) {
+			Domoticz_Protocol="http";
+		} else {
+			Domoticz_Protocol="https";
 		}
+		var Domoticz_Adress= App.getApp().getProperty("PROP_ADRESS");
+		var Domoticz_Port= App.getApp().getProperty("PROP_PORT");
+		
+		var url;
+		var prefix;
 		
 		
 		if (Domoticz_Adress==null) {
-			status="Error";
-			StatusText=Ui.loadResource(Rez.Strings.ERROR_INVALID_CONNECTION_SETTING);
-		} if (Domoticz_Adress.equals("")) {
-			status="Error";
-			StatusText=Ui.loadResource(Rez.Strings.ERROR_INVALID_CONNECTION_SETTING);
+			Domoticz_Adress="";
+		}
+		if (Domoticz_UserName.length()==0) {
+	    	prefix=Domoticz_Protocol+"://"+Domoticz_Adress+":"+Domoticz_Port+"/json.htm?";			
 		} else {
 	    	//needed vars
-	    	var url;
-	    	var prefix=Domoticz_Protocol+"://"+Domoticz_Adress+":"+Domoticz_Port+"/json.htm?username="+Su.encodeBase64(Domoticz_UserName)+"&password="+Su.encodeBase64(Domoticz_Password)+"&";
-	        
-	    	// create url
-	    	if (action==GETDEVICES) {
-	    		// build url to get the list of decices in the room
-		    	url=prefix+"type=command&param=getplandevices&idx="+roomidx; // get roomplan connectiq
-	    	}	else if (action==GETDEVICESTATUS) {
-	    		// build url to get the status of the current device
-	    		url=prefix+"type=devices&rid="+DevicesIdx[devicecursor]; // get device info
-	    	}	else if (action==GETSCENESTATUS) {
-	    		// build url to get the status of the current scene
-	    		url=prefix+"type=scenes"; // get device info
-	    	}	else if (action==GETROOMS) {
-	    		// build url to get all roomplans
-	    		url=prefix+"type=plans&order=Order&used=true"; // get device info
-	    	}	else if (action==SENDONCOMMAND) {
-	    		// build url to switch on device
-	    		url=prefix+"type=command&param=switchlight&idx="+DevicesIdx[devicecursor]+"&switchcmd=On"; // Send on command
-	    	}	else if (action==SENDOFFCOMMAND) {
-	    		// build url to switch off device
-	    		url=prefix+"type=command&param=switchlight&idx="+DevicesIdx[devicecursor]+"&switchcmd=Off"; // Send off command
-	    	}	else if (action==SWITCHOFFGROUP) {
-	    		// build url to switch off group/scene
-	    		url=prefix+"type=command&param=switchscene&idx="+DevicesIdx[devicecursor]+"&switchcmd=Off"; // Send off command
-	    	}	else if (action==SWITCHONGROUP) {
-	    		// build url to switch on group/scene
-	    		url=prefix+"type=command&param=switchscene&idx="+DevicesIdx[devicecursor]+"&switchcmd=On"; // Send off command
-	    	} else {
-	    		url="unknown url";
-	    	}
-	    	
-	
-			// Make the request
-	        Comm.makeWebRequest(
-	            url,
-	            {
-	            },
-	            {
-	                "Content-Type" => Comm.REQUEST_CONTENT_TYPE_URL_ENCODED
-	            },
-		            method(:onReceive)
-		     );
-		}
-	
+	    	prefix=Domoticz_Protocol+"://"+Domoticz_Adress+":"+Domoticz_Port+"/json.htm?username="+Su.encodeBase64(Domoticz_UserName)+"&password="+Su.encodeBase64(Domoticz_Password)+"&";
+		}	        
+    	// create url
+    	if (action==GETDEVICES) {
+    		// build url to get the list of decices in the room
+	    	url=prefix+"type=command&param=getplandevices&idx="+roomidx; // get roomplan connectiq
+    	}	else if (action==GETDEVICESTATUS) {
+    		// build url to get the status of the current device
+    		url=prefix+"type=devices&rid="+DevicesIdx[devicecursor]; // get device info
+    	}	else if (action==GETSCENESTATUS) {
+    		// build url to get the status of the current scene
+    		url=prefix+"type=scenes"; // get device info
+    	}	else if (action==GETROOMS) {
+    		// build url to get all roomplans
+    		url=prefix+"type=plans&order=Order&used=true"; // get device info
+    	}	else if (action==SENDONCOMMAND) {
+    		// build url to switch on device
+    		url=prefix+"type=command&param=switchlight&idx="+DevicesIdx[devicecursor]+"&switchcmd=On"; // Send on command
+    	}	else if (action==SENDOFFCOMMAND) {
+    		// build url to switch off device
+    		url=prefix+"type=command&param=switchlight&idx="+DevicesIdx[devicecursor]+"&switchcmd=Off"; // Send off command
+    	}	else if (action==SWITCHOFFGROUP) {
+    		// build url to switch off group/scene
+    		url=prefix+"type=command&param=switchscene&idx="+DevicesIdx[devicecursor]+"&switchcmd=Off"; // Send off command
+    	}	else if (action==SWITCHONGROUP) {
+    		// build url to switch on group/scene
+    		url=prefix+"type=command&param=switchscene&idx="+DevicesIdx[devicecursor]+"&switchcmd=On"; // Send off command
+    	} else {
+    		url="unknown url";
+    	}
+    	
+    	System.println(url);
+    	
+
+		// Make the request
+        Comm.makeWebRequest(
+            url,
+            {
+            },
+            {
+                "Content-Type" => Comm.REQUEST_CONTENT_TYPE_URL_ENCODED
+            },
+	            method(:onReceive)
+	     );	
     }
     
     // Receive the data from the web request
     function onReceive(responseCode, data) 
     {
+    	System.println("Responsecode :"+responseCode);
        // Check responsecode
        if (responseCode==200)
        {
@@ -524,13 +520,14 @@ class GarmoticzView extends WatchUi.View {
 	       						if ( data["result"][0]["SubType"].equals("Switch") or data["result"][0]["SubType"].equals("X10") ) {  // Device is a switch
 	       							if (data["result"][0]["SwitchType"].equals("On/Off")) { // switch can be controlled by user
 	       								DevicesType[i]=ONOFF;
-       								}	       							
-	       							if (data["result"][0]["Data"].equals("On")) {
-	       								// switch is on
-	       								DevicesData[i]=Ui.loadResource(Rez.Strings.ON);
-	       							} else if (data["result"][0]["Data"].equals("Off")) {
-	       								// switch is off
-	       								DevicesData[i]=Ui.loadResource(Rez.Strings.OFF);
+       								} else if (data["result"][0]["SwitchType"].equals("Door Contact")) { // DWS detected
+		       							if (data["result"][0]["Data"].equals("Open")) {
+		       								// switch is on
+		       								DevicesData[i]=Ui.loadResource(Rez.Strings.OPEN);
+		       							} else if (data["result"][0]["Data"].equals("Closed")) {
+		       								// switch is off
+		       								DevicesData[i]=Ui.loadResource(Rez.Strings.CLOSED);
+	       								}
 	       							} else {
 	       								DevicesData[i]=data["result"][0]["Data"]; // this should not happen. 
 	       							}
