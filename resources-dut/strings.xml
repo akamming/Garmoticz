@@ -15,6 +15,7 @@
     <string id="ERROR_BLE_CONNECTION_UNAVAILABLE">Bluetooth staat uit</string>
     <string id="ERROR_BLE_TIMEOUT">Timeout</string>
     <string id="ERROR_TOO_MUCH_DATA">Te veel data</string> 
+    <string id="ERROR_INVALID_RESPONSE">rare HTTP response (Proxy?)</string> 
 
     <string id="STATUS_ROOM_HAS_NO_DEVICES">Geen apparaten ingesteld</string>
     <string id="STATUS_NO_ROOMPLAN_CONFIGURED">Geen ruimtes ingesteld</string>

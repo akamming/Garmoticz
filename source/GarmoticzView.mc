@@ -33,6 +33,8 @@ const ConnectionErrorMessages = {
 	
 	-401 => Rez.Strings.ERROR_INVALID_CONNECTION_SETTING ,
 	404 => Rez.Strings.ERROR_INVALID_CONNECTION_SETTING,
+
+	-400 => Rez.Strings.ERROR_INVALID_RESPONSE,
 	
 	-104 => Rez.Strings.ERROR_BLE_CONNECTION_UNAVAILABLE,
 	

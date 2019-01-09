@@ -15,6 +15,7 @@
     <string id="ERROR_BLE_CONNECTION_UNAVAILABLE">No Bluetooth</string>
     <string id="ERROR_BLE_TIMEOUT">Timeout</string>
     <string id="ERROR_TOO_MUCH_DATA">Response too big</string> 
+    <string id="ERROR_INVALID_RESPONSE">Invalid HTTP response (Proxy?)</string> 
 
     <string id="STATUS_ROOM_HAS_NO_DEVICES">Room has no devices</string>
     <string id="STATUS_NO_ROOMPLAN_CONFIGURED">No roomplans configured</string>
