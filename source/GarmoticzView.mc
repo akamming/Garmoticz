@@ -53,10 +53,8 @@ class GarmoticzView extends WatchUi.View {
 	
 	var DevicesName;
 	var DevicesIdx;
-//	var DevicesSwitchType;
 	var DevicesData;
 	var DevicesType;
-//	var DevicesSubType;
 
 	var RoomsIdx;
 	var RoomsName;
@@ -71,13 +69,6 @@ class GarmoticzView extends WatchUi.View {
 	// Timer to prevent too many url's when scrolling through devices
 	var delayTimer;
 	const delayTime=1000;
-	
-	// Config (using garmin express)
-	// var Domoticz_UserName;
-	// var Domoticz_Password;
-	// var Domoticz_Protocol;
-	// var Domoticz_Adress;
-	// var Domoticz_Port;
 	
 	// commands from viewhandler
 	enum { 
@@ -96,14 +87,6 @@ class GarmoticzView extends WatchUi.View {
         delayTimer=new Timer.Timer();
         
         View.initialize();
-    }
-
-    // Load your resources here
-    function onLayout(dc) {
-    
-    	// Set Height en Width
-        
-        // setLayout(Rez.Layouts.MainLayout(dc));
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -390,12 +373,6 @@ class GarmoticzView extends WatchUi.View {
 
     function makeWebRequest(action) {
 
-		// If settings were change, get new settings before we try again
-        // if ($.gSettingsChanged) {
-			//$.gSettingsChanged = false;
-			//retrieveSettings();
-		//}
-		
 		var Domoticz_UserName = App.getApp().getProperty("PROP_USERNAME");
 		var Domoticz_Password= App.getApp().getProperty("PROP_PASSWORD");
 		var Domoticz_Protocol=App.getApp().getProperty("PROP_PROTOCOL");
