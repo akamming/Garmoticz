@@ -14,42 +14,55 @@ enum {
 	MENU
 }
 
-// DeviceTypes
-enum {
-	ONOFF,
-	GROUP,
-	SCENE,
-	DEVICE
+// commands from viewhandler
+enum { 
+	GETROOMS,  
+	GETDEVICES,
+	GETDEVICESTATUS,
+	SENDONCOMMAND,
+	SENDOFFCOMMAND,
+	GETSCENESTATUS,
+	SWITCHONGROUP,
+	SWITCHOFFGROUP
 }
-
-// mapping of technical errors (source: https://developer.garmin.com/downloads/connect-iq/monkey-c/doc/Toybox/Communications.html) to friendly user text.
-// Every not mapped number is matched to 
-
-const ConnectionErrorMessages = {
-	-1001 => Rez.Strings.ERROR_HANDSET_REQUIRES_HTTPS,
-	
-	-403 => Rez.Strings.ERROR_TOO_MUCH_DATA,
-	-402 => Rez.Strings.ERROR_TOO_MUCH_DATA,
-	
-	-401 => Rez.Strings.ERROR_INVALID_CONNECTION_SETTING ,
-	404 => Rez.Strings.ERROR_INVALID_CONNECTION_SETTING,
-
-	-400 => Rez.Strings.ERROR_INVALID_RESPONSE,
-	
-	-104 => Rez.Strings.ERROR_BLE_CONNECTION_UNAVAILABLE,
-	
-	-3 => Rez.Strings.ERROR_BLE_TIMEOUT,
-	-2 => Rez.Strings.ERROR_BLE_TIMEOUT
-};
 
 
 class GarmoticzView extends WatchUi.View {
+
+	// DeviceTypes
+	enum {
+		ONOFF,
+		GROUP,
+		SCENE,
+		DEVICE
+	}
+	
+	// mapping of technical errors (source: https://developer.garmin.com/downloads/connect-iq/monkey-c/doc/Toybox/Communications.html) to friendly user text.
+	// Every not mapped number is matched to 
+	
+	const ConnectionErrorMessages = {
+		-1001 => Rez.Strings.ERROR_HANDSET_REQUIRES_HTTPS,
+		
+		-403 => Rez.Strings.ERROR_TOO_MUCH_DATA,
+		-402 => Rez.Strings.ERROR_TOO_MUCH_DATA,
+		
+		-401 => Rez.Strings.ERROR_INVALID_CONNECTION_SETTING ,
+		404 => Rez.Strings.ERROR_INVALID_CONNECTION_SETTING,
+	
+		-400 => Rez.Strings.ERROR_INVALID_RESPONSE,
+		
+		-104 => Rez.Strings.ERROR_BLE_CONNECTION_UNAVAILABLE,
+		
+		-3 => Rez.Strings.ERROR_BLE_TIMEOUT,
+		-2 => Rez.Strings.ERROR_BLE_TIMEOUT
+	};
+	
 	// Global vars
 	var StatusText="";
 	var Line1="";
 	var Line2="";
-	var Line3="";
 	var Line2Status="";
+	var Line3="";
 	
 	var DevicesName;
 	var DevicesIdx;
@@ -68,19 +81,7 @@ class GarmoticzView extends WatchUi.View {
 	
 	// Timer to prevent too many url's when scrolling through devices
 	var delayTimer;
-	const delayTime=1000;
-	
-	// commands from viewhandler
-	enum { 
-		GETROOMS,  
-		GETDEVICES,
-		GETDEVICESTATUS,
-		SENDONCOMMAND,
-		SENDOFFCOMMAND,
-		GETSCENESTATUS,
-		SWITCHONGROUP,
-		SWITCHOFFGROUP
-	}
+	const delayTime=500; // number of milliseconds before status is requested
 		
     function initialize() {
         // initializez timer
@@ -215,7 +216,7 @@ class GarmoticzView extends WatchUi.View {
 	    // Handle Command from Delegate view
     function HandleCommand (data)
     {
-    	// stop the timer (if new action was done too fast, no update from device will take place)
+    	// stop the timers (if new action was done too fast, no update from device will take place)
     	delayTimer.stop();
     	
          if (data==NEXTITEM) {
@@ -373,29 +374,27 @@ class GarmoticzView extends WatchUi.View {
 
     function makeWebRequest(action) {
 
-		var Domoticz_UserName = App.getApp().getProperty("PROP_USERNAME");
-		var Domoticz_Password= App.getApp().getProperty("PROP_PASSWORD");
-		var Domoticz_Protocol=App.getApp().getProperty("PROP_PROTOCOL");
+		// var Domoticz_UserName = App.getApp().getProperty("PROP_USERNAME");
+		// var Domoticz_Password= App.getApp().getProperty("PROP_PASSWORD");
+		// var Domoticz_Adress= App.getApp().getProperty("PROP_ADRESS");
+		// var Domoticz_Port= App.getApp().getProperty("PROP_PORT");
+
+		// initialize vars
+		var url;
+		var prefix;
+		var Domoticz_Protocol;
+
 		if (App.getApp().getProperty("PROP_PROTOCOL")==0) {
 			Domoticz_Protocol="http";
 		} else {
 			Domoticz_Protocol="https";
 		}
-		var Domoticz_Adress= App.getApp().getProperty("PROP_ADRESS");
-		var Domoticz_Port= App.getApp().getProperty("PROP_PORT");
-		
-		var url;
-		var prefix;
-		
-		
-		if (Domoticz_Adress==null) {
-			Domoticz_Adress="";
-		}
-		if (Domoticz_UserName.length()==0) {
-	    	prefix=Domoticz_Protocol+"://"+Domoticz_Adress+":"+Domoticz_Port+"/json.htm?";			
+				
+		if (App.getApp().getProperty("PROP_USERNAME").length()==0) {
+	    	prefix=Domoticz_Protocol+"://"+App.getApp().getProperty("PROP_ADRESS")+":"+App.getApp().getProperty("PROP_PORT")+"/json.htm?";			
 		} else {
 	    	//needed vars
-	    	prefix=Domoticz_Protocol+"://"+Domoticz_Adress+":"+Domoticz_Port+"/json.htm?username="+Su.encodeBase64(Domoticz_UserName)+"&password="+Su.encodeBase64(Domoticz_Password)+"&";
+	    	prefix=Domoticz_Protocol+"://"+App.getApp().getProperty("PROP_ADRESS")+":"+App.getApp().getProperty("PROP_PORT")+"/json.htm?username="+Su.encodeBase64(App.getApp().getProperty("PROP_USERNAME"))+"&password="+Su.encodeBase64(App.getApp().getProperty("PROP_PASSWORD"))+"&";
 		}	        
     	// create url
     	if (action==GETDEVICES) {
@@ -426,9 +425,6 @@ class GarmoticzView extends WatchUi.View {
     		url="unknown url";
     	}
     	
-    	System.println(url);
-    	
-
 		// Make the request
         Comm.makeWebRequest(
             url,
@@ -444,7 +440,6 @@ class GarmoticzView extends WatchUi.View {
     // Receive the data from the web request
     function onReceive(responseCode, data) 
     {
-    	System.println("Responsecode :"+responseCode);
        // Check responsecode
        if (responseCode==200)
        {
@@ -490,8 +485,7 @@ class GarmoticzView extends WatchUi.View {
 	    				// device info received, update the device
 	    				if (status.equals("ShowDevices")) {
 			            	status="ShowDeviceState";
-	    				}
-	    				
+	    				}				
 	    				
 		            	for (var i=0;i<DevicesIdx.size();i++) {
 		            	    if (DevicesIdx[i].equals(data["result"][0]["idx"])) {
@@ -499,17 +493,21 @@ class GarmoticzView extends WatchUi.View {
 	       						if ( data["result"][0]["SubType"].equals("Switch") or data["result"][0]["SubType"].equals("X10") ) {  // Device is a switch
 	       							if (data["result"][0]["SwitchType"].equals("On/Off")) { // switch can be controlled by user
 	       								DevicesType[i]=ONOFF;
-       								} else if (data["result"][0]["SwitchType"].equals("Door Contact")) { // DWS detected
-		       							if (data["result"][0]["Data"].equals("Open")) {
-		       								// switch is on
-		       								DevicesData[i]=Ui.loadResource(Rez.Strings.OPEN);
-		       							} else if (data["result"][0]["Data"].equals("Closed")) {
-		       								// switch is off
-		       								DevicesData[i]=Ui.loadResource(Rez.Strings.CLOSED);
-	       								}
-	       							} else {
 	       								DevicesData[i]=data["result"][0]["Data"]; // this should not happen. 
 	       							}
+       								if (data["result"][0]["Data"].equals("On")) {
+	       								// switch is on
+	       								DevicesData[i]=Ui.loadResource(Rez.Strings.ON);
+	       							} else if (data["result"][0]["Data"].equals("Off")) {
+	       								// switch is off
+	       								DevicesData[i]=Ui.loadResource(Rez.Strings.OFF);
+       								} else if (data["result"][0]["Data"].equals("Open")) {
+	       								// switch is on
+	       								DevicesData[i]=Ui.loadResource(Rez.Strings.OPEN);
+	       							} else if (data["result"][0]["Data"].equals("Closed")) {
+	       								// switch is off
+	       								DevicesData[i]=Ui.loadResource(Rez.Strings.CLOSED);
+       								}	       							
        							} else if (data["result"][0]["SubType"].equals("kWh")) {  // kwh device: take the daily counter + usage as data
 	       							DevicesData[i]=data["result"][0]["CounterToday"]+", "+data["result"][0]["Usage"];
 	       						} else if (data["result"][0]["SubType"].equals("Gas")) {  // gas device: take the daily counter as data
@@ -757,7 +755,6 @@ class GarmoticzView extends WatchUi.View {
         		app.setProperty("DevicesIdx"+i,DevicesIdx[i]);
         		app.setProperty("DevicesName"+i,DevicesName[i]);
 	       		app.setProperty("DevicesType"+i,DevicesType[i]);
-	       		// app.setProperty("DevicesSubType"+i,DevicesSubType[i]);
 	       		app.setProperty("DevicesData"+i,DevicesData[i]);
         	}
         }
