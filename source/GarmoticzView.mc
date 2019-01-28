@@ -5,6 +5,24 @@ using Toybox.StringUtil as Su;
 using Toybox.Application as App;
 using Toybox.Timer as Timer;
 
+// Global vars, so all classes can access them
+var roomcursor=0;
+var devicecursor=0;
+var roomidx=0;
+var deviceidx=0;
+var devicetype;
+var status="Start Screen";
+var RoomsIdx;
+var RoomsName;
+var DevicesName;
+var DevicesIdx;
+var DevicesData;
+var DevicesType;
+var Refreshing=false;
+
+
+
+
 // Commands sent by delegate handler
 enum { 
 	NEXTITEM,
@@ -14,7 +32,7 @@ enum {
 	MENU
 }
 
-// commands from viewhandler
+// commands for getwebrequest
 enum { 
 	GETROOMS,  
 	GETDEVICES,
@@ -25,6 +43,8 @@ enum {
 	SWITCHONGROUP,
 	SWITCHOFFGROUP
 }
+
+const BACKMENUITEM = 10000;
 
 
 class GarmoticzView extends WatchUi.View {
@@ -64,37 +84,20 @@ class GarmoticzView extends WatchUi.View {
 	var Line2Status="";
 	var Line3="";
 	
-	var DevicesName;
-	var DevicesIdx;
-	var DevicesData;
-	var DevicesType;
 
-	var RoomsIdx;
-	var RoomsName;
 
-	var roomcursor=0;
-	var devicecursor=0;
-	var roomidx=0;
-	var deviceidx=0;
-	var devicetype;
-	var status="Fetching Rooms";
 	
 	// Timer to prevent too many url's when scrolling through devices
 	var delayTimer;
 	const delayTime=500; // number of milliseconds before status is requested
 		
     function initialize() {
+		// parent call
+        View.initialize();
+
         // initializez timer
         delayTimer=new Timer.Timer();
         
-        View.initialize();
-    }
-
-    // Called when this View is brought to the foreground. Restore
-    // the state of this View and prepare it to be shown. This includes
-    // loading resources into memory.
-    function onShow() {
-    	
      	// Load the last known vales of the cursor
         var app = Application.getApp();       
         devicecursor = app.getProperty("devicecursor");       
@@ -103,7 +106,7 @@ class GarmoticzView extends WatchUi.View {
         deviceidx = app.getProperty("deviceidx");       
         devicetype = app.getProperty("devicetype");       
 		status=app.getProperty("status");       
-		
+
         // Reset values to readable if they are null  to prevent exceptions
         if (devicecursor==null) {
        		devicecursor=0; 
@@ -119,13 +122,11 @@ class GarmoticzView extends WatchUi.View {
         }
    		if (status==null) {
    			// no status saved  or saved in malicious state, setting the app to an initial state.
-        	status="Fetching Rooms";
-   			
-	    	makeWebRequest(GETROOMS);
-        	
+        	status="Start Screen";
         } else {
 	       // try to set correct state based on previous state
 	       if (status.equals("ShowDeviceState")) {
+	       		// System.println("initialize: ShowDeviceState detected");
 
 	       		// See if we have rooms stored on the watch
 	       		var Error=false; // for error handling
@@ -161,11 +162,10 @@ class GarmoticzView extends WatchUi.View {
 	       		
 	       		if (Error) {
 	       			// there was an error, get the rooms from the domoticz instance
-			    	makeWebRequest(GETDEVICES);
 		        	status="Fetching Devices";
 	        	} else {
 	        		// we have retrieved a valid config
-	        		status="ShowDevices";
+	        		status="ShowDevice";
 	        		
     		        // make sure the shown device will be updated to latest status (using delay to prevent too many updates in case of fast scrolling)
         			delayTimer.start(method(:getDeviceStatus),delayTime,false);
@@ -198,19 +198,23 @@ class GarmoticzView extends WatchUi.View {
 	       		
 	       		if (Error) {
 	       			// there was an error, get the rooms from the domoticz instance
-		        	status="Fetching Rooms";
-			    	makeWebRequest(GETROOMS);
+		        	status="Start Screen";
 	        	} else {
 	        		// we have retrieved a valid config
 	        		status="ShowRooms";
 	    		}
-	        } else {
-	        	
+	        } else {	        	
 	        	// unknown state, go to initial state
-	        	status="Fetching Rooms";
-		    	makeWebRequest(GETROOMS);
+	        	status="Start Screen";
 	        }
         }
+    }
+
+    // Called when this View is brought to the foreground. Restore
+    // the state of this View and prepare it to be shown. This includes
+    // loading resources into memory.
+    function onShow() {
+    	// System.println("OnShow");
     }
     
 	    // Handle Command from Delegate view
@@ -232,10 +236,11 @@ class GarmoticzView extends WatchUi.View {
     
     function ResetApplication()
     {
-    	// Reset the application
-    	status="Fetching Rooms";
-    	
-    	makeWebRequest(GETROOMS);
+ 		if (status.equals("ShowDeviceState")) {
+ 			status="Fetching Devices";
+ 		} else {
+ 		   	status="Fetching Rooms";
+    	}
     	Ui.requestUpdate();    	
     }
 
@@ -251,7 +256,6 @@ class GarmoticzView extends WatchUi.View {
 			deviceidx=DevicesIdx[devicecursor];
 			devicetype=DevicesType[devicecursor];
 			delayTimer.start(method(:getDeviceStatus),delayTime,false);	            	
-			Ui.requestUpdate(); 
 			
 		} else if (status.equals("ShowRooms")) {
 			roomcursor++;
@@ -260,8 +264,8 @@ class GarmoticzView extends WatchUi.View {
 				roomcursor=0;
 			}
 			roomidx=RoomsIdx[roomcursor];
-			Ui.requestUpdate();			
 		} 
+		Ui.requestUpdate();			
 	}
 	
 	function PreviousItem()
@@ -276,7 +280,6 @@ class GarmoticzView extends WatchUi.View {
 			deviceidx=DevicesIdx[devicecursor];
 			devicetype=DevicesType[devicecursor];
 			delayTimer.start(method(:getDeviceStatus),delayTime,false);	            	
-			Ui.requestUpdate();
 		} else if (status.equals("ShowRooms")) {
 			roomcursor--;
 			if (roomcursor<0) 
@@ -284,13 +287,13 @@ class GarmoticzView extends WatchUi.View {
 				roomcursor=RoomsIdx.size()-1;
 			}
 			roomidx=RoomsIdx[roomcursor];
-			Ui.requestUpdate();
 		} 
+		Ui.requestUpdate();
 	}
 	
 	function Select()
 	{
-		if (status.equals("ShowDeviceState") or status.equals("ShowDevices")) {
+		if (status.equals("ShowDeviceState") or status.equals("ShowDevice")) {
 			// check if we have to flip a switch
 			if (DevicesType[devicecursor]==ONOFF) {
 				// Device is a switchable device
@@ -343,8 +346,7 @@ class GarmoticzView extends WatchUi.View {
 			RoomsIdx=null;
 			RoomsName=null;
 			status="Fetching Devices";
-			makeWebRequest(GETDEVICES);
-			Ui.requestUpdate();
+			// Ui.requestUpdate();
 		}
 	}
 	
@@ -373,11 +375,6 @@ class GarmoticzView extends WatchUi.View {
 
 
     function makeWebRequest(action) {
-
-		// var Domoticz_UserName = App.getApp().getProperty("PROP_USERNAME");
-		// var Domoticz_Password= App.getApp().getProperty("PROP_PASSWORD");
-		// var Domoticz_Adress= App.getApp().getProperty("PROP_ADRESS");
-		// var Domoticz_Port= App.getApp().getProperty("PROP_PORT");
 
 		// initialize vars
 		var url;
@@ -425,6 +422,8 @@ class GarmoticzView extends WatchUi.View {
     		url="unknown url";
     	}
     	
+    	// System.println("url: "+url);
+    	
 		// Make the request
         Comm.makeWebRequest(
             url,
@@ -440,6 +439,8 @@ class GarmoticzView extends WatchUi.View {
     // Receive the data from the web request
     function onReceive(responseCode, data) 
     {
+		// System.println("onReceive: "+data["title"]);
+
        // Check responsecode
        if (responseCode==200)
        {
@@ -458,6 +459,10 @@ class GarmoticzView extends WatchUi.View {
 			            	DevicesData=new [data["result"].size()];
 			            	DevicesType=new [data["result"].size()];
 			            	// DevicesSubType=new [data["result"].size()];
+			            	
+							// start building 
+			            	var menu = new WatchUi.Menu();
+        					menu.setTitle(Ui.loadResource(Rez.Strings.DEVICES));			            	
 			            				            	
 			            	for (var i=0;i<data["result"].size();i++) {
 			            		
@@ -473,19 +478,24 @@ class GarmoticzView extends WatchUi.View {
 		       						DevicesName[i]=data["result"][i]["Name"].substring(8,data["result"][i]["Name"].length());
 			       					DevicesType[i]=SCENE; // can be scene or group, but this will be corrected when the def devices is loaded
 		   						}
+   								menu.addItem(DevicesName[i], i);
+		   						
 		        			}
+		        			
 		        			// Check if we remember were we were the last time;
 		        			SetDeviceCursor();	
+		        			
+        					// Push the menu
+		        			menu.addItem(Ui.loadResource(Rez.Strings.BACK),BACKMENUITEM); // add Back item to menu
+        					WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
+		        			
 	        			} else { 
 	        				status="Error";
 	        				StatusText=Ui.loadResource(Rez.Strings.STATUS_ROOM_HAS_NO_DEVICES);
         				}	    				
 	    			} else if (data["title"].equals("Devices")) {
-	    			
 	    				// device info received, update the device
-	    				if (status.equals("ShowDevices")) {
-			            	status="ShowDeviceState";
-	    				}				
+	    				Refreshing=false; // remove updates statusline
 	    				
 		            	for (var i=0;i<DevicesIdx.size();i++) {
 		            	    if (DevicesIdx[i].equals(data["result"][0]["idx"])) {
@@ -526,7 +536,7 @@ class GarmoticzView extends WatchUi.View {
 		   						}
 	   						}
 	            		}
-	            		
+		            	
 					} else if (data["title"].equals("SwitchLight") or data["title"].equals("SwitchScene")) {
 						// a scene, group of light was switched. Update the device status
 		            	status="ShowDeviceState";
@@ -538,15 +548,25 @@ class GarmoticzView extends WatchUi.View {
 		            		// we have rooms to populate!
 			            	RoomsIdx=new [data["result"].size()];
 			            	RoomsName=new [data["result"].size()];
-			            	
+
+							// start building menu
+			            	var menu = new WatchUi.Menu();
+        					menu.setTitle(Ui.loadResource(Rez.Strings.ROOMS));
+
 			            	for (var i=0;i<data["result"].size();i++) {
 			            		RoomsIdx[i]=data["result"][i]["idx"];
 			            		RoomsName[i]=data["result"][i]["Name"];
+			            		menu.addItem(RoomsName[i], i);
 			            	}
+			            	
 			            	// Set Room Cursor
 			            	SetRoomCursor();
 			            	status="ShowRooms";
-		            				            	
+			            	
+			            	
+        					// Push the menu
+			            	menu.addItem(Ui.loadResource(Rez.Strings.BACK),BACKMENUITEM); // add Back item to menu
+        					WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
 	            		} else {
 	            			// no roomplans in domoticz instance
 	            			status="Error";
@@ -554,6 +574,7 @@ class GarmoticzView extends WatchUi.View {
             			}
         			} else if (data["title"].equals("Scenes")) {
         				// Scene(s) status(es) received, update the devicelist.
+        				Refreshing=false;
         				if (status.equals("ShowDevices")) {
         					status="ShowDeviceState";
     					}
@@ -612,20 +633,39 @@ class GarmoticzView extends WatchUi.View {
     
     // Update the view
     function onUpdate(dc) {
-        if (status.equals("Fetching Devices")) {
+    
+    	// for debugging
+    	// System.println("onUpdate() - "+status);
+    	
+    	// set the correct lines
+        if (status.equals("Fetching Devices") or status.equals("DeviceFetchInProgress")) {
 	    	Line1="";
 	    	Line2=Ui.loadResource(Rez.Strings.STATUS_LOADING_DEVICES);
 	    	Line3="";
-        } else if (status.equals("Fetching Rooms")) {
+	        if (status.equals("Fetching Devices")) {
+		    	// make sure we get the devices!
+	        	makeWebRequest(GETDEVICES);
+	        	status="DeviceFetchInProgress";
+	        } 
+	    } else if (status.equals("Fetching Rooms") or status.equals("RoomFetchInProgress")) {
 	    	Line1="";
 	    	Line2=Ui.loadResource(Rez.Strings.STATUS_LOADING_ROOMS);
 	    	Line3="";
-	    } else if (status.equals("Error")) {
+	        if (status.equals("Fetching Rooms")) {
+		    	// Make sure we get the rooms!
+		    	makeWebRequest(GETROOMS);
+		    	status="RoomFetchInProgress";
+		    } 
+    	} else if (status.equals("Error")) {
 	    	Line1="Error";
 	    	Line2=StatusText;
 	    	Line3="";
-    	} else if (status.equals("ShowDeviceState") or status.equals("ShowDevices") or status.equals("Sending Command")) {
-    	
+    	} else if (status.equals("Start Screen") or status.equals("ShowRooms") or status.equals("ShowDevices")) {
+    		Line1="";
+    		Line2="Garmoticz";
+    		Line2Status=Ui.loadResource(Rez.Strings.STATUS_PRESS_MENU);
+    		Line3="";
+    	} else if (status.equals("ShowDeviceState") or status.equals("ShowDevice") or status.equals("Sending Command")) {
     		if (devicecursor==0) 
     		{
     	    	Line1=DevicesName[DevicesIdx.size()-1];
@@ -642,24 +682,11 @@ class GarmoticzView extends WatchUi.View {
 		    } else {	    
 	    	    Line3=DevicesName[devicecursor+1];
     	    }
-	    } else if (status.equals("ShowRooms")) {
-    		if (roomcursor==0) 
-    		{
-    	    	Line1=RoomsName[RoomsIdx.size()-1];
-	    	} else {
-	    		Line1=RoomsName[roomcursor-1];
-    		}
-    		
-    	    Line2=RoomsName[roomcursor];
-    	    Line2Status="";
-    	    
-    	    if (roomcursor==RoomsIdx.size()-1)
-    	    {
-    		    Line3=RoomsName[0];  
-		    } else {	    
-	    	    Line3=RoomsName[roomcursor+1];
+    	    if (status.equals("ShowDevice")) {
+    	    	getDeviceStatus();
+    	    	status="ShowDeviceState";
     	    }	    	
-    	}	 else {
+    	} else {
     	   Line1=Ui.loadResource(Rez.Strings.STATUS_UNKNOWN_STATUS);
     	   Line2=status;
     	   Line3="";
@@ -671,54 +698,37 @@ class GarmoticzView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 
 		
-		if (status.equals("Fetching Devices") or status.equals("Fetching Rooms") or status.equals("Error")) {
-			// Status screen
-			// load logo
-			var image = Ui.loadResource( Rez.Drawables.DomoticzLogo);
-			dc.drawBitmap(dc.getWidth()/2-30,25,image);
-			
-			// Draw text
-	        dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
-		 	
-		} else {
-        	// menu screen
-        	
-	        // create menu structure by dividing screen in 3 area's
-	        dc.drawLine(0,dc.getHeight()/4,dc.getWidth(),dc.getHeight()/4);
-	        dc.drawLine(0,dc.getHeight()*3/4,dc.getWidth(),dc.getHeight()*3/4);
-        
-			// determine offsets and draw the menu	        
-	        var medium_offset=dc.getFontHeight(Graphics.FONT_MEDIUM)/2;
-	        var large_offset=dc.getFontHeight(Graphics.FONT_LARGE)/2;
-	        dc.drawText(dc.getWidth()/2,dc.getHeight()*1/8-medium_offset,Graphics.FONT_MEDIUM,Line1,Graphics.TEXT_JUSTIFY_CENTER);
-	        
-	        if (status.equals("ShowRooms")) {
-	        	// only one line
-		        dc.drawText(dc.getWidth()/2,dc.getHeight()/2-large_offset,Graphics.FONT_LARGE,Line2,Graphics.TEXT_JUSTIFY_CENTER);
-	        } else {
-	        	// two lines
-	        	if (dc.getTextWidthInPixels(Line2,Graphics.FONT_LARGE)>dc.getWidth()) { // smaller font is bigger than screen
-		        	dc.drawText(dc.getWidth()/2,dc.getHeight()*2/8,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
-	        	} else {
-		        	dc.drawText(dc.getWidth()/2,dc.getHeight()*2/8,Graphics.FONT_LARGE,Line2,Graphics.TEXT_JUSTIFY_CENTER);
-	        	}
-	        	if (dc.getTextWidthInPixels(Line2Status, Graphics.FONT_LARGE)>dc.getWidth()) { // small font if bigger than screen
-			        dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8,Graphics.FONT_MEDIUM,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
-		        } else {
-			        dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8,Graphics.FONT_LARGE,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
-		        }
+		// load logo
+		var image = Ui.loadResource( Rez.Drawables.DomoticzLogo);
+		dc.drawBitmap(dc.getWidth()/2-30,2,image);
+		var offset=10;
+		
+		if (status.equals("ShowDeviceState") or status.equals("ShowRooms") or status.equals("ShowDevices") or status.equals ("Sending Command") or status.equals("ShowDevice") or status.equals("Start Screen") ) {
+        	// two lines
+        	if (dc.getTextWidthInPixels(Line2,Graphics.FONT_LARGE)>dc.getWidth()) { // smaller font is bigger than screen
+	        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+offset,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+        	} else {
+	        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+offset,Graphics.FONT_LARGE,Line2,Graphics.TEXT_JUSTIFY_CENTER);
         	}
-	        dc.drawText(dc.getWidth()/2,dc.getHeight()*7/8-medium_offset,Graphics.FONT_MEDIUM,Line3,Graphics.TEXT_JUSTIFY_CENTER);
+        	if (dc.getTextWidthInPixels(Line2Status, Graphics.FONT_LARGE)>dc.getWidth()) { // small font if bigger than screen
+		        dc.drawText(dc.getWidth()/2,dc.getHeight()*8/16+offset,Graphics.FONT_MEDIUM,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
+	        } else {
+		        dc.drawText(dc.getWidth()/2,dc.getHeight()*8/16+offset,Graphics.FONT_LARGE,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
+	        }
+	        
+	        if (Refreshing) {
+		        // dc.drawText(dc.getWidth()/2,dc.getHeight()*13/16,Graphics.FONT_SMALL,Ui.loadResource(Rez.Strings.UPDATING),Graphics.TEXT_JUSTIFY_CENTER);
+		        var bitmap=Ui.loadResource(Rez.Drawables.NetworkTrafficIcon);
+		        dc.drawBitmap(dc.getWidth()/2-20, dc.getHeight()-30, bitmap);
+	        }
+		} else {
+			// One Line
+	        dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
         }
-        	        
-        if (status.equals("ShowDevices")) {
-        	// make sure the shown device will be updated to latest status
-        	delayTimer.start(method(:getDeviceStatus),delayTime,false);
-        }
-        
     }
     
     function getDeviceStatus() {
+    	Refreshing=true;
     	if (DevicesType[devicecursor]==DEVICE or DevicesType[devicecursor]==ONOFF) {
     		// current device is a device
     		makeWebRequest(GETDEVICESTATUS);
@@ -726,6 +736,7 @@ class GarmoticzView extends WatchUi.View {
     		// current device is a scene
     		makeWebRequest(GETSCENESTATUS);
     	}
+    	Ui.requestUpdate();
     }
     
     // Called when this View is removed from the screen. Save the

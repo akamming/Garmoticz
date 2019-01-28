@@ -88,8 +88,7 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
     		// it is a shortpress, handle normal behaviour
     			
 	    	// retrieve the key
-	        key = evt.getKey();
-	
+	        key = evt.getKey();	
 	        if (key == KEY_ENTER) {
 	        	if (isTouchScreen) {
 		        	notify.invoke(SELECT);
