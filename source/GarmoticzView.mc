@@ -300,6 +300,7 @@ class GarmoticzView extends WatchUi.View {
 
 		    	// communicate status
 		    	status="Sending Command";	
+	        	Refreshing=true;
 
 				// handle differently of on and off
 				if (DevicesData[devicecursor].equals(Ui.loadResource(Rez.Strings.ON))) {
@@ -316,6 +317,7 @@ class GarmoticzView extends WatchUi.View {
 			if (DevicesType[devicecursor]==GROUP) {
 		    	// communicate status
 		    	status="Sending Command";	
+	        	Refreshing=true;
 
 				// handle differently of on and off
 				if (DevicesData[devicecursor].equals(Ui.loadResource(Rez.Strings.ON))) {
@@ -336,6 +338,7 @@ class GarmoticzView extends WatchUi.View {
 
 				DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_ACTIVATING_SCENE);
 				makeWebRequest(SWITCHONGROUP);
+	        	Refreshing=true;
 				
 				// update the UI
 				Ui.requestUpdate();
@@ -439,7 +442,7 @@ class GarmoticzView extends WatchUi.View {
     // Receive the data from the web request
     function onReceive(responseCode, data) 
     {
-		// System.println("onReceive: "+data["title"]);
+    	Refreshing=false; // data received
 
        // Check responsecode
        if (responseCode==200)
@@ -646,6 +649,7 @@ class GarmoticzView extends WatchUi.View {
 		    	// make sure we get the devices!
 	        	makeWebRequest(GETDEVICES);
 	        	status="DeviceFetchInProgress";
+	        	Refreshing=true;
 	        } 
 	    } else if (status.equals("Fetching Rooms") or status.equals("RoomFetchInProgress")) {
 	    	Line1="";
@@ -655,6 +659,7 @@ class GarmoticzView extends WatchUi.View {
 		    	// Make sure we get the rooms!
 		    	makeWebRequest(GETROOMS);
 		    	status="RoomFetchInProgress";
+	        	Refreshing=true;
 		    } 
     	} else if (status.equals("Error")) {
 	    	Line1="Error";
@@ -716,15 +721,17 @@ class GarmoticzView extends WatchUi.View {
 		        dc.drawText(dc.getWidth()/2,dc.getHeight()*8/16+offset,Graphics.FONT_LARGE,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
 	        }
 	        
-	        if (Refreshing) {
-		        // dc.drawText(dc.getWidth()/2,dc.getHeight()*13/16,Graphics.FONT_SMALL,Ui.loadResource(Rez.Strings.UPDATING),Graphics.TEXT_JUSTIFY_CENTER);
-		        var bitmap=Ui.loadResource(Rez.Drawables.NetworkTrafficIcon);
-		        dc.drawBitmap(dc.getWidth()/2-20, dc.getHeight()-30, bitmap);
-	        }
 		} else {
 			// One Line
 	        dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
         }
+
+        if (Refreshing) {
+	        // dc.drawText(dc.getWidth()/2,dc.getHeight()*13/16,Graphics.FONT_SMALL,Ui.loadResource(Rez.Strings.UPDATING),Graphics.TEXT_JUSTIFY_CENTER);
+	        var bitmap=Ui.loadResource(Rez.Drawables.NetworkTrafficIcon);
+	        dc.drawBitmap(dc.getWidth()/2-20, dc.getHeight()-30, bitmap);
+        }
+
     }
     
     function getDeviceStatus() {
