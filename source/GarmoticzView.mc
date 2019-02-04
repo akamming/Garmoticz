@@ -126,7 +126,6 @@ class GarmoticzView extends WatchUi.View {
         } else {
 	       // try to set correct state based on previous state
 	       if (status.equals("ShowDeviceState")) {
-	       		// System.println("initialize: ShowDeviceState detected");
 
 	       		// See if we have rooms stored on the watch
 	       		var Error=false; // for error handling
@@ -214,7 +213,6 @@ class GarmoticzView extends WatchUi.View {
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
     function onShow() {
-    	// System.println("OnShow");
     }
     
 	    // Handle Command from Delegate view
@@ -236,11 +234,7 @@ class GarmoticzView extends WatchUi.View {
     
     function ResetApplication()
     {
- 		if (status.equals("ShowDeviceState")) {
- 			status="Fetching Devices";
- 		} else {
- 		   	status="Fetching Rooms";
-    	}
+ 		status="Fetching Rooms";
     	Ui.requestUpdate();    	
     }
 
@@ -424,8 +418,6 @@ class GarmoticzView extends WatchUi.View {
     	} else {
     		url="unknown url";
     	}
-    	
-    	// System.println("url: "+url);
     	
 		// Make the request
         Comm.makeWebRequest(
@@ -638,7 +630,6 @@ class GarmoticzView extends WatchUi.View {
     function onUpdate(dc) {
     
     	// for debugging
-    	// System.println("onUpdate() - "+status);
     	
     	// set the correct lines
         if (status.equals("Fetching Devices") or status.equals("DeviceFetchInProgress")) {
@@ -704,7 +695,7 @@ class GarmoticzView extends WatchUi.View {
 
 		
 		// load logo
-		var image = Ui.loadResource( Rez.Drawables.DomoticzLogo);
+		var image = Ui.loadResource( Rez.Drawables.Domoticz_Logo);
 		dc.drawBitmap(dc.getWidth()/2-30,2,image);
 		var offset=10;
 		
@@ -750,24 +741,17 @@ class GarmoticzView extends WatchUi.View {
     // state of this View here. This includes freeing resources from
     // memory.
     function onHide() {
-        // Save cursors
         var app=Application.getApp();
-        app.setProperty("devicecursor",devicecursor);       
-        app.setProperty("roomcursor", roomcursor);       
-        app.setProperty("deviceidx",deviceidx);       
-        app.setProperty("devicetype",devicetype);       
-        app.setProperty("roomidx", roomidx);       
-        app.setProperty("status", status);
         
-        if (status.equals("ShowRooms")) {
-        	// save rooms, so they do not need to be retrieved at startup
-        	app.setProperty("SizeOfRooms", RoomsIdx.size());
-        	for (var i=0;i<RoomsIdx.size();i++) {
-        		app.setProperty("RoomsIdx"+i,RoomsIdx[i]);
-        		app.setProperty("RoomsName"+i,RoomsName[i]);
-        	}
-        } else if (status.equals("ShowDeviceState")) {
-        	// save rooms, so they do not need to be retrieved at startup
+        if (status.equals("ShowDeviceState")) {
+	        // Save cursors
+	        app.setProperty("devicecursor",devicecursor);       
+	        app.setProperty("roomcursor", roomcursor);       
+	        app.setProperty("deviceidx",deviceidx);       
+	        app.setProperty("devicetype",devicetype);       
+	        app.setProperty("roomidx", roomidx);       
+	        app.setProperty("status", status);
+        	// save devices, so they do not need to be retrieved at startup
         	app.setProperty("SizeOfDevices", DevicesIdx.size());
         	for (var i=0;i<DevicesIdx.size();i++) {
         		app.setProperty("DevicesIdx"+i,DevicesIdx[i]);
@@ -775,6 +759,8 @@ class GarmoticzView extends WatchUi.View {
 	       		app.setProperty("DevicesType"+i,DevicesType[i]);
 	       		app.setProperty("DevicesData"+i,DevicesData[i]);
         	}
+        } else if (status.equals("Start Screen") or status.equals("ShowRooms")) {
+	        app.setProperty("status", "Start Screen");        	
         }
     }
 }
