@@ -5,6 +5,17 @@ using Toybox.StringUtil as Su;
 using Toybox.Application as App;
 using Toybox.Timer as Timer;
 
+
+// define functions for debugging on console which is not executed in release version
+(:debug) function print(message) {
+	System.println(message);
+}
+
+(:release) function print(message) {
+	// do nothing
+}
+
+
 // Global vars, so all classes can access them
 var roomcursor=0;
 var devicecursor=0;

@@ -39,8 +39,9 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
         } 
         return true;
     }
-        
- 	function onTap(clickEvent) {
+   
+ // in simulator there is no swipeup/swipedown. So allow tapping on upper or lower part of screen as alternative       
+ (:debug) function onTap(clickEvent) {
         var Coordinates=clickEvent.getCoordinates();
         var x=Coordinates[0];
         var y=Coordinates[1];
@@ -54,6 +55,11 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
 			// A selection was made
 			notify.invoke(SELECT);
 		}
+        return true;
+    }
+    
+ (:release) function onTap(clickEvent) {
+		notify.invoke(SELECT);
         return true;
     }
     
