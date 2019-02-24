@@ -4,14 +4,15 @@ using Toybox.WatchUi as Ui;
 using Toybox.StringUtil as Su;
 using Toybox.Application as App;
 using Toybox.Timer as Timer;
+using Toybox.System;
 
 
 // define functions for debugging on console which is not executed in release version
-(:debug) function print(message) {
+(:debug) function Log(message) {
 	System.println(message);
 }
 
-(:release) function print(message) {
+(:release) function Log(message) {
 	// do nothing
 }
 
@@ -90,6 +91,7 @@ class GarmoticzView extends WatchUi.View {
 	
 	// Global vars
 	var StatusText="";
+	var ErrorCode=0;
 	var Line1="";
 	var Line2="";
 	var Line2Status="";
@@ -498,6 +500,7 @@ class GarmoticzView extends WatchUi.View {
 	        			} else { 
 	        				status="Error";
 	        				StatusText=Ui.loadResource(Rez.Strings.STATUS_ROOM_HAS_NO_DEVICES);
+	        				ErrorCode=0;
         				}	    				
 	    			} else if (data["title"].equals("Devices")) {
 	    				// device info received, update the device
@@ -577,6 +580,7 @@ class GarmoticzView extends WatchUi.View {
 	            			// no roomplans in domoticz instance
 	            			status="Error";
 	            			StatusText=Ui.loadResource(Rez.Strings.STATUS_NO_ROOMPLAN_CONFIGURED);
+	            			ErrorCode=0;
             			}
         			} else if (data["title"].equals("Scenes")) {
         				// Scene(s) status(es) received, update the devicelist.
@@ -612,26 +616,31 @@ class GarmoticzView extends WatchUi.View {
 					} else {
 						status="Error";
 						StatusText=Ui.loadResource(Rez.Strings.STATUS_UNKNOWN_HTTP_RESPONSE);
+						ErrorCode=0;
 	        		}
             	} else {
             		status="Error";
 	            	StatusText=Ui.loadResource(Rez.Strings.STATUS_DOMOTICZ_ERROR)+data["status"];
+	            	ErrorCode=0;
             	}            		
 	       } else {
 	            // not parsable
 	            status="Error";
 	            StatusText=Ui.loadResource(Rez.Strings.STATUS_NOT_PARSABLE);
+	            ErrorCode=0;
 	       }
 	   } else {
 	   		status="Error";
 	   	    if (ConnectionErrorMessages[responseCode]==null) {
 		   	    // assume general Error, since it was not logged. Also show  the number for debugging purposes..
 		   		status="Error";
-		   		StatusText=Ui.loadResource(Rez.Strings.ERROR_GENERAL_CONNECTION_ERROR)+" ("+responseCode+")";
+		   		StatusText=Ui.loadResource(Rez.Strings.ERROR_GENERAL_CONNECTION_ERROR);
+		   		ErrorCode=responseCode;
 			} else {
 				// specific error
 	       		status="Error";
 	       		StatusText=Ui.loadResource(ConnectionErrorMessages[responseCode]); 
+	       		ErrorCode=responseCode;
        		}
    		}
    		Ui.requestUpdate();
@@ -640,8 +649,6 @@ class GarmoticzView extends WatchUi.View {
     // Update the view
     function onUpdate(dc) {
     
-    	// for debugging
-    	
     	// set the correct lines
         if (status.equals("Fetching Devices") or status.equals("DeviceFetchInProgress")) {
 	    	Line1="";
@@ -666,6 +673,11 @@ class GarmoticzView extends WatchUi.View {
     	} else if (status.equals("Error")) {
 	    	Line1="Error";
 	    	Line2=StatusText;
+	    	if (ErrorCode==0) {
+	    		Line2Status="";
+    		} else {
+    			Line2Status=ErrorCode.toString();
+			}
 	    	Line3="";
     	} else if (status.equals("Start Screen") or status.equals("ShowRooms") or status.equals("ShowDevices")) {
     		Line1="";
@@ -710,10 +722,14 @@ class GarmoticzView extends WatchUi.View {
 		dc.drawBitmap(dc.getWidth()/2-30,2,image);
 		var offset=10;
 		
-		if (status.equals("ShowDeviceState") or status.equals("ShowRooms") or status.equals("ShowDevices") or status.equals ("Sending Command") or status.equals("ShowDevice") or status.equals("Start Screen") ) {
+		if (status.equals("ShowDeviceState") or status.equals("ShowRooms") or status.equals("ShowDevices") or status.equals ("Sending Command") or status.equals("ShowDevice") or status.equals("Start Screen") or status.equals("Error") ) {
         	// two lines
         	if (dc.getTextWidthInPixels(Line2,Graphics.FONT_LARGE)>dc.getWidth()) { // smaller font is bigger than screen
-	        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+offset,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+	        	if (dc.getTextWidthInPixels(Line2,Graphics.FONT_MEDIUM)>dc.getWidth()) { // on fenix 5 sometimes even smaller font is too big
+		        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+offset,Graphics.FONT_XTINY,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+	        	} else {
+		        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+offset,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+	        	}
         	} else {
 	        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+offset,Graphics.FONT_LARGE,Line2,Graphics.TEXT_JUSTIFY_CENTER);
         	}
@@ -725,7 +741,15 @@ class GarmoticzView extends WatchUi.View {
 	        
 		} else {
 			// One Line
-	        dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+			if (dc.getTextWidthInPixels(Line2,Graphics.FONT_MEDIUM)>dc.getWidth()) {
+		        dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8,Graphics.FONT_SMALL,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+	        } else {
+    			if (dc.getTextWidthInPixels(Line2,Graphics.FONT_MEDIUM)>dc.getWidth()) {
+		    		dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8,Graphics.FONT_TINY,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+	    		} else {
+		    		dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+	    		}
+        	}    
         }
 
         if (Refreshing) {
