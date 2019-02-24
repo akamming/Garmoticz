@@ -13,7 +13,8 @@
     <string id="ERROR_INVALID_CONNECTION_SETTING">Invalid connection settings</string>
     <string id="ERROR_HANDSET_REQUIRES_HTTPS">Handset requires HTTPS</string>
     <string id="ERROR_BLE_CONNECTION_UNAVAILABLE">No Bluetooth</string>
-    <string id="ERROR_BLE_TIMEOUT">Timeout</string>
+    <string id="ERROR_BLE_TIMEOUT">Bluetooth Timeout</string>
+    <string id="ERROR_NETWORK_TIMEOUT">Network Timeout</string>
     <string id="ERROR_TOO_MUCH_DATA">Response too big</string> 
     <string id="ERROR_INVALID_RESPONSE">Invalid HTTP response (Proxy?)</string> 
 

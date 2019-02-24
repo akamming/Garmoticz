@@ -82,6 +82,9 @@ class GarmoticzView extends WatchUi.View {
 		404 => Rez.Strings.ERROR_INVALID_CONNECTION_SETTING,
 	
 		-400 => Rez.Strings.ERROR_INVALID_RESPONSE,
+
+		-300 => Rez.Strings.ERROR_NETWORK_TIMEOUT,
+		-400 => Rez.Strings.ERROR_NETWORK_TIMEOUT,
 		
 		-104 => Rez.Strings.ERROR_BLE_CONNECTION_UNAVAILABLE,
 		
