@@ -51,6 +51,7 @@ enum {
 	GETDEVICESTATUS,
 	SENDONCOMMAND,
 	SENDOFFCOMMAND,
+	SENDSTOPCOMMAND,
 	GETSCENESTATUS,
 	SWITCHONGROUP,
 	SWITCHOFFGROUP
@@ -64,6 +65,7 @@ class GarmoticzView extends WatchUi.View {
 	// DeviceTypes
 	enum {
 		ONOFF,
+		VENBLIND,
 		GROUP,
 		SCENE,
 		DEVICE
@@ -324,6 +326,28 @@ class GarmoticzView extends WatchUi.View {
 				// update the UI
 				Ui.requestUpdate();
 			} 
+			if (DevicesType[devicecursor]==VENBLIND) {
+				// Device is a switchable device
+
+		    	// communicate status
+		    	status="Sending Command";	
+	        	Refreshing=true;
+
+				// handle differently of on and off
+				if (DevicesData[devicecursor].equals(Ui.loadResource(Rez.Strings.CLOSED))) {
+					DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_STOPPING);
+					makeWebRequest(SENDSTOPCOMMAND);
+				} else if (DevicesData[devicecursor].equals(Ui.loadResource(Rez.Strings.STOPPED))) {
+					DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_OFF);
+					makeWebRequest(SENDOFFCOMMAND);
+				} else {
+					DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_ON);
+					makeWebRequest(SENDONCOMMAND);
+				}
+				
+				// update the UI
+				Ui.requestUpdate();
+			} 
 			if (DevicesType[devicecursor]==GROUP) {
 		    	// communicate status
 		    	status="Sending Command";	
@@ -425,6 +449,9 @@ class GarmoticzView extends WatchUi.View {
     	}	else if (action==SENDOFFCOMMAND) {
     		// build url to switch off device
     		url=prefix+"type=command&param=switchlight&idx="+DevicesIdx[devicecursor]+"&switchcmd=Off"; // Send off command
+    	}	else if (action==SENDSTOPCOMMAND) {
+    		// build url to switch off device
+    		url=prefix+"type=command&param=switchlight&idx="+DevicesIdx[devicecursor]+"&switchcmd=Stop"; // Send stop command
     	}	else if (action==SWITCHOFFGROUP) {
     		// build url to switch off group/scene
     		url=prefix+"type=command&param=switchscene&idx="+DevicesIdx[devicecursor]+"&switchcmd=Off"; // Send off command
@@ -516,6 +543,9 @@ class GarmoticzView extends WatchUi.View {
 	       							if (data["result"][0]["SwitchType"].equals("On/Off")) { // switch can be controlled by user
 	       								DevicesType[i]=ONOFF;
 	       								DevicesData[i]=data["result"][0]["Data"]; // this should not happen. 
+	       							} else if (data["result"][0]["SwitchType"].equals("Venetian Blinds US") or data["result"][0]["SwitchType"].equals("Venetian Blinds EU")) {
+	       								DevicesType[i]=VENBLIND;
+	       								DevicesData[i]=data["result"][0]["Data"]; // this should not happen. 
 	       							}
        								if (data["result"][0]["Data"].equals("On")) {
 	       								// switch is on
@@ -529,7 +559,10 @@ class GarmoticzView extends WatchUi.View {
 	       							} else if (data["result"][0]["Data"].equals("Closed")) {
 	       								// switch is off
 	       								DevicesData[i]=Ui.loadResource(Rez.Strings.CLOSED);
-       								}	       							
+       								} else if (data["result"][0]["Data"].equals("Stopped")) {
+	       								// switch is off
+	       								DevicesData[i]=Ui.loadResource(Rez.Strings.STOPPED);
+       								}		       							
        							} else if (data["result"][0]["SubType"].equals("kWh")) {  // kwh device: take the daily counter + usage as data
 	       							DevicesData[i]=data["result"][0]["CounterToday"]+", "+data["result"][0]["Usage"];
 	       						} else if (data["result"][0]["SubType"].equals("Gas")) {  // gas device: take the daily counter as data
@@ -769,12 +802,12 @@ class GarmoticzView extends WatchUi.View {
     
     function getDeviceStatus() {
     	Refreshing=true;
-    	if (DevicesType[devicecursor]==DEVICE or DevicesType[devicecursor]==ONOFF) {
+    	if (DevicesType[devicecursor]==SCENE or DevicesType[devicecursor]==GROUP) {
     		// current device is a device
-    		makeWebRequest(GETDEVICESTATUS);
+    		makeWebRequest(GETSCENESTATUS);
     	} else {
     		// current device is a scene
-    		makeWebRequest(GETSCENESTATUS);
+    		makeWebRequest(GETDEVICESTATUS);
     	}
     	Ui.requestUpdate();
     }

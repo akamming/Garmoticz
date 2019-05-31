@@ -29,6 +29,7 @@
     <string id="STATUS_UNKNOWN_STATUS">Onbekende status</string>
     <string id="STATUS_SWITCHING_ON">Zet Aan</string>
     <string id="STATUS_SWITCHING_OFF">Zet Uit</string>
+    <string id="STATUS_STOPPING">Stoppen...</string>
     <string id="STATUS_ACTIVATING_SCENE">Activeer scene</string>
     <string id="STATUS_DEVICE_STATUS_LOADING">Laden...</string>
     <string id="STATUS_COMMAND_EXECUTED_OK">Commando uitgevoerd</string>
@@ -39,6 +40,7 @@
     <string id="MIXED">Gemixt</string>    
     <string id="OPEN">Open</string>
     <string id="CLOSED">Gesloten</string>
+    <string id="STOPPED">Gestopt</string>
     
     <string id="ROOMS">Kamers</string>
     <string id="DEVICES">Apparaten</string>

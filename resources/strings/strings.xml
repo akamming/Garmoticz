@@ -29,6 +29,7 @@
     <string id="STATUS_UNKNOWN_STATUS">Unknown status</string>
     <string id="STATUS_SWITCHING_ON">Switching On</string>
     <string id="STATUS_SWITCHING_OFF">Switching Off</string>
+    <string id="STATUS_STOPPING">Stopping...</string>
     <string id="STATUS_ACTIVATING_SCENE">Activating Scene</string>
     <string id="STATUS_DEVICE_STATUS_LOADING">Loading...</string>
     <string id="STATUS_COMMAND_EXECUTED_OK">Command OK</string>
@@ -39,6 +40,7 @@
     <string id="MIXED">Mixed</string>
     <string id="OPEN">Open</string>
     <string id="CLOSED">Closed</string>
+    <string id="STOPPED">Stopped</string>
     
     <string id="ROOMS">Rooms</string>
     <string id="DEVICES">Devices</string>
