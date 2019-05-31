@@ -512,7 +512,7 @@ class GarmoticzView extends WatchUi.View {
 		            	for (var i=0;i<DevicesIdx.size();i++) {
 		            	    if (DevicesIdx[i].equals(data["result"][0]["idx"])) {
 		            	    	// device i is the device to update!
-	       						if ( data["result"][0]["SubType"].equals("Switch") or data["result"][0]["SubType"].equals("X10") or data["result"][0]["SubType"].equals("Impuls") ) {  // Device is a switch
+       							if (data["result"][0]["SwitchType"]!=null) { // it is a switch
 	       							if (data["result"][0]["SwitchType"].equals("On/Off")) { // switch can be controlled by user
 	       								DevicesType[i]=ONOFF;
 	       								DevicesData[i]=data["result"][0]["Data"]; // this should not happen. 
