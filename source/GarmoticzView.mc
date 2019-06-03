@@ -58,7 +58,9 @@ enum {
 }
 
 const BACKMENUITEM = 10000;
-
+const OPENMENUITEM=10001;
+const CLOSEMENUITEM=10002;
+const STOPMENUITEM=10003;
 
 class GarmoticzView extends WatchUi.View {
 
@@ -350,7 +352,7 @@ class GarmoticzView extends WatchUi.View {
 				Ui.requestUpdate();
 			} 
 			
-			
+			/*
 			if (DevicesType[devicecursor]==VENBLIND) {
 				// Device is a switchable device
 
@@ -374,7 +376,25 @@ class GarmoticzView extends WatchUi.View {
 				
 				// update the UI
 				Ui.requestUpdate();
+			} */
+			
+			if (DevicesType[devicecursor]==VENBLIND) {
+				// Device is a switchable Venetian Blinds, so 3 commands available to choose from: Present menu
+	        	var menu = new WatchUi.Menu();
+	        	// Arnold
+				menu.setTitle(Ui.loadResource(Rez.Strings.BLINDS));			            	
+	        				            	
+   				menu.addItem(Ui.loadResource(Rez.Strings.OPEN),OPENMENUITEM);
+   				menu.addItem(Ui.loadResource(Rez.Strings.CLOSE),CLOSEMENUITEM);
+   				menu.addItem(Ui.loadResource(Rez.Strings.STOP),STOPMENUITEM);
+				
+				// Push the menu
+				menu.addItem(Ui.loadResource(Rez.Strings.BACK),BACKMENUITEM); // add Back item to menu
+				WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
+
 			} 
+			
+			
 			
 			if (DevicesType[devicecursor]==PUSHON) {
 				// Device is a switchable device
@@ -515,6 +535,8 @@ class GarmoticzView extends WatchUi.View {
     	} else {
     		url="unknown url";
     	}
+    	
+    	Log (url);
     	
 		// Make the request
         Comm.makeWebRequest(
@@ -751,6 +773,21 @@ class GarmoticzView extends WatchUi.View {
     // Update the view
     function onUpdate(dc) {
     	Log("status = "+status);
+    	
+    	// A Menu command might have been given)
+    	if (status.equals("SendStopCommand")) {
+    		DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_STOPPING);
+			makeWebRequest(SENDSTOPCOMMAND);
+			status="Sending Command";
+    	} else if (status.equals("SendCloseCommand")) {
+    		DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_ON);
+			makeWebRequest(SENDONCOMMAND);
+			status="Sending Command";
+    	} else if (status.equals("SendOpenCommand")) {
+    		DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_OFF);
+			makeWebRequest(SENDOFFCOMMAND);
+			status="Sending Command";
+		}
     
     	// set the correct lines
         if (status.equals("Fetching Devices") or status.equals("DeviceFetchInProgress")) {

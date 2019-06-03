@@ -31,6 +31,14 @@ class GarmoticzMenuInputDelegate extends WatchUi.MenuInputDelegate {
 				devicetype=DevicesType[item];
 				status="ShowDevice";
 			}
+    	} else if (status.equals("ShowDeviceState")) {
+    		if (item==OPENMENUITEM) {
+	    		status = "SendOpenCommand";
+    		} else if (item==CLOSEMENUITEM) {
+    			status = "SendCloseCommand";
+			} else if (item==STOPMENUITEM) {
+				status = "SendStopCommand";
+			}
     	}
     	
     }

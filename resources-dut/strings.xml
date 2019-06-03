@@ -47,6 +47,10 @@
     
     <string id="ROOMS">Kamers</string>
     <string id="DEVICES">Apparaten</string>
+    <string id="BLINDS">Zonwering</string>
+    <string id="OPEN">Open</string>
+    <string id="CLOSE">Sluit</string>
+    <string id="STOP">Stop</string>
     <string id="BACK">Terug</string>
     <string id="UPDATING">Verversen...</string>
 </strings>
