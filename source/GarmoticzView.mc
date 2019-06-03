@@ -65,6 +65,7 @@ class GarmoticzView extends WatchUi.View {
 	// DeviceTypes
 	enum {
 		ONOFF,
+		INVERTEDBLINDS,
 		VENBLIND,
 		PUSHON,
 		PUSHOFF,
@@ -316,8 +317,8 @@ class GarmoticzView extends WatchUi.View {
 		    	status="Sending Command";	
 	        	Refreshing=true;
 
-				// handle differently of on and off
-				if (DevicesData[devicecursor].equals(Ui.loadResource(Rez.Strings.ON))) {
+				// handle differently of on/closed and off/open
+				if (DevicesData[devicecursor].equals(Ui.loadResource(Rez.Strings.ON)) or DevicesData[devicecursor].equals(Ui.loadResource(Rez.Strings.CLOSED))) {
 					DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_OFF);
 					makeWebRequest(SENDOFFCOMMAND);
 				} else {
@@ -328,6 +329,28 @@ class GarmoticzView extends WatchUi.View {
 				// update the UI
 				Ui.requestUpdate();
 			} 
+			
+			if (DevicesType[devicecursor]==INVERTEDBLINDS) {
+				// Device is a switchable device
+
+		    	// communicate status
+		    	status="Sending Command";	
+	        	Refreshing=true;
+
+				// handle differently of on/closed and off/open
+				if (DevicesData[devicecursor].equals(Ui.loadResource(Rez.Strings.OPEN))) {
+					DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_OFF);
+					makeWebRequest(SENDOFFCOMMAND);
+				} else {
+					DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_ON);
+					makeWebRequest(SENDONCOMMAND);
+				}
+				
+				// update the UI
+				Ui.requestUpdate();
+			} 
+			
+			
 			if (DevicesType[devicecursor]==VENBLIND) {
 				// Device is a switchable device
 
@@ -593,8 +616,10 @@ class GarmoticzView extends WatchUi.View {
        								}					
        								
        								// Set switchtype and correct data if needed
-	       							if (data["result"][0]["SwitchType"].equals("On/Off")) { // switch can be controlled by user
+	       							if (data["result"][0]["SwitchType"].equals("On/Off") or data["result"][0]["SwitchType"].equals("Blinds")) { // switch can be controlled by user
 	       								DevicesType[i]=ONOFF;
+       								} else if (data["result"][0]["SwitchType"].equals("Blinds Inverted")) {
+       									DevicesType[i]=INVERTEDBLINDS;
 	       							} else if (data["result"][0]["SwitchType"].equals("Venetian Blinds US") or data["result"][0]["SwitchType"].equals("Venetian Blinds EU")) { // blinds
 	       								DevicesType[i]=VENBLIND;
 	       							} else if (data["result"][0]["SwitchType"].equals("Push On Button")) { // PushOnButton
@@ -725,6 +750,7 @@ class GarmoticzView extends WatchUi.View {
     
     // Update the view
     function onUpdate(dc) {
+    	Log("status = "+status);
     
     	// set the correct lines
         if (status.equals("Fetching Devices") or status.equals("DeviceFetchInProgress")) {
