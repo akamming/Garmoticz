@@ -42,6 +42,9 @@
     <string id="CLOSED">Gesloten</string>
     <string id="STOPPED">Gestopt</string>
     
+    <string id="PUSHON">Zet Aan</string>
+    <string id="PUSHOFF">Zet Uit</string>
+    
     <string id="ROOMS">Kamers</string>
     <string id="DEVICES">Apparaten</string>
     <string id="BACK">Terug</string>

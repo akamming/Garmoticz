@@ -66,6 +66,8 @@ class GarmoticzView extends WatchUi.View {
 	enum {
 		ONOFF,
 		VENBLIND,
+		PUSHON,
+		PUSHOFF,
 		GROUP,
 		SCENE,
 		DEVICE
@@ -345,9 +347,38 @@ class GarmoticzView extends WatchUi.View {
 					makeWebRequest(SENDONCOMMAND);
 				}
 				
+				
+				
 				// update the UI
 				Ui.requestUpdate();
 			} 
+			
+			if (DevicesType[devicecursor]==PUSHON) {
+				// Device is a switchable device
+
+		    	// communicate status
+		    	status="Sending Command";	
+	        	Refreshing=true;
+
+				makeWebRequest(SENDONCOMMAND);
+				
+				// update the UI
+				Ui.requestUpdate();
+			} 
+			
+			if (DevicesType[devicecursor]==PUSHOFF) {
+				// Device is a switchable device
+
+		    	// communicate status
+		    	status="Sending Command";	
+	        	Refreshing=true;
+
+				makeWebRequest(SENDOFFCOMMAND);
+				
+				// update the UI
+				Ui.requestUpdate();
+			} 
+			
 			if (DevicesType[devicecursor]==GROUP) {
 		    	// communicate status
 		    	status="Sending Command";	
@@ -540,13 +571,8 @@ class GarmoticzView extends WatchUi.View {
 		            	    if (DevicesIdx[i].equals(data["result"][0]["idx"])) {
 		            	    	// device i is the device to update!
        							if (data["result"][0]["SwitchType"]!=null) { // it is a switch
-	       							if (data["result"][0]["SwitchType"].equals("On/Off")) { // switch can be controlled by user
-	       								DevicesType[i]=ONOFF;
-	       								DevicesData[i]=data["result"][0]["Data"]; // this should not happen. 
-	       							} else if (data["result"][0]["SwitchType"].equals("Venetian Blinds US") or data["result"][0]["SwitchType"].equals("Venetian Blinds EU")) {
-	       								DevicesType[i]=VENBLIND;
-	       								DevicesData[i]=data["result"][0]["Data"]; // this should not happen. 
-	       							}
+	       							
+	       							// set datafield
        								if (data["result"][0]["Data"].equals("On")) {
 	       								// switch is on
 	       								DevicesData[i]=Ui.loadResource(Rez.Strings.ON);
@@ -562,7 +588,23 @@ class GarmoticzView extends WatchUi.View {
        								} else if (data["result"][0]["Data"].equals("Stopped")) {
 	       								// switch is off
 	       								DevicesData[i]=Ui.loadResource(Rez.Strings.STOPPED);
-       								}		       							
+       								} else {
+       									DevicesData[i]=data["result"][0]["Data"];
+       								}					
+       								
+       								// Set switchtype and correct data if needed
+	       							if (data["result"][0]["SwitchType"].equals("On/Off")) { // switch can be controlled by user
+	       								DevicesType[i]=ONOFF;
+	       							} else if (data["result"][0]["SwitchType"].equals("Venetian Blinds US") or data["result"][0]["SwitchType"].equals("Venetian Blinds EU")) { // blinds
+	       								DevicesType[i]=VENBLIND;
+	       							} else if (data["result"][0]["SwitchType"].equals("Push On Button")) { // PushOnButton
+	       								DevicesType[i]=PUSHON;
+	       								DevicesData[i]=Ui.loadResource(Rez.Strings.PUSHON);
+	       							} else if (data["result"][0]["SwitchType"].equals("Push Off Button")) { // PushOffButton
+	       								DevicesType[i]=PUSHOFF;
+	       								DevicesData[i]=Ui.loadResource(Rez.Strings.PUSHOFF); 
+	       							}
+	       							
        							} else if (data["result"][0]["SubType"].equals("kWh")) {  // kwh device: take the daily counter + usage as data
 	       							DevicesData[i]=data["result"][0]["CounterToday"]+", "+data["result"][0]["Usage"];
 	       						} else if (data["result"][0]["SubType"].equals("Gas")) {  // gas device: take the daily counter as data
@@ -576,7 +618,6 @@ class GarmoticzView extends WatchUi.View {
 				   							DevicesData[i]=data["result"][0]["Data"];
 										}
 	       						} else { // The rest
-	       						
 		   							DevicesData[i]=data["result"][0]["Data"];
 		   						}
 	   						}

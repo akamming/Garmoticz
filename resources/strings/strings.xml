@@ -42,6 +42,9 @@
     <string id="CLOSED">Closed</string>
     <string id="STOPPED">Stopped</string>
     
+    <string id="PUSHON">Push On</string>
+    <string id="PUSHOFF">Push Off</string>
+    
     <string id="ROOMS">Rooms</string>
     <string id="DEVICES">Devices</string>
     <string id="BACK">Back</string>
