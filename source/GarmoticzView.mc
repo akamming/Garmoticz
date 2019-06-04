@@ -255,7 +255,10 @@ class GarmoticzView extends WatchUi.View {
  			ResetApplication();
  		} else if (data==BACK) {
  			if (status.equals("ShowDeviceState"))  {
-	 			ResetApplication();
+	 			// ResetApplication();
+	 			SetRoomCursor();
+		     	status="ShowRooms";
+		     	Ui.requestUpdate();
  			} else {
  	 			popView(WatchUi.SLIDE_RIGHT);
  			
@@ -323,8 +326,8 @@ class GarmoticzView extends WatchUi.View {
 			// roomcursor=item;
     		roomidx=RoomsIdx[roomcursor];
     		devicecursor=0;
-			RoomsIdx=null;
-			RoomsName=null;
+			// RoomsIdx=null;
+			// RoomsName=null;
 			status="Fetching Devices";
 			Ui.requestUpdate();
 			
@@ -370,31 +373,6 @@ class GarmoticzView extends WatchUi.View {
 				Ui.requestUpdate();
 			} 
 			
-			/*
-			if (DevicesType[devicecursor]==VENBLIND) {
-				// Device is a switchable device
-
-		    	// communicate status
-		    	status="Sending Command";	
-	        	Refreshing=true;
-
-				// handle differently of on and off
-				if (DevicesData[devicecursor].equals(Ui.loadResource(Rez.Strings.CLOSED))) {
-					DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_STOPPING);
-					makeWebRequest(SENDSTOPCOMMAND);
-				} else if (DevicesData[devicecursor].equals(Ui.loadResource(Rez.Strings.STOPPED))) {
-					DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_OFF);
-					makeWebRequest(SENDOFFCOMMAND);
-				} else {
-					DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_ON);
-					makeWebRequest(SENDONCOMMAND);
-				}
-				
-				
-				
-				// update the UI
-				Ui.requestUpdate();
-			} */
 			
 			if (DevicesType[devicecursor]==VENBLIND) {
 				// Device is a switchable Venetian Blinds, so 3 commands available to choose from: Present menu
