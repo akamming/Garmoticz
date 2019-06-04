@@ -25,11 +25,6 @@ class InitialViewDelegate extends Ui.BehaviorDelegate {
         return true;
     }
     
-    function onKey(evt) {
-    	StartApp();
-    	return true;
-    }
-    
     // Set up the callback to the view
     function initialize() {
     

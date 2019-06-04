@@ -40,6 +40,7 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
         return true;
     } 
     
+    /* 
     function onNextPage() {
     	notify.invoke(NEXTITEM);
     	return true;
@@ -48,7 +49,7 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
     function onPreviousPage() {
     	notify.invoke(PREVIOUSITEM);
     	return true;
-	}
+	} */
 
 	//    
  	function onTap(clickEvent) {
