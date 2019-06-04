@@ -255,10 +255,13 @@ class GarmoticzView extends WatchUi.View {
  			ResetApplication();
  		} else if (data==BACK) {
  			if (status.equals("ShowDeviceState"))  {
-	 			// ResetApplication();
-	 			SetRoomCursor();
-		     	status="ShowRooms";
-		     	Ui.requestUpdate();
+ 				if (RoomsIdx==null) {
+		 			ResetApplication();
+	 			} else {
+		 			SetRoomCursor();
+			     	status="ShowRooms";
+			     	Ui.requestUpdate();
+		     	}
  			} else {
  	 			popView(WatchUi.SLIDE_RIGHT);
  			
@@ -872,6 +875,7 @@ class GarmoticzView extends WatchUi.View {
         	} else {
 	        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+0*offset,Graphics.FONT_LARGE,Line2,Graphics.TEXT_JUSTIFY_CENTER);
         	}
+        	
         	if (dc.getTextWidthInPixels(Line2Status, Graphics.FONT_LARGE)>dc.getWidth()) { // small font if bigger than screen
 	        	if (dc.getTextWidthInPixels(Line2Status, Graphics.FONT_MEDIUM)>dc.getWidth()) { // for some watches even medium is too big
 			        dc.drawText(dc.getWidth()/2,dc.getHeight()*8/16+0*offset,Graphics.FONT_XTINY,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
@@ -885,17 +889,15 @@ class GarmoticzView extends WatchUi.View {
 	        
 		} else {
 			// One Line
-			if (dc.getTextWidthInPixels(Line2,Graphics.FONT_MEDIUM)>dc.getWidth()) {
-		        dc.drawText(dc.getWidth()/2,dc.getHeight()*5/8+offset,Graphics.FONT_SMALL,Line2,Graphics.TEXT_JUSTIFY_CENTER);
-	        } else {
-    			if (dc.getTextWidthInPixels(Line2,Graphics.FONT_MEDIUM)>dc.getWidth()) {
-		    		dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8-offset,Graphics.FONT_TINY,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+			if (dc.getTextWidthInPixels(Line2, Graphics.FONT_LARGE)>dc.getWidth()) {
+    			if (dc.getTextWidthInPixels(Line2, Graphics.FONT_MEDIUM)>dc.getWidth()) {
+		    		dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8-2*offset,Graphics.FONT_XTINY,Line2,Graphics.TEXT_JUSTIFY_CENTER);
 	    		} else {
-		    		dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8-offset,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+		    		dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8-2*offset,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
 	    		}
-        	}    
-        	
-        	
+        	} else {
+		        dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8-2*offset,Graphics.FONT_LARGE,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+	        }
         }
         
         // Draw additional items if in device of rooms mode

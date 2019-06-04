@@ -27,6 +27,7 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
         return true;
     }
     
+    
     function onSwipe(evt) {
         var swipe = evt.getDirection();
 
@@ -34,13 +35,22 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
             notify.invoke(NEXTITEM);
         } else if (swipe == SWIPE_DOWN) {
             notify.invoke(PREVIOUSITEM);
-        } else if (swipe == SWIPE_RIGHT) {
-            notify.invoke(MENU);
         } 
+        
         return true;
+    } 
+    
+    function onNextPage() {
+    	notify.invoke(NEXTITEM);
+    	return true;
     }
-   
- // in simulator there is no swipeup/swipedown. So allow tapping on upper or lower part of screen as alternative       
+    
+    function onPreviousPage() {
+    	notify.invoke(PREVIOUSITEM);
+    	return true;
+	}
+
+	//    
  	function onTap(clickEvent) {
         var Coordinates=clickEvent.getCoordinates();
         var x=Coordinates[0];
