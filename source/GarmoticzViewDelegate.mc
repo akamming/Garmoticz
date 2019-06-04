@@ -41,7 +41,7 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
     }
    
  // in simulator there is no swipeup/swipedown. So allow tapping on upper or lower part of screen as alternative       
- (:debug) function onTap(clickEvent) {
+ 	function onTap(clickEvent) {
         var Coordinates=clickEvent.getCoordinates();
         var x=Coordinates[0];
         var y=Coordinates[1];
@@ -58,17 +58,18 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
         return true;
     }
     
- (:release) function onTap(clickEvent) {
-		notify.invoke(SELECT);
-        return true;
-    }
-    
 	function onLongPress() {
 		LongPressOccurred=true;
 		if (key == KEY_ENTER) {
 		    notify.invoke(SELECT);
 		}
+		return true;
 	}
+	
+	/* function onSelect() {
+		notify.invoke(SELECT);
+		return true;
+	} */
     
     function onKeyPressed(evt) {
 		// store the pressed key in global var for Longpress
@@ -79,7 +80,7 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
 		
     	// start the timer to detect for longpress
  		keyTimer.start(method(:onLongPress),1000,false);
-    	return false;
+    	return true;
 	
     }    
     
@@ -96,11 +97,12 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
 	    	// retrieve the key
 	        key = evt.getKey();	
 	        if (key == KEY_ENTER) {
-	        	if (isTouchScreen) {
+	        	notify.invoke(SELECT);
+	        	/* if (isTouchScreen) {
 		        	notify.invoke(SELECT);
 	        	} else {
 		        	notify.invoke(NEXTITEM);
-	        	}
+	        	} */
 	    	} else if (key == KEY_DOWN) {
 	        	notify.invoke(NEXTITEM);
 	    	} else if (key == KEY_UP) {
@@ -111,6 +113,8 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
     	}
     	return false;
     }
+    
+    
 
     // Set up the callback to the view
     function initialize(handler) {

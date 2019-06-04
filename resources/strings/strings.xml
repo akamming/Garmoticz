@@ -33,7 +33,7 @@
     <string id="STATUS_ACTIVATING_SCENE">Activating Scene</string>
     <string id="STATUS_DEVICE_STATUS_LOADING">Loading...</string>
     <string id="STATUS_COMMAND_EXECUTED_OK">Command OK</string>
-    <string id="STATUS_PRESS_MENU">Press Menu to Start</string>
+    <string id="STATUS_PRESS_MENU">Press Enter to Start</string>
     
     <string id="ON">On</string>
     <string id="OFF">Off</string>
@@ -48,7 +48,6 @@
     <string id="ROOMS">Rooms</string>
     <string id="DEVICES">Devices</string>
     <string id="BLINDS">Blinds</string>
-    <string id="OPEN">Open</string>
     <string id="CLOSE">Close</string>
     <string id="STOP">Stop</string>
     <string id="BACK">Back</string>

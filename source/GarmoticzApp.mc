@@ -26,8 +26,15 @@ class GarmoticzApp extends Application.AppBase {
 
      // Return the initial view of your application here
     function getInitialView() {
-        mView = new GarmoticzView();
-        return [mView, new GarmoticzViewDelegate(mView.method(:HandleCommand))];
+    	// Old
+        // mView = new GarmoticzView();
+        // return [mView, new GarmoticzViewDelegate(mView.method(:HandleCommand))];
+
+
+    
+    	// New
+        mView = new InitialView();
+        return [mView, new InitialViewDelegate()];
     }
 
 }

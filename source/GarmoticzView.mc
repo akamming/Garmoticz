@@ -23,7 +23,7 @@ var devicecursor=0;
 var roomidx=0;
 var deviceidx=0;
 var devicetype;
-var status="Start Screen";
+var status="Fetching Rooms";
 var RoomsIdx;
 var RoomsName;
 var DevicesName;
@@ -115,6 +115,7 @@ class GarmoticzView extends WatchUi.View {
 	const delayTime=500; // number of milliseconds before status is requested
 		
     function initialize() {
+    	Log("Initialize");
 		// parent call
         View.initialize();
 
@@ -145,7 +146,7 @@ class GarmoticzView extends WatchUi.View {
         }
    		if (status==null) {
    			// no status saved  or saved in malicious state, setting the app to an initial state.
-        	status="Start Screen";
+        	status="Fetching Rooms";
         } else {
 	       // try to set correct state based on previous state
 	       if (status.equals("ShowDeviceState")) {
@@ -220,22 +221,25 @@ class GarmoticzView extends WatchUi.View {
 	       		
 	       		if (Error) {
 	       			// there was an error, get the rooms from the domoticz instance
-		        	status="Start Screen";
+		        ResetApplication();
 	        	} else {
 	        		// we have retrieved a valid config
 	        		status="ShowRooms";
 	    		}
 	        } else {	        	
 	        	// unknown state, go to initial state
-	        	status="Start Screen";
+	        	// status="Start Screen";
+	        	ResetApplication();
 	        }
         }
+        Log("Initialize finished");
     }
 
     // Called when this View is brought to the foreground. Restore
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
     function onShow() {
+    	Log("OnShow");
     }
     
 	    // Handle Command from Delegate view
@@ -252,7 +256,14 @@ class GarmoticzView extends WatchUi.View {
  			Select();
  		} else if (data==MENU) {
  			ResetApplication();
- 		} 
+ 		} else if (data==BACK) {
+ 			if (status.equals("ShowDeviceState"))  {
+	 			ResetApplication();
+ 			} else {
+ 	 			popView(WatchUi.SLIDE_RIGHT);
+ 			
+ 			}
+ 		}
     }
     
     function ResetApplication()
@@ -310,7 +321,18 @@ class GarmoticzView extends WatchUi.View {
 	
 	function Select()
 	{
-		if (status.equals("ShowDeviceState") or status.equals("ShowDevice")) {
+		Log("Select "+status);
+		if (status.equals("ShowRooms")) {
+			// go to devices menu of selected room
+			// roomcursor=item;
+    		roomidx=RoomsIdx[roomcursor];
+    		devicecursor=0;
+			RoomsIdx=null;
+			RoomsName=null;
+			status="Fetching Devices";
+			Ui.requestUpdate();
+			
+		} else if (status.equals("ShowDeviceState") or status.equals("ShowDevice")) {
 			// check if we have to flip a switch
 			if (DevicesType[devicecursor]==ONOFF) {
 				// Device is a switchable device
@@ -381,15 +403,13 @@ class GarmoticzView extends WatchUi.View {
 			if (DevicesType[devicecursor]==VENBLIND) {
 				// Device is a switchable Venetian Blinds, so 3 commands available to choose from: Present menu
 	        	var menu = new WatchUi.Menu();
-	        	// Arnold
 				menu.setTitle(Ui.loadResource(Rez.Strings.BLINDS));			            	
-	        				            	
    				menu.addItem(Ui.loadResource(Rez.Strings.OPEN),OPENMENUITEM);
    				menu.addItem(Ui.loadResource(Rez.Strings.CLOSE),CLOSEMENUITEM);
    				menu.addItem(Ui.loadResource(Rez.Strings.STOP),STOPMENUITEM);
+				menu.addItem(Ui.loadResource(Rez.Strings.BACK),BACKMENUITEM); 
 				
-				// Push the menu
-				menu.addItem(Ui.loadResource(Rez.Strings.BACK),BACKMENUITEM); // add Back item to menu
+				// push menu
 				WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
 
 			} 
@@ -601,7 +621,9 @@ class GarmoticzView extends WatchUi.View {
 		        			
         					// Push the menu
 		        			menu.addItem(Ui.loadResource(Rez.Strings.BACK),BACKMENUITEM); // add Back item to menu
-        					WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
+        					// WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
+        					status="ShowDevice";
+        					SetDeviceCursor();
 		        			
 	        			} else { 
 	        				status="Error";
@@ -699,7 +721,7 @@ class GarmoticzView extends WatchUi.View {
 			            	
         					// Push the menu
 			            	menu.addItem(Ui.loadResource(Rez.Strings.BACK),BACKMENUITEM); // add Back item to menu
-        					WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
+        					// WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
 	            		} else {
 	            			// no roomplans in domoticz instance
 	            			status="Error";
@@ -819,11 +841,27 @@ class GarmoticzView extends WatchUi.View {
     			Line2Status=ErrorCode.toString();
 			}
 	    	Line3="";
-    	} else if (status.equals("Start Screen") or status.equals("ShowRooms") or status.equals("ShowDevices")) {
+    	} else if (status.equals("Start Screen") or status.equals("ShowDevices")) {
     		Line1="";
     		Line2="Garmoticz";
-    		Line2Status=Ui.loadResource(Rez.Strings.STATUS_PRESS_MENU);
+    		// Line2Status=Ui.loadResource(Rez.Strings.STATUS_PRESS_MENU);
+    		Line2Status="oeps...";
     		Line3="";
+		} else if (status.equals("ShowRooms")) {
+			if (roomcursor==0) {
+				Line1=RoomsName[RoomsIdx.size()-1];
+			} else {
+				Line1=RoomsName[roomcursor-1];
+			}
+			
+			Line2=RoomsName[roomcursor];
+			Line2Status="";
+			
+			if (roomcursor==RoomsIdx.size()-1) {
+				Line3=RoomsName[0];
+			} else {
+				Line3=RoomsName[roomcursor+1];
+			}
     	} else if (status.equals("ShowDeviceState") or status.equals("ShowDevice") or status.equals("Sending Command")) {
     		if (devicecursor==0) 
     		{
@@ -856,45 +894,64 @@ class GarmoticzView extends WatchUi.View {
         dc.clear();
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 
-		
-		// load logo
-		var image = Ui.loadResource( Rez.Drawables.Domoticz_Logo);
-		dc.drawBitmap(dc.getWidth()/2-30,2,image);
+		// set offset
 		var offset=10;
+
 		
-		if (status.equals("ShowDeviceState") or status.equals("ShowRooms") or status.equals("ShowDevices") or status.equals ("Sending Command") or status.equals("ShowDevice") or status.equals("Start Screen") or status.equals("Error") ) {
+		// load logo if only line 2 needs to be shown, otherwise: Draw lines
+		if (status.equals("ShowDevice") or status.equals("ShowDeviceState") or status.equals("Sending Command") or status.equals("ShowRooms")) {
+			dc.drawLine(0,dc.getHeight()/4-0*offset,dc.getWidth(),dc.getHeight()/4-0*offset);
+			dc.drawLine(0,dc.getHeight()/4*3+0*offset,dc.getWidth(),dc.getHeight()/4*3+0*offset);			
+		} else {
+			var image = Ui.loadResource( Rez.Drawables.Domoticz_Logo);
+			dc.drawBitmap(dc.getWidth()/2-30,2,image);
+		}	
+		
+		
+		if (status.equals("ShowDeviceState") or status.equals("ShowDevices") or status.equals ("Sending Command") or status.equals("ShowDevice") or status.equals("Start Screen") or status.equals("Error") ) {
         	// two lines
         	if (dc.getTextWidthInPixels(Line2,Graphics.FONT_LARGE)>dc.getWidth()) { // smaller font is bigger than screen
 	        	if (dc.getTextWidthInPixels(Line2,Graphics.FONT_MEDIUM)>dc.getWidth()) { // on fenix 5 sometimes even smaller font is too big
-		        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+offset,Graphics.FONT_XTINY,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+		        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+0*offset,Graphics.FONT_XTINY,Line2,Graphics.TEXT_JUSTIFY_CENTER);
 	        	} else {
-		        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+offset,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+		        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+0*offset,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
 	        	}
         	} else {
-	        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+offset,Graphics.FONT_LARGE,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+	        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+0*offset,Graphics.FONT_LARGE,Line2,Graphics.TEXT_JUSTIFY_CENTER);
         	}
         	if (dc.getTextWidthInPixels(Line2Status, Graphics.FONT_LARGE)>dc.getWidth()) { // small font if bigger than screen
 	        	if (dc.getTextWidthInPixels(Line2Status, Graphics.FONT_MEDIUM)>dc.getWidth()) { // for some watches even medium is too big
-			        dc.drawText(dc.getWidth()/2,dc.getHeight()*8/16+offset,Graphics.FONT_XTINY,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
+			        dc.drawText(dc.getWidth()/2,dc.getHeight()*8/16+0*offset,Graphics.FONT_XTINY,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
 		        } else {
-			        dc.drawText(dc.getWidth()/2,dc.getHeight()*8/16+offset,Graphics.FONT_MEDIUM,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
+			        dc.drawText(dc.getWidth()/2,dc.getHeight()*8/16+0*offset,Graphics.FONT_MEDIUM,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
 		        }
 	        } else {
-		        dc.drawText(dc.getWidth()/2,dc.getHeight()*8/16+offset,Graphics.FONT_LARGE,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
+		        dc.drawText(dc.getWidth()/2,dc.getHeight()*8/16+0*offset,Graphics.FONT_LARGE,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
 	        }
+	        
 	        
 		} else {
 			// One Line
+			Log("Line2 = "+Line2);
 			if (dc.getTextWidthInPixels(Line2,Graphics.FONT_MEDIUM)>dc.getWidth()) {
-		        dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8,Graphics.FONT_SMALL,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+		        dc.drawText(dc.getWidth()/2,dc.getHeight()*5/8+offset,Graphics.FONT_SMALL,Line2,Graphics.TEXT_JUSTIFY_CENTER);
 	        } else {
     			if (dc.getTextWidthInPixels(Line2,Graphics.FONT_MEDIUM)>dc.getWidth()) {
-		    		dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8,Graphics.FONT_TINY,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+		    		dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8-offset,Graphics.FONT_TINY,Line2,Graphics.TEXT_JUSTIFY_CENTER);
 	    		} else {
-		    		dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
+		    		dc.drawText(dc.getWidth()/2,dc.getHeight()*4/8-offset,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
 	    		}
         	}    
+        	
+        	
         }
+        
+        // Draw additional items if in device of rooms mode
+        if (status.equals("ShowDevice") or status.equals("ShowDeviceState") or status.equals("Sending Command") or status.equals("ShowRooms")) {
+        	dc.drawText(dc.getWidth()/2,dc.getHeight()*1/16+offset,Graphics.FONT_XTINY,Line1,Graphics.TEXT_JUSTIFY_CENTER);
+        	dc.drawText(dc.getWidth()/2,dc.getHeight()*13/16,Graphics.FONT_XTINY,Line3,Graphics.TEXT_JUSTIFY_CENTER);
+        }
+    
 
         if (Refreshing) {
 	        // dc.drawText(dc.getWidth()/2,dc.getHeight()*13/16,Graphics.FONT_SMALL,Ui.loadResource(Rez.Strings.UPDATING),Graphics.TEXT_JUSTIFY_CENTER);
@@ -939,7 +996,8 @@ class GarmoticzView extends WatchUi.View {
 	       		app.setProperty("DevicesData"+i,DevicesData[i]);
         	}
         } else if (status.equals("Start Screen") or status.equals("ShowRooms")) {
-	        app.setProperty("status", "Start Screen");        	
+	        // app.setProperty("status", "Start Screen");        	
+	        app.setProperty("status", "Fetching Rooms");        	
         }
     }
 }
