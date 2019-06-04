@@ -115,7 +115,6 @@ class GarmoticzView extends WatchUi.View {
 	const delayTime=500; // number of milliseconds before status is requested
 		
     function initialize() {
-    	Log("Initialize");
 		// parent call
         View.initialize();
 
@@ -232,14 +231,12 @@ class GarmoticzView extends WatchUi.View {
 	        	ResetApplication();
 	        }
         }
-        Log("Initialize finished");
     }
 
     // Called when this View is brought to the foreground. Restore
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
     function onShow() {
-    	Log("OnShow");
     }
     
 	    // Handle Command from Delegate view
@@ -321,7 +318,6 @@ class GarmoticzView extends WatchUi.View {
 	
 	function Select()
 	{
-		Log("Select "+status);
 		if (status.equals("ShowRooms")) {
 			// go to devices menu of selected room
 			// roomcursor=item;
@@ -556,8 +552,6 @@ class GarmoticzView extends WatchUi.View {
     		url="unknown url";
     	}
     	
-    	Log (url);
-    	
 		// Make the request
         Comm.makeWebRequest(
             url,
@@ -594,10 +588,6 @@ class GarmoticzView extends WatchUi.View {
 			            	DevicesType=new [data["result"].size()];
 			            	// DevicesSubType=new [data["result"].size()];
 			            	
-							// start building 
-			            	var menu = new WatchUi.Menu();
-        					menu.setTitle(Ui.loadResource(Rez.Strings.DEVICES));			            	
-			            				            	
 			            	for (var i=0;i<data["result"].size();i++) {
 			            		
 			            		// Check if it is a device or a scene
@@ -612,16 +602,12 @@ class GarmoticzView extends WatchUi.View {
 		       						DevicesName[i]=data["result"][i]["Name"].substring(8,data["result"][i]["Name"].length());
 			       					DevicesType[i]=SCENE; // can be scene or group, but this will be corrected when the def devices is loaded
 		   						}
-   								menu.addItem(DevicesName[i], i);
 		   						
 		        			}
 		        			
 		        			// Check if we remember were we were the last time;
 		        			SetDeviceCursor();	
 		        			
-        					// Push the menu
-		        			menu.addItem(Ui.loadResource(Rez.Strings.BACK),BACKMENUITEM); // add Back item to menu
-        					// WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
         					status="ShowDevice";
         					SetDeviceCursor();
 		        			
@@ -704,24 +690,14 @@ class GarmoticzView extends WatchUi.View {
 			            	RoomsIdx=new [data["result"].size()];
 			            	RoomsName=new [data["result"].size()];
 
-							// start building menu
-			            	var menu = new WatchUi.Menu();
-        					menu.setTitle(Ui.loadResource(Rez.Strings.ROOMS));
-
 			            	for (var i=0;i<data["result"].size();i++) {
 			            		RoomsIdx[i]=data["result"][i]["idx"];
 			            		RoomsName[i]=data["result"][i]["Name"];
-			            		menu.addItem(RoomsName[i], i);
 			            	}
 			            	
 			            	// Set Room Cursor
 			            	SetRoomCursor();
 			            	status="ShowRooms";
-			            	
-			            	
-        					// Push the menu
-			            	menu.addItem(Ui.loadResource(Rez.Strings.BACK),BACKMENUITEM); // add Back item to menu
-        					// WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
 	            		} else {
 	            			// no roomplans in domoticz instance
 	            			status="Error";
@@ -794,7 +770,6 @@ class GarmoticzView extends WatchUi.View {
     
     // Update the view
     function onUpdate(dc) {
-    	Log("status = "+status);
     	
     	// A Menu command might have been given)
     	if (status.equals("SendStopCommand")) {
@@ -932,7 +907,6 @@ class GarmoticzView extends WatchUi.View {
 	        
 		} else {
 			// One Line
-			Log("Line2 = "+Line2);
 			if (dc.getTextWidthInPixels(Line2,Graphics.FONT_MEDIUM)>dc.getWidth()) {
 		        dc.drawText(dc.getWidth()/2,dc.getHeight()*5/8+offset,Graphics.FONT_SMALL,Line2,Graphics.TEXT_JUSTIFY_CENTER);
 	        } else {

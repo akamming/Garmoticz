@@ -11,25 +11,21 @@ class InitialViewDelegate extends Ui.BehaviorDelegate {
 	}
 	
     function onMenu() {
-    	Log("OnMenu");
 	    StartApp();
 	    return true;
  	}
  	
  	function onTap(clickEvent) {
- 		Log ("onTap");
 	    StartApp();
         return true;
     }
     
     function onSelect() {
-    	Log("onSelect");
 	    StartApp();
         return true;
     }
     
     function onKey(evt) {
-    	Log ("key pressed");
     	StartApp();
     	return true;
     }

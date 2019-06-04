@@ -58,60 +58,21 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
         return true;
     }
     
-	function onLongPress() {
-		LongPressOccurred=true;
-		if (key == KEY_ENTER) {
-		    notify.invoke(SELECT);
-		}
-		return true;
-	}
 	
-	/* function onSelect() {
-		notify.invoke(SELECT);
-		return true;
-	} */
     
-    function onKeyPressed(evt) {
-		// store the pressed key in global var for Longpress
-		key = evt.getKey();
-		
-		// (re)set boolean to detect longpress when handling the release of the key.
-		LongPressOccurred=false;
-		
-    	// start the timer to detect for longpress
- 		keyTimer.start(method(:onLongPress),1000,false);
-    	return true;
-	
-    }    
     
-    function onKeyReleased(evt) {
-    	// stop the timer!
-    	keyTimer.stop();
-    	
-    	if (LongPressOccurred) {
-    		// longpress occurred. Do not handle this key, because it was handled by the timer.
-    		
-    	} else {    
-    		// it is a shortpress, handle normal behaviour
-    			
-	    	// retrieve the key
-	        key = evt.getKey();	
-	        if (key == KEY_ENTER) {
-	        	notify.invoke(SELECT);
-	        	/* if (isTouchScreen) {
-		        	notify.invoke(SELECT);
-	        	} else {
-		        	notify.invoke(NEXTITEM);
-	        	} */
-	    	} else if (key == KEY_DOWN) {
-	        	notify.invoke(NEXTITEM);
-	    	} else if (key == KEY_UP) {
-	        	notify.invoke(PREVIOUSITEM);
-	        } else {
-		        return false;
-	        }
-    	}
-    	return false;
+    function onKey(evt) {
+    	// retrieve the key
+        key = evt.getKey();	
+        if (key == KEY_ENTER) {
+        	notify.invoke(SELECT);
+    	} else if (key == KEY_DOWN) {
+        	notify.invoke(NEXTITEM);
+    	} else if (key == KEY_UP) {
+        	notify.invoke(PREVIOUSITEM);
+        } else {
+	        return false;
+        }
     }
     
     
