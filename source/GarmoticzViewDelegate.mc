@@ -56,25 +56,23 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
         return true;
     }
     
-	
-    
-    
     function onKey(evt) {
     	// retrieve the key
         key = evt.getKey();	
         if (key == KEY_ENTER) {
         	notify.invoke(SELECT);
+        	return true;
     	} else if (key == KEY_DOWN) {
         	notify.invoke(NEXTITEM);
+        	return true;
     	} else if (key == KEY_UP) {
         	notify.invoke(PREVIOUSITEM);
+        	return true;
         } else {
 	        return false;
         }
     }
     
-    
-
     // Set up the callback to the view
     function initialize(handler) {
     
