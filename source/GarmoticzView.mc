@@ -161,19 +161,15 @@ class GarmoticzView extends WatchUi.View {
 	       			// Devices were saved, initialize arrays
 	       			DevicesIdx = new [SizeOfDevices];	
 	       			DevicesName = new [SizeOfDevices];
-					// DevicesSwitchType = new [SizeOfDevices];
 					DevicesData = new [SizeOfDevices];
 					DevicesType = new [SizeOfDevices];
-					// DevicesSubType = new [SizeOfDevices];
 					
 					// populate array
 	       			for (var i=0;i<SizeOfDevices;i++) {
 	       				DevicesIdx[i]=app.getProperty("DevicesIdx"+i);
 	       				DevicesName[i]=app.getProperty("DevicesName"+i);
-	       				// DevicesSwitchType[i]="Loading...";
 	       				DevicesData[i]=app.getProperty("DevicesData"+i);
 	       				DevicesType[i]=app.getProperty("DevicesType"+i);
-	       				// DevicesSubType[i]=app.getProperty("DevicesSubType"+i);
 	       				
 	       				// check for errors
 	       				if (DevicesIdx[i]==null or DevicesName[i]==null or DevicesType[i]==null or DevicesData[i]==null) {
@@ -232,14 +228,8 @@ class GarmoticzView extends WatchUi.View {
 	        }
         }
     }
-
-    // Called when this View is brought to the foreground. Restore
-    // the state of this View and prepare it to be shown. This includes
-    // loading resources into memory.
-    function onShow() {
-    }
     
-	    // Handle Command from Delegate view
+    // Handle Command from Delegate view
     function HandleCommand (data)
     {
     	// stop the timers (if new action was done too fast, no update from device will take place)
@@ -564,18 +554,14 @@ class GarmoticzView extends WatchUi.View {
 			            	status="ShowDevices";
 			            	DevicesName=new [data["result"].size()];
 			            	DevicesIdx=new [data["result"].size()];
-			            	// DevicesSwitchType=new [data["result"].size()];
 			            	DevicesData=new [data["result"].size()];
 			            	DevicesType=new [data["result"].size()];
-			            	// DevicesSubType=new [data["result"].size()];
 			            	
 			            	for (var i=0;i<data["result"].size();i++) {
 			            		
 			            		// Check if it is a device or a scene
 	       						DevicesIdx[i]=data["result"][i]["devidx"];
-	       						// DevicesSwitchType[i]=Ui.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING);
 	       						DevicesData[i]=Ui.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING);
-	       						// DevicesSubType[i]=Ui.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING);
 			            		if (data["result"][i]["type"]==0) {
 		       						DevicesName[i]=data["result"][i]["Name"];
 		       						DevicesType[i]=DEVICE;
@@ -908,7 +894,6 @@ class GarmoticzView extends WatchUi.View {
     
 
         if (Refreshing) {
-	        // dc.drawText(dc.getWidth()/2,dc.getHeight()*13/16,Graphics.FONT_SMALL,Ui.loadResource(Rez.Strings.UPDATING),Graphics.TEXT_JUSTIFY_CENTER);
 	        var bitmap=Ui.loadResource(Rez.Drawables.NetworkTrafficIcon);
 	        dc.drawBitmap(dc.getWidth()/2-20, dc.getHeight()-30, bitmap);
         }
