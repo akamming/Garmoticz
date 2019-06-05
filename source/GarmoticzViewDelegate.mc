@@ -40,18 +40,6 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
         return true;
     } 
     
-    /* 
-    function onNextPage() {
-    	notify.invoke(NEXTITEM);
-    	return true;
-    }
-    
-    function onPreviousPage() {
-    	notify.invoke(PREVIOUSITEM);
-    	return true;
-	} */
-
-	//    
  	function onTap(clickEvent) {
         var Coordinates=clickEvent.getCoordinates();
         var x=Coordinates[0];
