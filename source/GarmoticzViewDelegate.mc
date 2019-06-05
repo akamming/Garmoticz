@@ -6,7 +6,6 @@
 using Toybox.Application as App;
 using Toybox.WatchUi as Ui;
 using Toybox.System as System;
-using Toybox.Timer as Timer;
 
 class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
     var notify;
@@ -78,9 +77,6 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
 
     // Set up the callback to the view
     function initialize(handler) {
-    
-     	// initialize the timer
-     	keyTimer=new Timer.Timer();
     
     	// Get device capabilities
     	var mySettings=System.getDeviceSettings();
