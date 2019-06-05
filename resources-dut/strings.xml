@@ -33,7 +33,8 @@
     <string id="STATUS_ACTIVATING_SCENE">Activeer scene</string>
     <string id="STATUS_DEVICE_STATUS_LOADING">Laden...</string>
     <string id="STATUS_COMMAND_EXECUTED_OK">Commando uitgevoerd</string>
-    <string id="STATUS_PRESS_MENU">Druk op Enter om te starten</string>
+    <string id="STATUS_PRESS_ENTER">Druk op Enter om te starten</string>
+    <string id="STATUS_TAP_SCREEN">Tik op scherm voor start</string>
         
     <string id="ON">Aan</string>
     <string id="OFF">Uit</string>

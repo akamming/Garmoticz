@@ -3,6 +3,8 @@ using Toybox.WatchUi as Ui;
 class InitialViewDelegate extends Ui.BehaviorDelegate {
 	hidden var mView;
 	
+	
+	
 	function StartApp()
 	{
 	    // start garmoticzview

@@ -1,4 +1,5 @@
 using Toybox.WatchUi as Ui;
+using Toybox.System;
 
 class InitialView extends Ui.View {
 
@@ -37,8 +38,14 @@ class InitialView extends Ui.View {
 		
 		var offset=10;
 		var Line2="Garmoticz";
-		var Line2Status=Ui.loadResource(Rez.Strings.STATUS_PRESS_MENU);
+		var Line2Status;
 		
+		var mySettings=System.getDeviceSettings();
+		if (mySettings.isTouchScreen) {
+			Line2Status=Ui.loadResource(Rez.Strings.STATUS_TAP_SCREEN);
+		} else {
+			Line2Status=Ui.loadResource(Rez.Strings.STATUS_PRESS_ENTER);
+		}	
 	
     	// two lines
     	if (dc.getTextWidthInPixels(Line2,Graphics.FONT_LARGE)>dc.getWidth()) { // smaller font is bigger than screen
