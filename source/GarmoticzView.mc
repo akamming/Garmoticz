@@ -932,15 +932,17 @@ class GarmoticzView extends WatchUi.View {
     // memory.
     function onHide() {
         var app=Application.getApp();
-        
-        if (status.equals("ShowDeviceState")) {
+
+		// if there are devices: Save them for faster startup        
+        if (DevicesIdx!=null) {
 	        // Save cursors
 	        app.setProperty("devicecursor",devicecursor);       
 	        app.setProperty("roomcursor", roomcursor);       
 	        app.setProperty("deviceidx",deviceidx);       
 	        app.setProperty("devicetype",devicetype);       
 	        app.setProperty("roomidx", roomidx);       
-	        app.setProperty("status", status);
+	        app.setProperty("status", "ShowDeviceState");
+
         	// save devices, so they do not need to be retrieved at startup
         	app.setProperty("SizeOfDevices", DevicesIdx.size());
         	for (var i=0;i<DevicesIdx.size();i++) {
@@ -949,8 +951,7 @@ class GarmoticzView extends WatchUi.View {
 	       		app.setProperty("DevicesType"+i,DevicesType[i]);
 	       		app.setProperty("DevicesData"+i,DevicesData[i]);
         	}
-        } else if (status.equals("Start Screen") or status.equals("ShowRooms")) {
-	        // app.setProperty("status", "Start Screen");        	
+        } else {
 	        app.setProperty("status", "Fetching Rooms");        	
         }
     }
