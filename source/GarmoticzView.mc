@@ -470,14 +470,10 @@ class GarmoticzView extends WatchUi.View {
 		deviceidx=DevicesIdx[devicecursor];
 		devicetype=DevicesType[devicecursor];
 	}
-
-
-    function makeWebRequest(action) {
-
-		// initialize vars
-		var url;
-		var prefix;
+	
+	function getPrefix() {
 		var Domoticz_Protocol;
+		var prefix;
 
 		if (App.getApp().getProperty("PROP_PROTOCOL")==0) {
 			Domoticz_Protocol="http";
@@ -491,6 +487,34 @@ class GarmoticzView extends WatchUi.View {
 	    	//needed vars
 	    	prefix=Domoticz_Protocol+"://"+App.getApp().getProperty("PROP_ADRESS")+":"+App.getApp().getProperty("PROP_PORT")+"/json.htm?username="+Su.encodeBase64(App.getApp().getProperty("PROP_USERNAME"))+"&password="+Su.encodeBase64(App.getApp().getProperty("PROP_PASSWORD"))+"&";
 		}	        
+		
+		return prefix;
+	}
+	
+	function callURL(url) {
+
+		// Log url
+    	Log(url);
+   
+		// Make the request
+        Comm.makeWebRequest(
+            url,
+            {
+            },
+            {
+                "Content-Type" => Comm.REQUEST_CONTENT_TYPE_URL_ENCODED
+            },
+	            method(:onReceive)
+	     );	
+    }
+
+
+    function makeWebRequest(action) {
+
+		// initialize vars
+		var url;
+		var prefix=getPrefix();
+		
     	// create url
     	if (action==GETDEVICES) {
     		// build url to get the list of decices in the room
@@ -523,17 +547,8 @@ class GarmoticzView extends WatchUi.View {
     		url="unknown url";
     	}
     	
-		// Make the request
-        Comm.makeWebRequest(
-            url,
-            {
-            },
-            {
-                "Content-Type" => Comm.REQUEST_CONTENT_TYPE_URL_ENCODED
-            },
-	            method(:onReceive)
-	     );	
-    }
+   		callURL(url); 	
+	}
     
     // Receive the data from the web request
     function onReceive(responseCode, data) 
