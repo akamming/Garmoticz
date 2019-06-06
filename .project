@@ -14,4 +14,11 @@
 	<natures>
 		<nature>connectiq.projectNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>resources/drawables/networktraffic.png</name>
+			<type>1</type>
+			<location>C:/Users/kammi493/eclipse-workspace/Garmoticz/resources/drawables/networktraffic.png</location>
+		</link>
+	</linkedResources>
 </projectDescription>
