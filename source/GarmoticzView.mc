@@ -628,11 +628,11 @@ class GarmoticzView extends WatchUi.View {
        								}					
        								
        								// Set switchtype and correct data if needed
-	       							if (data["result"][0]["SwitchType"].equals("On/Off") or data["result"][0]["SwitchType"].equals("Blinds")) { // switch can be controlled by user
+	       							if (data["result"][0]["SwitchType"].equals("On/Off")) { // switch can be controlled by user
 	       								DevicesType[i]=ONOFF;
        								} else if (data["result"][0]["SwitchType"].equals("Blinds Inverted")) {
        									DevicesType[i]=INVERTEDBLINDS;
-	       							} else if (data["result"][0]["SwitchType"].equals("Venetian Blinds US") or data["result"][0]["SwitchType"].equals("Venetian Blinds EU")) { // blinds
+	       							} else if (data["result"][0]["SwitchType"].equals("Venetian Blinds US") or data["result"][0]["SwitchType"].equals("Venetian Blinds EU") or data["result"][0]["SwitchType"].equals("Blinds")) { // blinds
 	       								DevicesType[i]=VENBLIND;
 	       							} else if (data["result"][0]["SwitchType"].equals("Push On Button")) { // PushOnButton
 	       								DevicesType[i]=PUSHON;
