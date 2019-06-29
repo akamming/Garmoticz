@@ -471,40 +471,21 @@ class GarmoticzView extends WatchUi.View {
 		devicetype=DevicesType[devicecursor];
 	}
 	
-	function getPrefix() {
-		var Domoticz_Protocol;
-		var prefix;
-
-		if (App.getApp().getProperty("PROP_PROTOCOL")==0) {
-			Domoticz_Protocol="http";
-		} else {
-			Domoticz_Protocol="https";
-		}
-				
-		if (App.getApp().getProperty("PROP_USERNAME").length()==0) {
-	    	prefix=Domoticz_Protocol+"://"+App.getApp().getProperty("PROP_ADRESS")+":"+App.getApp().getProperty("PROP_PORT")+"/json.htm?";			
-		} else {
-	    	//needed vars
-	    	prefix=Domoticz_Protocol+"://"+App.getApp().getProperty("PROP_ADRESS")+":"+App.getApp().getProperty("PROP_PORT")+"/json.htm?username="+Su.encodeBase64(App.getApp().getProperty("PROP_USERNAME"))+"&password="+Su.encodeBase64(App.getApp().getProperty("PROP_PASSWORD"))+"&";
-		}	        
-		
-		return prefix;
-	}
 	
-	function callURL(url) {
+	function callURL(url, params) {
 
 		// Log url
-    	Log(url);
+    	Log("url="+url+",params="+params);
+   
    
 		// Make the request
-        Comm.makeWebRequest(
+       Comm.makeWebRequest(
             url,
-            {
-            },
-            {
+			params,            
+			{
                 "Content-Type" => Comm.REQUEST_CONTENT_TYPE_URL_ENCODED
             },
-	            method(:onReceive)
+             method(:onReceive)
 	     );	
     }
 
@@ -513,41 +494,73 @@ class GarmoticzView extends WatchUi.View {
 
 		// initialize vars
 		var url;
-		var prefix=getPrefix();
+		var Domoticz_Protocol;
+		var prefix;
+		var params = {};
+
+		if (App.getApp().getProperty("PROP_PROTOCOL")==0) {
+			Domoticz_Protocol="http";
+		} else {
+			Domoticz_Protocol="https";
+		}
+		
+		url=Domoticz_Protocol+"://"+App.getApp().getProperty("PROP_ADRESS")+":"+App.getApp().getProperty("PROP_PORT")+"/json.htm";
+		
+		if (App.getApp().getProperty("PROP_USERNAME").length()==0) {
+			params={};
+		} else {
+    		params = {
+				"username" => Su.encodeBase64(App.getApp().getProperty("PROP_USERNAME")),
+				"password" => Su.encodeBase64(App.getApp().getProperty("PROP_PASSWORD"))
+			};
+		}	        
+
 		
     	// create url
     	if (action==GETDEVICES) {
-    		// build url to get the list of decices in the room
-	    	url=prefix+"type=command&param=getplandevices&idx="+roomidx; // get roomplan connectiq
+	    	params.put("type","command");
+	    	params.put("param","getplandevices");
+	    	params.put("idx",roomidx);
     	}	else if (action==GETDEVICESTATUS) {
-    		// build url to get the status of the current device
-    		url=prefix+"type=devices&rid="+DevicesIdx[devicecursor]; // get device info
+    		params.put("type","devices");
+    		params.put("rid",DevicesIdx[devicecursor]);
     	}	else if (action==GETSCENESTATUS) {
-    		// build url to get the status of the current scene
-    		url=prefix+"type=scenes"; // get device info
+    		params.put("type","scenes");
     	}	else if (action==GETROOMS) {
-    		// build url to get all roomplans
-    		url=prefix+"type=plans&order=Order&used=true"; // get device info
+    		params.put("type","plans");
+    		params.put("order","Order");
+    		params.put("used","true");
+    		
     	}	else if (action==SENDONCOMMAND) {
-    		// build url to switch on device
-    		url=prefix+"type=command&param=switchlight&idx="+DevicesIdx[devicecursor]+"&switchcmd=On"; // Send on command
+    		params.put("type","command");
+    		params.put("param","switchlight");
+    		params.put("idx",DevicesIdx[devicecursor]);
+    		params.put("switchcmd","On");
     	}	else if (action==SENDOFFCOMMAND) {
-    		// build url to switch off device
-    		url=prefix+"type=command&param=switchlight&idx="+DevicesIdx[devicecursor]+"&switchcmd=Off"; // Send off command
+    		params.put("type","command");
+    		params.put("param","switchlight");
+    		params.put("idx",DevicesIdx[devicecursor]);
+    		params.put("switchcmd","Off");
     	}	else if (action==SENDSTOPCOMMAND) {
-    		// build url to switch off device
-    		url=prefix+"type=command&param=switchlight&idx="+DevicesIdx[devicecursor]+"&switchcmd=Stop"; // Send stop command
+    		params.put("type","command");
+    		params.put("param","switchlight");
+    		params.put("idx",DevicesIdx[devicecursor]);
+    		params.put("switchcmd","Stop");
     	}	else if (action==SWITCHOFFGROUP) {
-    		// build url to switch off group/scene
-    		url=prefix+"type=command&param=switchscene&idx="+DevicesIdx[devicecursor]+"&switchcmd=Off"; // Send off command
+    		params.put("type","command");
+    		params.put("param","switchscene");
+    		params.put("idx",DevicesIdx[devicecursor]);
+    		params.put("switchcmd","Off");
     	}	else if (action==SWITCHONGROUP) {
-    		// build url to switch on group/scene
-    		url=prefix+"type=command&param=switchscene&idx="+DevicesIdx[devicecursor]+"&switchcmd=On"; // Send off command
+       		params.put("type","command");
+    		params.put("param","switchscene");
+    		params.put("idx",DevicesIdx[devicecursor]);
+    		params.put("switchcmd","On"); 		
     	} else {
     		url="unknown url";
     	}
     	
-   		callURL(url); 	
+   		callURL(url,params); 	
 	}
     
     // Receive the data from the web request
