@@ -11,7 +11,7 @@
 			<settingConfig type="AlphaNumeric"></settingConfig>
 		</setting>
 		<setting propertyKey="@Properties.PROP_PASSWORD" title="@Strings.title_password">
-			<settingConfig type="AlphaNumeric"></settingConfig>
+			<settingConfig type="password"></settingConfig>
 		</setting>
 		<setting propertyKey="@Properties.PROP_PROTOCOL" title="@Strings.title_protocol">
 			<settingConfig type="list" required="true">
