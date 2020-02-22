@@ -5,6 +5,7 @@
     <string id="title_password">Password</string>
     <string id="title_protocol">Protocol</string>
     <string id="title_adress">IP Adress or Domainname</string>
+    <string id="title_path">Path (for example: /domoticz)</string>
     <string id="title_port">port number</string>
     <string id="HTTP">HTTP</string>
     <string id="HTTPS">HTTPS</string>
