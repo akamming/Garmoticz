@@ -1,0 +1,58 @@
+<strings>
+    <string id="AppName">Garmoticz</string>
+
+    <string id="title_username">Utilisateur</string>
+    <string id="title_password">Mot de passe</string>
+    <string id="title_protocol">Protocole</string>
+    <string id="title_adress">Adresse IP ou nom de domaine</string>
+    <string id="title_path">Répertoire (par exemple: /domoticz)</string>
+    <string id="title_port">Numéro de port</string>
+    <string id="HTTP">HTTP</string>
+    <string id="HTTPS">HTTPS</string>
+    
+    <string id="ERROR_GENERAL_CONNECTION_ERROR">Erreur de connexion</string>
+    <string id="ERROR_INVALID_CONNECTION_SETTING">Paramêtres de connexion non valide</string>
+    <string id="ERROR_HANDSET_REQUIRES_HTTPS">Connexion HTTPS requise</string>
+    <string id="ERROR_BLE_CONNECTION_UNAVAILABLE">Pas de Bluetooth</string>
+    <string id="ERROR_BLE_TIMEOUT">Délais Bluetooth dépassé</string>
+    <string id="ERROR_NETWORK_TIMEOUT">Délais réseau dépassé</string>
+    <string id="ERROR_TOO_MUCH_DATA">Réponse trop grande</string> 
+    <string id="ERROR_INVALID_RESPONSE">Réponse HTTP non invalide (Proxy?)</string> 
+
+    <string id="STATUS_ROOM_HAS_NO_DEVICES">La pièce n'a pas de dispositifs</string>
+    <string id="STATUS_NO_ROOMPLAN_CONFIGURED">Pas de plan de pièce configuré</string>
+    <string id="STATUS_NO_SCENESORGROUPS">Pas de scénes/groupes></string>
+    <string id="STATUS_UNKNOWN_HTTP_RESPONSE">Réponse HTTP inconnue</string>
+    <string id="STATUS_DOMOTICZ_ERROR">Domoticz erreur: </string>
+    <string id="STATUS_NOT_PARSABLE">Pas interprétable (Proxy?)</string>
+    <string id="STATUS_LOADING_DEVICES">Chargement des dispositifs</string>
+    <string id="STATUS_LOADING_ROOMS">Chargement des pièces</string>
+    <string id="STATUS_UNKNOWN_STATUS">Statut inconnu</string>
+    <string id="STATUS_SWITCHING_ON">Allumer</string>
+    <string id="STATUS_SWITCHING_OFF">Eteindre</string>
+    <string id="STATUS_STOPPING">Arrêt...</string>
+    <string id="STATUS_ACTIVATING_SCENE">Activation de la scéne</string>
+    <string id="STATUS_DEVICE_STATUS_LOADING">Chargement...</string>
+    <string id="STATUS_COMMAND_EXECUTED_OK">Commande OK</string>
+    <string id="STATUS_PRESS_ENTER">Pressez entrer pour commencer</string>
+    <string id="STATUS_TAP_SCREEN">Touchez l'écran pour commencer</string>
+    
+    <string id="ON">On</string>
+    <string id="OFF">Off</string>
+    <string id="MIXED">Mélangé</string>
+    <string id="OPEN">Ouvert</string>
+    <string id="CLOSED">Fermé</string>
+    <string id="STOPPED">Arrêté</string>
+    
+    <string id="PUSHON">Presser On</string>
+    <string id="PUSHOFF">Presser Off</string>
+    
+    <string id="ROOMS">Pièces</string>
+    <string id="DEVICES">Dispositifs</string>
+    <string id="BLINDS">Stores</string>
+    <string id="CLOSE">Fermer</string>
+    <string id="STOP">Arréter</string>
+    <string id="BACK">Retour</string>
+    <string id="UPDATING">Mise à jour...</string>
+
+</strings>
