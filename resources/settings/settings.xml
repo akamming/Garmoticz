@@ -4,6 +4,7 @@
 		<property id="PROP_PASSWORD" type="string"></property>
 		<property id="PROP_PROTOCOL" type="number">1</property>
 		<property id="PROP_ADRESS" type="string"></property>
+		<property id="PROP_PATH" type="string"></property>
 		<property id="PROP_PORT" type="number">443</property>
 	</properties>
 	<settings>
@@ -20,6 +21,9 @@
 		</setting>
 		<setting propertyKey="@Properties.PROP_ADRESS" title="@Strings.title_adress">
 			<settingConfig type="AlphaNumeric" required="true"></settingConfig>
+		</setting>
+		<setting propertyKey="@Properties.PROP_PATH" title="@Strings.title_path">
+			<settingConfig type="AlphaNumeric" required="false"></settingConfig>
 		</setting>
 		<setting propertyKey="@Properties.PROP_PORT" title="@Strings.title_port">
 			<settingConfig type="numeric" required="true"></settingConfig>
