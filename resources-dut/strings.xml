@@ -5,7 +5,7 @@
     <string id="title_password">Wachtwoord</string>
     <string id="title_protocol">Protocol</string>
     <string id="title_adress">IP Adres of Domeinnaam</string>
-    <string id="title_path">weg (zum Beispiel: /domoticz)</string>
+    <string id="title_path">pad (bijvoorbeeld: /domoticz)</string>
     <string id="title_port">poort nummer</string>
     <string id="HTTP">HTTP</string>
     <string id="HTTPS">HTTPS</string>
@@ -54,4 +54,6 @@
     <string id="STOP">Stop</string>
     <string id="BACK">Terug</string>
     <string id="UPDATING">Verversen...</string>
+    
+    <string id="TITLE_SETPOINT">Sætpunkt</string>
 </strings>

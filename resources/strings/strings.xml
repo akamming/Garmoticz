@@ -54,5 +54,6 @@
     <string id="STOP">Stop</string>
     <string id="BACK">Back</string>
     <string id="UPDATING">Updating...</string>
-
+    
+    <string id="TITLE_SETPOINT">Set point</string>
 </strings>
