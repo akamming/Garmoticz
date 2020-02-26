@@ -21,7 +21,7 @@
 
     <string id="STATUS_ROOM_HAS_NO_DEVICES">La pièce n'a pas de dispositifs</string>
     <string id="STATUS_NO_ROOMPLAN_CONFIGURED">Pas de plan de pièce configuré</string>
-    <string id="STATUS_NO_SCENESORGROUPS">Pas de scénes/groupes></string>
+    <string id="STATUS_NO_SCENESORGROUPS">Pas de scènes/groupes></string>
     <string id="STATUS_UNKNOWN_HTTP_RESPONSE">Réponse HTTP inconnue</string>
     <string id="STATUS_DOMOTICZ_ERROR">Domoticz erreur: </string>
     <string id="STATUS_NOT_PARSABLE">Pas interprétable (Proxy?)</string>
@@ -31,7 +31,7 @@
     <string id="STATUS_SWITCHING_ON">Allumer</string>
     <string id="STATUS_SWITCHING_OFF">Eteindre</string>
     <string id="STATUS_STOPPING">Arrêt...</string>
-    <string id="STATUS_ACTIVATING_SCENE">Activation de la scéne</string>
+    <string id="STATUS_ACTIVATING_SCENE">Activation de la scène</string>
     <string id="STATUS_DEVICE_STATUS_LOADING">Chargement...</string>
     <string id="STATUS_COMMAND_EXECUTED_OK">Commande OK</string>
     <string id="STATUS_PRESS_ENTER">Pressez entrer pour commencer</string>
@@ -51,7 +51,7 @@
     <string id="DEVICES">Dispositifs</string>
     <string id="BLINDS">Stores</string>
     <string id="CLOSE">Fermer</string>
-    <string id="STOP">Arréter</string>
+    <string id="STOP">Arrêter</string>
     <string id="BACK">Retour</string>
     <string id="UPDATING">Mise à jour...</string>
     
