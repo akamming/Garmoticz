@@ -54,4 +54,5 @@
     <string id="STOP">Stop</string>
     <string id="BACK">Terug</string>
     <string id="UPDATING">Verversen...</string>
+    <string id="TITLE_SETPOINT">Sætpunkt</string>
 </strings>
