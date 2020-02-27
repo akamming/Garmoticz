@@ -675,6 +675,10 @@ class GarmoticzView extends WatchUi.View {
        								} else if (data["result"][0]["Data"].equals("Stopped")) {
 	       								// switch is off
 	       								DevicesData[i]=Ui.loadResource(Rez.Strings.STOPPED);
+       								} else if (data["result"][0]["Data"].substring(0,9).equals("Set Level")) {
+       									Log("Dimmer Level");
+       									// dimmer level
+       									DevicesData[i]=data["result"][0]["Data"].substring(10,16);
        								} else {
        									DevicesData[i]=data["result"][0]["Data"];
        								}
