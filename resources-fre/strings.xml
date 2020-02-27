@@ -56,4 +56,5 @@
     <string id="UPDATING">Mise à jour...</string>
     
     <string id="TITLE_SETPOINT">Consigne</string>
+	<string id="TITLE_DIMMER">Dimmer</string>
 </strings>

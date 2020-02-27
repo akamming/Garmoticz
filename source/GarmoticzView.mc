@@ -32,6 +32,23 @@ var DevicesData;
 var DevicesType;
 var Refreshing=false;
 var setpoint=18.0;
+var dimmerlevel;
+var MenuType;
+
+
+// DeviceTypes
+enum {
+	ONOFF,
+	INVERTEDBLINDS,
+	VENBLIND,
+	PUSHON,
+	PUSHOFF,
+	GROUP,
+	SCENE,
+	DEVICE,
+	SETPOINT,
+	DIMMER
+}
 
 
 
@@ -53,10 +70,12 @@ enum {
 	SENDOFFCOMMAND,
 	SENDSTOPCOMMAND,
 	SENDSETPOINT,
+	SENDDIMMERVALUE,
 	GETSCENESTATUS,
 	SWITCHONGROUP,
 	SWITCHOFFGROUP
 }
+
 
 const BACKMENUITEM = 10000;
 const OPENMENUITEM=10001;
@@ -64,19 +83,6 @@ const CLOSEMENUITEM=10002;
 const STOPMENUITEM=10003;
 
 class GarmoticzView extends WatchUi.View {
-
-	// DeviceTypes
-	enum {
-		ONOFF,
-		INVERTEDBLINDS,
-		VENBLIND,
-		PUSHON,
-		PUSHOFF,
-		GROUP,
-		SCENE,
-		DEVICE,
-		SETPOINT
-	}
 
 	// mapping of technical errors (source: https://developer.garmin.com/downloads/connect-iq/monkey-c/doc/Toybox/Communications.html) to friendly user text.
 	// Every not mapped number is matched to
@@ -370,6 +376,7 @@ class GarmoticzView extends WatchUi.View {
 
 			if (DevicesType[devicecursor]==VENBLIND) {
 				// Device is a switchable Venetian Blinds, so 3 commands available to choose from: Present menu
+				MenuType=VENBLIND;
 	        	var menu = new WatchUi.Menu();
 				menu.setTitle(Ui.loadResource(Rez.Strings.BLINDS));
    				menu.addItem(Ui.loadResource(Rez.Strings.OPEN),OPENMENUITEM);
@@ -439,8 +446,8 @@ class GarmoticzView extends WatchUi.View {
 
 			if (DevicesType[devicecursor]==SETPOINT) {
 				// Device is a SetPoint
-				status="ShowSetpointMenu";
                 var menu = new WatchUi.Menu();
+                MenuType=SETPOINT;
                 menu.setTitle(Ui.loadResource(Rez.Strings.TITLE_SETPOINT));
                 for(var k=setpoint-4;k<=setpoint+4;k=k+0.5) {
 					menu.addItem(k.format("%.1f"),k);
@@ -448,6 +455,20 @@ class GarmoticzView extends WatchUi.View {
 				// push menu
 				WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
 			}
+			
+			if (DevicesType[devicecursor]==DIMMER) {
+				// Device is a Dimmer
+				MenuType=DIMMER;
+                var menu = new WatchUi.Menu();
+                menu.setTitle(Ui.loadResource(Rez.Strings.TITLE_DIMMER));
+                for (var x=0;x<=100;x+=10) {
+                	menu.addItem(x.format("%d")+" %",x);
+                }
+				// push menu
+				WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
+				
+			}
+
 		} else if (status.equals("ShowRooms")) {
 			// room selected, fetch devices
 			devicecursor=0;
@@ -560,6 +581,12 @@ class GarmoticzView extends WatchUi.View {
     		params.put("param","setsetpoint");
     		params.put("idx",DevicesIdx[devicecursor]);
     		params.put("setpoint",setpoint);
+    	}	else if (action==SENDDIMMERVALUE) {
+    		params.put("type","command");
+    		params.put("param","switchlight");
+    		params.put("idx",DevicesIdx[devicecursor]);
+    		params.put("switchcmd","Set Level");
+    		params.put("level",dimmerlevel);
     	}	else if (action==SWITCHOFFGROUP) {
     		params.put("type","command");
     		params.put("param","switchscene");
@@ -655,6 +682,8 @@ class GarmoticzView extends WatchUi.View {
        								// Set switchtype and correct data if needed
 	       							if (data["result"][0]["SwitchType"].equals("On/Off")) { // switch can be controlled by user
 	       								DevicesType[i]=ONOFF;
+       								} else if (data["result"][0]["SwitchType"].equals("Dimmer")) {
+       									DevicesType[i]=DIMMER;
        								} else if (data["result"][0]["SwitchType"].equals("Blinds Inverted")) {
        									DevicesType[i]=INVERTEDBLINDS;
 	       							} else if (data["result"][0]["SwitchType"].equals("Venetian Blinds US") or data["result"][0]["SwitchType"].equals("Venetian Blinds EU") or data["result"][0]["SwitchType"].equals("Blinds")) { // blinds
@@ -801,6 +830,9 @@ class GarmoticzView extends WatchUi.View {
 			status="Sending Command";
 		} else if (status.equals("SendSetpoint")) {
 			makeWebRequest(SENDSETPOINT);
+			status="Sending Command";
+		} else if (status.equals("SendDimmerValue")) {
+			makeWebRequest(SENDDIMMERVALUE);
 			status="Sending Command";
 		}
 

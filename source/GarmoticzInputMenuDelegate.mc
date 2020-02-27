@@ -9,7 +9,7 @@ class GarmoticzMenuInputDelegate extends WatchUi.MenuInputDelegate {
     }
 
     function onMenuItem(item) {
-    	if (status.equals("ShowDeviceState")) {
+    	if (MenuType==VENBLIND) {
     		if (item==OPENMENUITEM) {
 	    		status = "SendOpenCommand";
     		} else if (item==CLOSEMENUITEM) {
@@ -17,9 +17,12 @@ class GarmoticzMenuInputDelegate extends WatchUi.MenuInputDelegate {
 			} else if (item==STOPMENUITEM) {
 				status = "SendStopCommand";
 			}
-    	} else if(status.equals("ShowSetpointMenu")) {
+    	} else if(MenuType==SETPOINT) {
     		setpoint = item;
 			status = "SendSetpoint";
-    	}
+    	} else if(MenuType==DIMMER) {
+    		dimmerlevel = item;
+			status = "SendDimmerValue";
+    	} 
     }
 }
