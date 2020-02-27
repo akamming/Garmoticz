@@ -17,9 +17,9 @@ class GarmoticzMenuInputDelegate extends WatchUi.MenuInputDelegate {
 			} else if (item==STOPMENUITEM) {
 				status = "SendStopCommand";
 			}
-    	} else if(status.equals("SendSetPoint")) {
+    	} else if(status.equals("ShowSetpointMenu")) {
     		setpoint = item;
-			updatesetpoint = true;
+			status = "SendSetpoint";
     	}
     }
 }

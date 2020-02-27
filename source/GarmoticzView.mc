@@ -31,7 +31,6 @@ var DevicesIdx;
 var DevicesData;
 var DevicesType;
 var Refreshing=false;
-var updatesetpoint=false;
 var setpoint=18.0;
 
 
@@ -440,7 +439,7 @@ class GarmoticzView extends WatchUi.View {
 
 			if (DevicesType[devicecursor]==SETPOINT) {
 				// Device is a SetPoint
-				status="SendSetPoint";
+				status="ShowSetpointMenu";
                 var menu = new WatchUi.Menu();
                 menu.setTitle(Ui.loadResource(Rez.Strings.TITLE_SETPOINT));
                 for(var k=setpoint-4;k<=setpoint+4;k=k+0.5) {
@@ -486,7 +485,7 @@ class GarmoticzView extends WatchUi.View {
 		// Log url
     	Log("url="+url+",params="+params);
 
-		// Make the request
+		// Make the reqsetpoiuest
        Comm.makeWebRequest(
             url,
 			params,
@@ -561,7 +560,6 @@ class GarmoticzView extends WatchUi.View {
     		params.put("param","setsetpoint");
     		params.put("idx",DevicesIdx[devicecursor]);
     		params.put("setpoint",setpoint);
-    		updatesetpoint = false;
     	}	else if (action==SWITCHOFFGROUP) {
     		params.put("type","command");
     		params.put("param","switchscene");
@@ -801,7 +799,7 @@ class GarmoticzView extends WatchUi.View {
     		DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_SWITCHING_OFF);
 			makeWebRequest(SENDOFFCOMMAND);
 			status="Sending Command";
-		} else if (updatesetpoint) {
+		} else if (status.equals("SendSetpoint")) {
 			makeWebRequest(SENDSETPOINT);
 			status="Sending Command";
 		}
