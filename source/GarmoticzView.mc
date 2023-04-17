@@ -5,6 +5,7 @@ using Toybox.StringUtil as Su;
 using Toybox.Application as App;
 using Toybox.Timer as Timer;
 using Toybox.System;
+using Toybox.Lang;
 
 
 // define functions for debugging on console which is not executed in release version
@@ -78,9 +79,9 @@ enum {
 
 
 const BACKMENUITEM = 10000;
-const OPENMENUITEM=10001;
-const CLOSEMENUITEM=10002;
-const STOPMENUITEM=10003;
+const OPENMENUITEM=10001 ;
+const CLOSEMENUITEM=10002 ;
+const STOPMENUITEM=10003 ;
 
 class GarmoticzView extends WatchUi.View {
 
@@ -99,7 +100,6 @@ class GarmoticzView extends WatchUi.View {
 		-400 => Rez.Strings.ERROR_INVALID_RESPONSE,
 
 		-300 => Rez.Strings.ERROR_NETWORK_TIMEOUT,
-		-400 => Rez.Strings.ERROR_NETWORK_TIMEOUT,
 
 		-104 => Rez.Strings.ERROR_BLE_CONNECTION_UNAVAILABLE,
 
@@ -379,10 +379,10 @@ class GarmoticzView extends WatchUi.View {
 				MenuType=VENBLIND;
 	        	var menu = new WatchUi.Menu();
 				menu.setTitle(Ui.loadResource(Rez.Strings.BLINDS));
-   				menu.addItem(Ui.loadResource(Rez.Strings.OPEN),OPENMENUITEM);
-   				menu.addItem(Ui.loadResource(Rez.Strings.CLOSE),CLOSEMENUITEM);
-   				menu.addItem(Ui.loadResource(Rez.Strings.STOP),STOPMENUITEM);
-				menu.addItem(Ui.loadResource(Rez.Strings.BACK),BACKMENUITEM);
+   				menu.addItem(Ui.loadResource(Rez.Strings.OPEN),:OPENMENUITEM);
+   				menu.addItem(Ui.loadResource(Rez.Strings.CLOSE),:CLOSEMENUITEM);
+   				menu.addItem(Ui.loadResource(Rez.Strings.STOP),:STOPMENUITEM);
+				menu.addItem(Ui.loadResource(Rez.Strings.BACK),:BACKMENUITEM);
 
 				// push menu
 				WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
@@ -461,12 +461,19 @@ class GarmoticzView extends WatchUi.View {
 				MenuType=DIMMER;
                 var menu = new WatchUi.Menu();
                 menu.setTitle(Ui.loadResource(Rez.Strings.TITLE_DIMMER));
-                for (var x=0;x<=100;x+=10) {
-                	menu.addItem(x.format("%d")+" %",x);
-                }
+				menu.addItem("0",:zero);
+				menu.addItem("10",:ten);
+				menu.addItem("20",:twenty);
+				menu.addItem("30",:thirty);
+				menu.addItem("40",:fourty);
+				menu.addItem("50",:fifty);
+				menu.addItem("60",:sixty);
+				menu.addItem("70",:seventy);
+				menu.addItem("80",:eighty);
+				menu.addItem("90",:ninety);
+				menu.addItem("100",:hundred);
 				// push menu
 				WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
-				
 			}
 
 		} else if (status.equals("ShowRooms")) {
@@ -502,7 +509,7 @@ class GarmoticzView extends WatchUi.View {
 		devicetype=DevicesType[devicecursor];
 	}
 
-	function callURL(url, params) {
+	function callURL(url, params, options) {
 		// Log url
     	Log("url="+url+",params="+params);
 
@@ -510,9 +517,7 @@ class GarmoticzView extends WatchUi.View {
        Comm.makeWebRequest(
             url,
 			params,
-			{
-                "Content-Type" => Comm.REQUEST_CONTENT_TYPE_URL_ENCODED
-            },
+			options,
              method(:onReceive)
 	     );
     }
@@ -523,6 +528,7 @@ class GarmoticzView extends WatchUi.View {
 		var Domoticz_Protocol;
 		var prefix;
 		var params = {};
+		var options = {};
 
 		if (App.getApp().getProperty("PROP_PROTOCOL")==0) {
 			Domoticz_Protocol="http";
@@ -538,13 +544,23 @@ class GarmoticzView extends WatchUi.View {
 
 		if (App.getApp().getProperty("PROP_USERNAME").length()==0) {
 			params={};
-		} else {
-    		params = {
-				"username" => Su.encodeBase64(App.getApp().getProperty("PROP_USERNAME")),
-				"password" => Su.encodeBase64(App.getApp().getProperty("PROP_PASSWORD"))
+			options={
+				:headers => {
+					"Content-Type" => Comm.REQUEST_CONTENT_TYPE_URL_ENCODED
+				}
 			};
+		} else {
+			params={};
+			Log("Basic "+App.getApp().getProperty("PROP_USERNAME")+":"+App.getApp().getProperty("PROP_PASSWORD"));
+			options = {
+				:responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON,
+				:headers => {
+					"Content-Type" => Communications.REQUEST_CONTENT_TYPE_URL_ENCODED,
+					"Authorization" => "Basic "+Su.encodeBase64(App.getApp().getProperty("PROP_USERNAME")+":"+App.getApp().getProperty("PROP_PASSWORD"))
+				}
+	        };
+			
 		}
-
 
     	// create url
     	if (action==GETDEVICES) {
@@ -560,7 +576,6 @@ class GarmoticzView extends WatchUi.View {
     		params.put("type","plans");
     		params.put("order","Order");
     		params.put("used","true");
-
     	}	else if (action==SENDONCOMMAND) {
     		params.put("type","command");
     		params.put("param","switchlight");
@@ -601,11 +616,12 @@ class GarmoticzView extends WatchUi.View {
     		url="unknown url";
     	}
 
-   		callURL(url,params);
+
+   		callURL(url,params,options);
 	}
 
     // Receive the data from the web request
-    function onReceive(responseCode, data)
+    function onReceive(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void
     {
     	Refreshing=false; // data received
 		//Log(Toybox.System.println("onReceive responseCode="+responseCode+" data="+data));
