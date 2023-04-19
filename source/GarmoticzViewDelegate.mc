@@ -41,7 +41,7 @@ class GarmoticzViewDelegate extends Ui.BehaviorDelegate {
     
  	function onTap(clickEvent) {
         var Coordinates=clickEvent.getCoordinates();
-        var x=Coordinates[0];
+        // var x=Coordinates[0];
         var y=Coordinates[1];
         if (y<System.getDeviceSettings().screenHeight/3) {
         	// click was in upper part of screen
