@@ -744,7 +744,7 @@ class GarmoticzView extends WatchUi.View {
 		            	status="ShowDeviceState";
 			           	DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_COMMAND_EXECUTED_OK);
 			            getDeviceStatus();
-	            	} else if (data["title"].equals("Plans")) {
+			} else if (data["title"].equals("Plans") or data["title"].equals("getplans")) {
 						// Roomplans received, populate the roomlist.
 		            	if (data["result"]!=null) {
 		            		// we have rooms to populate!
