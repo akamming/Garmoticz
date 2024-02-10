@@ -1,3 +1,5 @@
+This app is no longer maintained, contact me by opening an issue if you want to take be the new maintainer of this app
+
 # Garmoticz
 Garmin ConnectIQ Frontend for Domoticz
 
