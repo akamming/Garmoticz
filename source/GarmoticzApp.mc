@@ -22,7 +22,10 @@ class GarmoticzApp extends Application.AppBase {
 	function onSettingsChanged() {
 		$.gSettingsChanged = true;
 	}
-    
+
+    function getGlanceView() {
+        return [ new GarmoticzGlanceView() ];
+    }    
 
      // Return the initial view of your application here
     function getInitialView() {
