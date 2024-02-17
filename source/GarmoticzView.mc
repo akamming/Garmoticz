@@ -743,7 +743,8 @@ class GarmoticzView extends WatchUi.View {
 						// a scene, group of light was switched. Update the device status
 		            	status="ShowDeviceState";
 			           	DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_COMMAND_EXECUTED_OK);
-			            getDeviceStatus();
+			            // getDeviceStatus();
+						delayTimer.start(method(:getDeviceStatus),delayTime,false); // wait a bit of time before switching
 	            	} else if (data["title"].equals("getplans")) {
 						// Roomplans received, populate the roomlist.
 		            	if (data["result"]!=null) {
