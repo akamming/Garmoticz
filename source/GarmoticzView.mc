@@ -511,7 +511,7 @@ class GarmoticzView extends WatchUi.View {
 
 	function callURL(url, params, options) {
 		// Log url
-    	// Log("url="+url+",params="+params);
+    	Log("url="+url+",params="+params);
 
 		// Make the reqsetpoiuest
        Comm.makeWebRequest(
@@ -624,7 +624,7 @@ class GarmoticzView extends WatchUi.View {
     function onReceive(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void
     {
     	Refreshing=false; // data received
-		//Log(Toybox.System.println("onReceive responseCode="+responseCode+" data="+data));
+		Log(Toybox.System.println("onReceive responseCode="+responseCode+" data="+data));
 
        // Check responsecode
        if (responseCode==200)
@@ -744,7 +744,7 @@ class GarmoticzView extends WatchUi.View {
 		            	status="ShowDeviceState";
 			           	DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_COMMAND_EXECUTED_OK);
 			            getDeviceStatus();
-	            	} else if (data["title"].equals("Plans")) {
+	            	} else if (data["title"].equals("getplans")) {
 						// Roomplans received, populate the roomlist.
 		            	if (data["result"]!=null) {
 		            		// we have rooms to populate!
@@ -765,7 +765,7 @@ class GarmoticzView extends WatchUi.View {
 	            			StatusText=Ui.loadResource(Rez.Strings.STATUS_NO_ROOMPLAN_CONFIGURED);
 	            			ErrorCode=0;
             			}
-        			} else if (data["title"].equals("Scenes")) {
+        			} else if (data["title"].equals("getscenes")) {
         				// Scene(s) status(es) received, update the devicelist.
         				Refreshing=false;
         				if (status.equals("ShowDevices")) {
