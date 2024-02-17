@@ -744,7 +744,7 @@ class GarmoticzView extends WatchUi.View {
 		            	status="ShowDeviceState";
 			           	DevicesData[devicecursor]=Ui.loadResource(Rez.Strings.STATUS_COMMAND_EXECUTED_OK);
 			            // getDeviceStatus();
-						delayTimer.start(method(:getDeviceStatus),delayTime,false); // wait a bit of time before switching
+						delayTimer.start(method(:getDeviceStatus),delayTime,false); // wait a bit of time before getting new state (sometimes domoticz did not yet process switched state)
 	            	} else if (data["title"].equals("getplans")) {
 						// Roomplans received, populate the roomlist.
 		            	if (data["result"]!=null) {
