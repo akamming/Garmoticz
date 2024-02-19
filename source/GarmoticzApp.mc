@@ -1,4 +1,5 @@
 using Toybox.Application;
+using Toybox.System as Sys;
 
 var gSettingsChanged = false;
 
@@ -29,15 +30,23 @@ class GarmoticzApp extends Application.AppBase {
 
      // Return the initial view of your application here
     function getInitialView() {
-    	// Old
-        // mView = new GarmoticzView();
-        // return [mView, new GarmoticzViewDelegate(mView.method(:HandleCommand))];
+        var fromGlance=false;
+        var sSettings=Sys.getDeviceSettings();
+        if(sSettings has :isGlanceModeEnabled) {
+            Log("Device has glance capability");
+        	fromGlance=sSettings.isGlanceModeEnabled;
+        }
 
-
-    
-    	// New
-        mView = new InitialView();
-        return [mView, new InitialViewDelegate()];
+        if (fromGlance) {
+            // Old
+            Log("Started from Glance");
+            mView = new GarmoticzView();
+            return [mView, new GarmoticzViewDelegate(mView.method(:HandleCommand))];
+        } else {
+            // New
+            Log("Started without Glance");
+            mView = new InitialView();
+            return [mView, new InitialViewDelegate()];
+        }
     }
-
 }
