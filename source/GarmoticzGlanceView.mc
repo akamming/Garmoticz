@@ -21,19 +21,6 @@ class GarmoticzGlanceView extends Ui.GlanceView {
     // do nothing
   }
 
-  function callURL(url, params, options) {
-  // Log url
-    Log("url="+url+",params="+params);
-
-  // Make the reqsetpoiuest
-      Comm.makeWebRequest(
-          url,
-          params,
-          options,
-          method(:onReceive)
-      );
-  }
-
   // Receive the data from the web request
   function onReceive(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void
   {
@@ -63,9 +50,8 @@ class GarmoticzGlanceView extends Ui.GlanceView {
     // Let's update the screen
     Ui.requestUpdate();
   }
-     
-  function initialize() {
-    GlanceView.initialize();
+
+  function CheckConnection() {
     // initialize vars
     var url;
     var Domoticz_Protocol;
@@ -103,7 +89,22 @@ class GarmoticzGlanceView extends Ui.GlanceView {
     Log (url);
     params.put("type","command");
     params.put("param","getversion");
-    callURL(url, params, options);
+
+    Log("url="+url+",params="+params);
+
+    // Make the reqsetpoiuest
+    Comm.makeWebRequest(
+        url,
+        params,
+        options,
+        method(:onReceive)
+    );
+  }
+     
+  function initialize() {
+    GlanceView.initialize();
+
+    CheckConnection();
   }
   
   function onUpdate(dc) {
