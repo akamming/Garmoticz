@@ -31,6 +31,7 @@ var DevicesName;
 var DevicesIdx;
 var DevicesData;
 var DevicesType;
+var Levels;
 var Refreshing=false;
 var setpoint=18.0;
 var dimmerlevel;
@@ -48,7 +49,8 @@ enum {
 	SCENE,
 	DEVICE,
 	SETPOINT,
-	DIMMER
+	DIMMER,
+	SELECTOR
 }
 
 
@@ -71,6 +73,7 @@ enum {
 	SENDOFFCOMMAND,
 	SENDSTOPCOMMAND,
 	SENDSETPOINT,
+	SENDSELECTOR,
 	SENDDIMMERVALUE,
 	GETSCENESTATUS,
 	SWITCHONGROUP,
@@ -374,6 +377,20 @@ class GarmoticzView extends WatchUi.View {
 				Ui.requestUpdate();
 			}
 
+			if (DevicesType[devicecursor]==SELECTOR) 
+			{
+				var menu = new WatchUi.Menu();
+                MenuType=SELECTOR;
+                menu.setTitle(Ui.loadResource(Rez.Strings.SELECTOR));
+                menu.setTitle(DevicesName[devicecursor]);
+                for(var k=MenuType-MenuType;k<=Levels.size()-1;k++) {
+					menu.addItem(Levels[k*10],k*10);
+   				}
+				// push menu
+				WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
+
+			}
+
 			if (DevicesType[devicecursor]==VENBLIND) {
 				// Device is a switchable Venetian Blinds, so 3 commands available to choose from: Present menu
 				MenuType=VENBLIND;
@@ -522,6 +539,29 @@ class GarmoticzView extends WatchUi.View {
 	     );
     }
 
+	function updateLevels(string) {
+		Levels={};
+		var location;
+		var levelvalue=-10;
+
+		var options = {
+			:fromRepresentation => Su.REPRESENTATION_STRING_BASE64,
+			:toRepresentation => Su.REPRESENTATION_STRING_PLAIN_TEXT 
+		};
+		var plainLevelNames=Su.convertEncodedString(string, options);
+		Log("Levelnames = "+plainLevelNames);
+
+		do {
+			levelvalue+=10;
+			location = plainLevelNames.find("|");
+			if (location != null) {
+				Levels.put(levelvalue,plainLevelNames.substring(0, location));
+				plainLevelNames = plainLevelNames.substring(location + 1, string.length());
+			}
+		} while (location != null);
+		Levels.put(levelvalue,plainLevelNames);
+	}
+
     function makeWebRequest(action) {
 		// initialize vars
 		var url;
@@ -596,6 +636,16 @@ class GarmoticzView extends WatchUi.View {
     		params.put("param","setsetpoint");
     		params.put("idx",DevicesIdx[devicecursor]);
     		params.put("setpoint",setpoint);
+    	}	else if (action==SENDSELECTOR) {
+    		params.put("type","command");
+    		params.put("param","switchlight");
+    		params.put("idx",DevicesIdx[devicecursor]);
+			if (dimmerlevel==0) {
+				params.put("switchcmd","Off");
+			} else {
+				params.put("switchcmd","Set Level");
+				params.put("level",dimmerlevel);
+			}
     	}	else if (action==SENDDIMMERVALUE) {
     		params.put("type","command");
     		params.put("param","switchlight");
@@ -674,9 +724,34 @@ class GarmoticzView extends WatchUi.View {
 		            	    if (DevicesIdx[i].equals(data["result"][0]["idx"])) {
 		            	    	// device i is the device to update!
        							if (data["result"][0]["SwitchType"]!=null) { // it is a switch
+       								// Set switchtype and correct data if needed
+	       							if (data["result"][0]["SwitchType"].equals("On/Off")) { // switch can be controlled by user
+	       								DevicesType[i]=ONOFF;
+									} else if (data["result"][0]["SwitchType"].equals("Selector")) {
+										DevicesType[i]=SELECTOR;
+       								} else if (data["result"][0]["SwitchType"].equals("Dimmer")) {
+       									DevicesType[i]=DIMMER;
+       								} else if (data["result"][0]["SwitchType"].equals("Blinds Inverted")) {
+       									DevicesType[i]=INVERTEDBLINDS;
+	       							} else if (data["result"][0]["SwitchType"].equals("Venetian Blinds US") or data["result"][0]["SwitchType"].equals("Venetian Blinds EU") or data["result"][0]["SwitchType"].equals("Blinds")) { // blinds
+	       								DevicesType[i]=VENBLIND;
+	       							} else if (data["result"][0]["SwitchType"].equals("Push On Button")) { // PushOnButton
+	       								DevicesType[i]=PUSHON;
+	       							} else if (data["result"][0]["SwitchType"].equals("Push Off Button")) { // PushOffButton
+	       								DevicesType[i]=PUSHOFF;
+	       							}
 
-	       							// set datafield
-       								if (data["result"][0]["Data"].equals("On")) {
+									// set datafield
+									if (DevicesType[i]==PUSHOFF) {
+	       								DevicesData[i]=Ui.loadResource(Rez.Strings.PUSHOFF);
+									} else if (DevicesType[i]==PUSHON) {
+	       								DevicesData[i]=Ui.loadResource(Rez.Strings.PUSHON);
+									} else if (DevicesType[i]==SELECTOR) {
+	       								DevicesData[i]="Selector "+data["result"][0]["Data"];
+										updateLevels(data["result"][0]["LevelNames"]);
+										Log(Levels);
+										DevicesData[i]=Levels[data["result"][0]["LevelInt"]];
+									} else if (data["result"][0]["Data"].equals("On")) {
 	       								// switch is on
 	       								DevicesData[i]=Ui.loadResource(Rez.Strings.ON);
 	       							} else if (data["result"][0]["Data"].equals("Off")) {
@@ -698,24 +773,6 @@ class GarmoticzView extends WatchUi.View {
        								} else {
        									DevicesData[i]=data["result"][0]["Data"];
        								}
-
-       								// Set switchtype and correct data if needed
-	       							if (data["result"][0]["SwitchType"].equals("On/Off")) { // switch can be controlled by user
-	       								DevicesType[i]=ONOFF;
-       								} else if (data["result"][0]["SwitchType"].equals("Dimmer")) {
-       									DevicesType[i]=DIMMER;
-       								} else if (data["result"][0]["SwitchType"].equals("Blinds Inverted")) {
-       									DevicesType[i]=INVERTEDBLINDS;
-	       							} else if (data["result"][0]["SwitchType"].equals("Venetian Blinds US") or data["result"][0]["SwitchType"].equals("Venetian Blinds EU") or data["result"][0]["SwitchType"].equals("Blinds")) { // blinds
-	       								DevicesType[i]=VENBLIND;
-	       							} else if (data["result"][0]["SwitchType"].equals("Push On Button")) { // PushOnButton
-	       								DevicesType[i]=PUSHON;
-	       								DevicesData[i]=Ui.loadResource(Rez.Strings.PUSHON);
-	       							} else if (data["result"][0]["SwitchType"].equals("Push Off Button")) { // PushOffButton
-	       								DevicesType[i]=PUSHOFF;
-	       								DevicesData[i]=Ui.loadResource(Rez.Strings.PUSHOFF);
-	       							}
-
        							} else if (data["result"][0]["SubType"].equals("kWh")) {  // kwh device: take the daily counter + usage as data
 	       							DevicesData[i]=data["result"][0]["CounterToday"]+", "+data["result"][0]["Usage"];
 	       						} else if (data["result"][0]["SubType"].equals("Gas")) {  // gas device: take the daily counter as data
@@ -851,6 +908,9 @@ class GarmoticzView extends WatchUi.View {
 			status="Sending Command";
 		} else if (status.equals("SendSetpoint")) {
 			makeWebRequest(SENDSETPOINT);
+			status="Sending Command";
+		} else if (status.equals("SendSelector")) {
+			makeWebRequest(SENDSELECTOR);
 			status="Sending Command";
 		} else if (status.equals("SendDimmerValue")) {
 			makeWebRequest(SENDDIMMERVALUE);

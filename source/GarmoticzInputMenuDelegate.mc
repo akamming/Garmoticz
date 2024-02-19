@@ -20,6 +20,9 @@ class GarmoticzMenuInputDelegate extends WatchUi.MenuInputDelegate {
     	} else if(MenuType==SETPOINT) {
     		setpoint = item;
 			status = "SendSetpoint";
+    	} else if(MenuType==SELECTOR) {
+    		dimmerlevel = item;
+			status = "SendSelector";
     	} else if(MenuType==DIMMER) {
     		if (item==:zero) { dimmerlevel = 0;	}
 			else if (item==:ten) { dimmerlevel = 10; } 
