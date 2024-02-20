@@ -36,6 +36,7 @@ var Refreshing=false;
 var setpoint=18.0;
 var dimmerlevel;
 var MenuType;
+var monkeyVersion;
 
 
 // DeviceTypes
@@ -131,6 +132,9 @@ class GarmoticzView extends WatchUi.View {
 
         // initializez timer
         delayTimer=new Timer.Timer();
+
+		monkeyVersion=Toybox.System.getDeviceSettings().monkeyVersion;
+		Log("Monkey Version is "+monkeyVersion);
 
      	// Load the last known vales of the cursor
         var app = Application.getApp();
@@ -384,7 +388,7 @@ class GarmoticzView extends WatchUi.View {
                 menu.setTitle(Ui.loadResource(Rez.Strings.SELECTOR));
                 menu.setTitle(DevicesName[devicecursor]);
                 for(var k=MenuType-MenuType;k<=Levels.size()-1;k++) {
-					menu.addItem(Levels[k*10],k*10);
+					menu.addItem(Levels[k*10],k*10);  
    				}
 				// push menu
 				WatchUi.pushView(menu, new GarmoticzMenuInputDelegate(), WatchUi.SLIDE_IMMEDIATE);
@@ -728,7 +732,13 @@ class GarmoticzView extends WatchUi.View {
 	       							if (data["result"][0]["SwitchType"].equals("On/Off")) { // switch can be controlled by user
 	       								DevicesType[i]=ONOFF;
 									} else if (data["result"][0]["SwitchType"].equals("Selector")) {
-										DevicesType[i]=SELECTOR;
+										// check if base64decoding is enabled
+										if (monkeyVersion[0]>=3) {
+											// Selector requires base64 decoding, which is only avalaible as of API 3.0.0
+											DevicesType[i]=SELECTOR;
+										} else {
+											DevicesType[i]=DEVICE; 
+										} 
        								} else if (data["result"][0]["SwitchType"].equals("Dimmer")) {
        									DevicesType[i]=DIMMER;
        								} else if (data["result"][0]["SwitchType"].equals("Blinds Inverted")) {
@@ -739,7 +749,10 @@ class GarmoticzView extends WatchUi.View {
 	       								DevicesType[i]=PUSHON;
 	       							} else if (data["result"][0]["SwitchType"].equals("Push Off Button")) { // PushOffButton
 	       								DevicesType[i]=PUSHOFF;
-	       							}
+	       							} else {
+										// We didn't recognize the device type, so set as generall unswitchable device
+										DevicesType[i]=DEVICE;
+									}
 
 									// set datafield
 									if (DevicesType[i]==PUSHOFF) {
