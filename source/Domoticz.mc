@@ -29,7 +29,8 @@ enum {
 
 class Domoticz {
     var roomscallback;
-    var roomItems = [];  // will contain the objects with the menu items of the rooms
+    // var roomItems = [];  // will contain the objects with the menu items of the rooms
+    var roomItems = {};  // will contain the objects with the menu items of the rooms
 
     public function initialize()
     {
@@ -165,11 +166,16 @@ class Domoticz {
 	            	if (data["title"].equals("getplans")) {
 						if (data["result"]!=null) {
                             Log("Getting the plan devices");
-                            roomItems=new [data["result"].size()];
+                            /* roomItems=new [data["result"].size()];
                             for (var i=0;i<data["result"].size();i++) {
 								System.println("Adding "+data["result"][i]["Name"]+"with index "+data["result"][i]["idx"]+" on index "+i);
 			            		roomItems[i]=new WatchUi.MenuItem(data["result"][i]["Name"],null,data["result"][i]["idx"],{});
-			            	}
+			            	} */
+							roomItems={};
+							for (var i=0;i<data["result"].size();i++) {
+								Log("Adding "+data["result"][i]["Name"]+"with index "+data["result"][i]["idx"]+" on index "+i);
+								roomItems.put(data["result"][i]["idx"], new WatchUi.MenuItem(data["result"][i]["Name"], null, data["result"][i]["idx"],{}));
+							}
                             roomscallback.invoke(null);
                         } else {
 							roomscallback.invoke("invalid domoticz response");

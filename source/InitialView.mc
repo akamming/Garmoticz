@@ -48,11 +48,16 @@ class InitialView extends Ui.View {
 
     public function startRoomsMenu() {
         var menu = new WatchUi.Menu2({:title=>new MenuTitleDrawable("Rooms")});
-        for (var i=0;i<dz.roomItems.size();i++){
+        /* for (var i=0;i<dz.roomItems.size();i++){
             menu.addItem(dz.roomItems[i]);
+        } */
+        var ks=dz.roomItems.keys();
+        for (var i=0;i<dz.roomItems.size();i++){
+            var key=ks[i];
+            Log("Key is "+key);
+            menu.addItem(dz.roomItems[key]);
         }
-        var delegate = new RoomsMenuDelegate();
-        WatchUi.pushView(menu, delegate, WatchUi.SLIDE_IMMEDIATE);
+        WatchUi.pushView(menu, new RoomsMenuDelegate(dz), WatchUi.SLIDE_IMMEDIATE);
     }
 
     function onRoomsPopulated(status)
