@@ -17,7 +17,6 @@ var gSettingsChanged = false;
 var fromGlance = false;
 var isTouchScreen = false;
 var exitApplication = false;
-var dz;
 
 // Commands sent by delegate handler
 enum {
@@ -56,8 +55,6 @@ class GarmoticzApp extends Application.AppBase {
 
      // Return the initial view of your application here
     function getInitialView() {
-        // create domoticz object.
-        dz = new Domoticz();
 
         // check if started from Glance
         fromGlance=false;
@@ -66,6 +63,8 @@ class GarmoticzApp extends Application.AppBase {
             Log("Device has glance capability");
         	fromGlance=sSettings.isGlanceModeEnabled;
         }
+        fromGlance=false;
+        // for debugging purposes
         if (fromGlance) {
             Log("FromGlance=true"); 
         } else {
@@ -86,13 +85,8 @@ class GarmoticzApp extends Application.AppBase {
         // mView = new InitialView();
         // return [mView, new InitialViewDelegate()];
         //use this if you want to allow returning to the menu
-    	if(fromGlance) {
-            Log("Glance detected: Start directly");
-            return [new InitialView(),new InitialViewDelegate()];
-        } else { 
-            Log("Glance not detected: show screen");
-            return [new InitialView()];
-        }
+        var mview=new InitialView();
+        return [mview,new InitialViewDelegate(mview)];
     }
 }   
 

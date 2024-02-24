@@ -1,8 +1,10 @@
 using Toybox.WatchUi as Ui;
 
 class InitialViewDelegate extends Ui.BehaviorDelegate {
+	var _mview;
 
-    function initialize() {
+    function initialize(mview as InitialView) {
+		_mview=mview;
         BehaviorDelegate.initialize();
     
     	// Get device capabilities
@@ -15,10 +17,8 @@ class InitialViewDelegate extends Ui.BehaviorDelegate {
     }
       
     function onMenu() {
-	   	var myMenu=new WatchUi.Menu2({:title=>"Items"});
-		myMenu.addItem(new WatchUi.MenuItem("item 1","","i1",{}));
-		myMenu.addItem(new WatchUi.MenuItem("item 2","","i2",{}));	 		
-	 	WatchUi.pushView(myMenu, new RoomsMenuDelegate(),WatchUi.SLIDE_IMMEDIATE);	    	
+		Log("onMenu called, getting rooms");
+		_mview.getrooms();
     	return true;
     }
 

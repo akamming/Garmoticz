@@ -170,11 +170,21 @@ class Domoticz {
 								System.println("Adding "+data["result"][i]["Name"]+"with index "+data["result"][i]["idx"]+" on index "+i);
 			            		roomItems[i]=new WatchUi.MenuItem(data["result"][i]["Name"],null,data["result"][i]["idx"],{});
 			            	}
-                            roomscallback.invoke();
-                        }
-                    }
-                }
-            }
-       }
+                            roomscallback.invoke(null);
+                        } else {
+							roomscallback.invoke("invalid domoticz response");
+						}
+                    }else {
+						roomscallback.invoke("unknown domoticz response");
+					}
+                }else {
+					roomscallback.invoke("Domoticz Error");
+				} 
+            }else {
+				roomscallback.invoke("Invalid domoticz response");
+			}
+       }else {
+			roomscallback.invoke("HTTP Error "+responseCode);
+	   }
     }   
 }
