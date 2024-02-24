@@ -88,101 +88,14 @@ class GarmoticzApp extends Application.AppBase {
         //use this if you want to allow returning to the menu
     	if(fromGlance) {
             Log("Glance detected: Start directly");
-            return [new M2WView(),new M2WDelegate()];
+            return [new InitialView(),new InitialViewDelegate()];
         } else { 
             Log("Glance not detected: show screen");
-            return [new M2WView()];
+            return [new InitialView()];
         }
     }
 }   
 
-class M2WView extends WatchUi.View {
-	var width,height;
-	var shown=false;
-	
-    function initialize() {
-       View.initialize();
-	}
-
-    function HandleCommand (data) {
-        Log("Data is "+data);
-    }
-	
-	function onShow() {
-        if (shown) {
-            Log("Shown=true"); 
-        } else {
-            Log("Shown=false");
-        }
-        if (fromGlance) {
-            Log("fromGlance=true"); 
-        } else {
-            Log("fromGlance=false");
-        }
-		if(!shown && fromGlance) {
-            Log("Starting directly");
-            dz.populateRooms(method(:onRoomsPopulated));
-	 		shown=true;			
-		} else {
-            Log("Not starting menu");
-        }
-	}
-
-    function onRoomsPopulated()
-    {
-        Log("Callback was called");
-        var menu = new WatchUi.Menu2({:title=>new MenuTitleDrawable("Rooms")});
-        for (var i=0;i<dz.roomItems.size();i++){
-            menu.addItem(dz.roomItems[i]);
-        }
-        var delegate = new Menu2InputDelegate();
-        WatchUi.pushView(menu, delegate, WatchUi.SLIDE_IMMEDIATE);
-    }
-	
-	function onLayout(dc) {
-		width=dc.getWidth();
-		height=dc.getHeight();
-	}
-	
-	function onUpdate(dc) {
-        if (exitApplication) {
-            WatchUi.popView(WatchUi.SLIDE_DOWN);
-        } else {
-            dc.setColor(Gfx.COLOR_BLACK,Gfx.COLOR_BLACK);
-            dc.clear();
-            dc.setColor(Gfx.COLOR_BLUE,Gfx.COLOR_TRANSPARENT);
-            if(!fromGlance) {
-                dc.drawText(width/2,height/2,Gfx.FONT_SMALL,"Hit Menu for Menu\nBack to Exit",Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
-            } else {
-                dc.drawText(width/2,height/2,Gfx.FONT_SMALL,"Hit Back to Exit",Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
-            }
-        }
-	}
-}
-
-class M2WDelegate extends WatchUi.BehaviorDelegate {
-
-    function initialize() {
-        BehaviorDelegate.initialize();
-    
-    	// Get device capabilities
-    	var mySettings=System.getDeviceSettings();
-    	isTouchScreen=mySettings.isTouchScreen;
-    
-    	// normal initialisation
-        WatchUi.BehaviorDelegate.initialize();
-
-    }
-      
-    function onMenu() {
-	   	var myMenu=new WatchUi.Menu2({:title=>"Items"});
-		myMenu.addItem(new WatchUi.MenuItem("item 1","","i1",{}));
-		myMenu.addItem(new WatchUi.MenuItem("item 2","","i2",{}));	 		
-	 	WatchUi.pushView(myMenu, new M2WMenuDelegate(),WatchUi.SLIDE_IMMEDIATE);	    	
-    	return true;
-    }
-
-}
 
 class M2WMenuDelegate extends WatchUi.Menu2InputDelegate {
     function initialize() {

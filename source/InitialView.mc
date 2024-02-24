@@ -1,85 +1,71 @@
 using Toybox.WatchUi as Ui;
 using Toybox.System;
+using Toybox.Graphics as Gfx;
 
 class InitialView extends Ui.View {
-
-    function HandleCommand (data)
-    {
-    	// invoke code
-    }
-
-
+	var width,height;
+	var shown=false;
+	
     function initialize() {
-        View.initialize();
+       View.initialize();
+	}
+
+    function HandleCommand (data) {
+        Log("Data is "+data);
     }
-
-    // Load your resources here
-    function onLayout(dc) {
-        // setLayout(Rez.Layouts.MainLayout(dc));
-    }
-
-    // Called when this View is brought to the foreground. Restore
-    // the state of this View and prepare it to be shown. This includes
-    // loading resources into memory.
-    function onShow() {
-    }
-
-    // Update the view
-    function onUpdate(dc) {
-    		// draw the screen. 1st: clear the current screen and set color
-        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
-        dc.clear();
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-
-		
-		// load logo
-		var image = Ui.loadResource( Rez.Drawables.Domoticz_Logo);
-		dc.drawBitmap(dc.getWidth()/2-30,2,image);
-		
-		var offset=10;
-		// var Line2="Garmoticz";
-		var Line2=Ui.loadResource(Rez.Strings.AppName);
-		var Line2Status;
-		
-		var mySettings=System.getDeviceSettings();
-		if (mySettings.isTouchScreen) {
-			Line2Status=Ui.loadResource(Rez.Strings.STATUS_TAP_SCREEN);
-		} else {
-			Line2Status=Ui.loadResource(Rez.Strings.STATUS_PRESS_ENTER);
-		}	
 	
-    	// two lines
-    	if (dc.getTextWidthInPixels(Line2,Graphics.FONT_LARGE)>dc.getWidth()) { // smaller font is bigger than screen
-        	if (dc.getTextWidthInPixels(Line2,Graphics.FONT_MEDIUM)>dc.getWidth()) { // on fenix 5 sometimes even smaller font is too big
-	        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+offset,Graphics.FONT_XTINY,Line2,Graphics.TEXT_JUSTIFY_CENTER);
-        	} else {
-	        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+offset,Graphics.FONT_MEDIUM,Line2,Graphics.TEXT_JUSTIFY_CENTER);
-        	}
-    	} else {
-        	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+offset,Graphics.FONT_LARGE,Line2,Graphics.TEXT_JUSTIFY_CENTER);
-    	}
-
-    	if (dc.getTextWidthInPixels(Line2Status, Graphics.FONT_LARGE)>dc.getWidth()) { // small font if bigger than screen
-        	if (dc.getTextWidthInPixels(Line2Status, Graphics.FONT_MEDIUM)>dc.getWidth()) { // for some watches even medium is too big
-		        dc.drawText(dc.getWidth()/2,dc.getHeight()*8/16+offset,Graphics.FONT_XTINY,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
-	        } else {
-		        dc.drawText(dc.getWidth()/2,dc.getHeight()*8/16+offset,Graphics.FONT_MEDIUM,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
-	        }
+	function onShow() {
+        if (shown) {
+            Log("Shown=true"); 
         } else {
-	        dc.drawText(dc.getWidth()/2,dc.getHeight()*8/16+offset,Graphics.FONT_LARGE,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
+            Log("Shown=false");
         }
+        if (fromGlance) {
+            Log("fromGlance=true"); 
+        } else {
+            Log("fromGlance=false");
+        }
+		if(!shown && fromGlance) {
+            Log("Starting directly");
+            dz.populateRooms(method(:onRoomsPopulated));
+	 		shown=true;			
+		} else {
+            Log("Not starting menu");
+        }
+	}
+
+    function startRoomsMenu() {
+        var menu = new WatchUi.Menu2({:title=>new MenuTitleDrawable("Rooms")});
+        for (var i=0;i<dz.roomItems.size();i++){
+            menu.addItem(dz.roomItems[i]);
+        }
+        var delegate = new Menu2InputDelegate();
+        WatchUi.pushView(menu, delegate, WatchUi.SLIDE_IMMEDIATE);
+    }
+
+    function onRoomsPopulated()
+    {
+        Log("Callback was called");
+        startRoomsMenu();
+    }
 	
-    
-    }
-
-    // Called when this View is removed from the screen. Save the
-    // state of this View here. This includes freeing resources from
-    // memory.
-    function onHide() {
-    }
-    
-    
-    
-    
-
+	function onLayout(dc) {
+		width=dc.getWidth();
+		height=dc.getHeight();
+	}
+	
+	function onUpdate(dc) {
+        if (exitApplication) {
+            WatchUi.popView(WatchUi.SLIDE_DOWN);
+        } else {
+            dc.setColor(Gfx.COLOR_BLACK,Gfx.COLOR_BLACK);
+            dc.clear();
+            dc.setColor(Gfx.COLOR_BLUE,Gfx.COLOR_TRANSPARENT);
+            if(!fromGlance) {
+                dc.drawText(width/2,height/2,Gfx.FONT_SMALL,"Hit Menu for Menu\nBack to Exit",Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
+            } else {
+                dc.drawText(width/2,height/2,Gfx.FONT_SMALL,"Hit Back to Exit",Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
+            }
+        }
+	}
 }

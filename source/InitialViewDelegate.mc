@@ -1,38 +1,26 @@
 using Toybox.WatchUi as Ui;
 
 class InitialViewDelegate extends Ui.BehaviorDelegate {
-	hidden var mView;
-	
-	
-	
-	function StartApp()
-	{
-	    // start garmoticzview
-		mView=new GarmoticzView();
-	    Ui.pushView(mView, new GarmoticzViewDelegate(mView.method(:HandleCommand)), WatchUi.SLIDE_LEFT);
-	}
-	
-    function onMenu() {
-	    StartApp();
-	    return true;
- 	}
- 	
- 	function onTap(clickEvent) {
-	    StartApp();
-        return true;
-    }
-    
-    function onSelect() {
-	    StartApp();
-        return true;
-    }
-    
-    // Set up the callback to the view
+
     function initialize() {
+        BehaviorDelegate.initialize();
+    
+    	// Get device capabilities
+    	var mySettings=System.getDeviceSettings();
+    	isTouchScreen=mySettings.isTouchScreen;
     
     	// normal initialisation
-        Ui.BehaviorDelegate.initialize();
+        WatchUi.BehaviorDelegate.initialize();
+
     }
-    
-	
+      
+    function onMenu() {
+	   	var myMenu=new WatchUi.Menu2({:title=>"Items"});
+		myMenu.addItem(new WatchUi.MenuItem("item 1","","i1",{}));
+		myMenu.addItem(new WatchUi.MenuItem("item 2","","i2",{}));	 		
+	 	WatchUi.pushView(myMenu, new M2WMenuDelegate(),WatchUi.SLIDE_IMMEDIATE);	    	
+    	return true;
+    }
+
 }
+
