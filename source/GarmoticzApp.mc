@@ -121,10 +121,6 @@ class M2WView extends WatchUi.View {
         }
 		if(!shown && fromGlance) {
             Log("Starting directly");
-	   		/* var myMenu=new WatchUi.Menu2({:title=>"Items"});
-			myMenu.addItem(new WatchUi.MenuItem("item 1","","i1",{}));
-			myMenu.addItem(new WatchUi.MenuItem("item 2","","i2",{}));	 		
-	 		WatchUi.pushView(myMenu, new M2WMenuDelegate(),WatchUi.SLIDE_IMMEDIATE); */
             dz.populateRooms(method(:onRoomsPopulated));
 	 		shown=true;			
 		} else {
@@ -135,7 +131,7 @@ class M2WView extends WatchUi.View {
     function onRoomsPopulated()
     {
         Log("Callback was called");
-        var menu = new WatchUi.Menu2({:title=>"My Menu2"});
+        var menu = new WatchUi.Menu2({:title=>new MenuTitleDrawable("Rooms")});
         for (var i=0;i<dz.roomItems.size();i++){
             menu.addItem(dz.roomItems[i]);
         }
