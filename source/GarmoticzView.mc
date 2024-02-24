@@ -8,16 +8,6 @@ using Toybox.System;
 using Toybox.Lang;
 
 
-// define functions for debugging on console which is not executed in release version
-(:debug) function Log(message) {
-	System.println(message);
-}
-
-(:release) function Log(message) {
-	// do nothing
-}
-
-
 // Global vars, so all classes can access them
 var roomcursor=0;
 var devicecursor=0;
@@ -55,31 +45,6 @@ enum {
 }
 
 
-
-// Commands sent by delegate handler
-enum {
-	NEXTITEM,
-	PREVIOUSITEM,
-	SELECT,
-	BACK,
-	MENU
-}
-
-// commands for getwebrequest
-enum {
-	GETROOMS,
-	GETDEVICES,
-	GETDEVICESTATUS,
-	SENDONCOMMAND,
-	SENDOFFCOMMAND,
-	SENDSTOPCOMMAND,
-	SENDSETPOINT,
-	SENDSELECTOR,
-	SENDDIMMERVALUE,
-	GETSCENESTATUS,
-	SWITCHONGROUP,
-	SWITCHOFFGROUP
-}
 
 
 const BACKMENUITEM = 10000;
@@ -570,7 +535,6 @@ class GarmoticzView extends WatchUi.View {
 		// initialize vars
 		var url;
 		var Domoticz_Protocol;
-		var prefix;
 		var params = {};
 		var options = {};
 

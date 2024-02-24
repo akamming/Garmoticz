@@ -37,7 +37,8 @@ class InitialView extends Ui.View {
 		dc.drawBitmap(dc.getWidth()/2-30,2,image);
 		
 		var offset=10;
-		var Line2="Garmoticz";
+		// var Line2="Garmoticz";
+		var Line2=Ui.loadResource(Rez.Strings.AppName);
 		var Line2Status;
 		
 		var mySettings=System.getDeviceSettings();
@@ -57,6 +58,7 @@ class InitialView extends Ui.View {
     	} else {
         	dc.drawText(dc.getWidth()/2,dc.getHeight()*5/16+offset,Graphics.FONT_LARGE,Line2,Graphics.TEXT_JUSTIFY_CENTER);
     	}
+
     	if (dc.getTextWidthInPixels(Line2Status, Graphics.FONT_LARGE)>dc.getWidth()) { // small font if bigger than screen
         	if (dc.getTextWidthInPixels(Line2Status, Graphics.FONT_MEDIUM)>dc.getWidth()) { // for some watches even medium is too big
 		        dc.drawText(dc.getWidth()/2,dc.getHeight()*8/16+offset,Graphics.FONT_XTINY,Line2Status,Graphics.TEXT_JUSTIFY_CENTER);
