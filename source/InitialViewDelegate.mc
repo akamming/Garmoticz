@@ -18,7 +18,7 @@ class InitialViewDelegate extends Ui.BehaviorDelegate {
 	   	var myMenu=new WatchUi.Menu2({:title=>"Items"});
 		myMenu.addItem(new WatchUi.MenuItem("item 1","","i1",{}));
 		myMenu.addItem(new WatchUi.MenuItem("item 2","","i2",{}));	 		
-	 	WatchUi.pushView(myMenu, new M2WMenuDelegate(),WatchUi.SLIDE_IMMEDIATE);	    	
+	 	WatchUi.pushView(myMenu, new RoomsMenuDelegate(),WatchUi.SLIDE_IMMEDIATE);	    	
     	return true;
     }
 

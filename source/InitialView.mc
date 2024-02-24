@@ -39,7 +39,7 @@ class InitialView extends Ui.View {
         for (var i=0;i<dz.roomItems.size();i++){
             menu.addItem(dz.roomItems[i]);
         }
-        var delegate = new Menu2InputDelegate();
+        var delegate = new RoomsMenuDelegate();
         WatchUi.pushView(menu, delegate, WatchUi.SLIDE_IMMEDIATE);
     }
 

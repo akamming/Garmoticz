@@ -97,26 +97,3 @@ class GarmoticzApp extends Application.AppBase {
 }   
 
 
-class M2WMenuDelegate extends WatchUi.Menu2InputDelegate {
-    function initialize() {
-        Menu2InputDelegate.initialize();
-    }
-    
-  	function onSelect(item) {
-  		var id=item.getId();
-  		if(id.equals("i1")) {System.println("item 1");}
-  		if(id.equals("i2")) {System.println("item 2");}  		 	  	
-	}
-
-    //! Handle the back key being pressed
-    public function onBack() as Void {
-        WatchUi.popView(WatchUi.SLIDE_DOWN);
-        if (fromGlance) {
-            exitApplication=true;
-            Log("Exitapplication=true");
-        } else {
-            Log("Exitapplication=false");
-        }
-    }
-    
-}	
