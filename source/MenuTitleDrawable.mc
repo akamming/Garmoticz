@@ -8,6 +8,7 @@ class MenuTitleDrawable extends Ui.Drawable {
 
     public function initialize(title as String) {
         _title=title;
+        Ui.Drawable.initialize({});
     }
 
     public function draw(dc as Dc) as Void {
