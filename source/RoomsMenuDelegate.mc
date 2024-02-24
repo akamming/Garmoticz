@@ -12,11 +12,12 @@ class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
   		var id=item.getId();
         Log("Item is "+id);
         if (_dz.roomItems[id].getSubLabel()==null) {
-            _dz.roomItems[id].setSubLabel("Item was clicked");
+            _dz.roomItems[id].setSubLabel("Loading devices...");
         } else {
             _dz.roomItems[id].setSubLabel(null);
         }
         WatchUi.requestUpdate();
+        _dz.populateDevices(GETDEVICES,id);
 	}
 
     //! Handle the back key being pressed

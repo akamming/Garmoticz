@@ -28,9 +28,10 @@ enum {
 // define functions for debugging on console which is not executed in release version
 
 class Domoticz {
-    var roomscallback;
-    // var roomItems = [];  // will contain the objects with the menu items of the rooms
+    var _roomscallback;
+	var _devicescallback;
     var roomItems = {};  // will contain the objects with the menu items of the rooms
+    var deviceItems = {};  // will contain the objects with the menu items of the devices
 
     public function initialize()
     {
@@ -39,16 +40,24 @@ class Domoticz {
 
     public function populateRooms(callbackhandler)
     {
-        roomscallback=callbackhandler;
-        makeWebRequest(GETROOMS);
+        _roomscallback=callbackhandler;
+        makeWebRequest(GETROOMS,null);
     }
 
-    function makeWebRequest(action) {
+	public function populateDevices(callbackhandler, currentRoom) {
+		Log("Currentroom is "+currentRoom);
+		_devicescallback=callbackhandler;
+		makeWebRequest(GETDEVICES,currentRoom);
+	}
+
+    function makeWebRequest(action,idx) {
 		// initialize vars
 		var url;
 		var Domoticz_Protocol;
 		var params = {};
 		var options = {};
+
+		Log("idx = "+idx);
 
 		if (App.getApp().getProperty("PROP_PROTOCOL")==0) {
 			Domoticz_Protocol="http";
@@ -86,7 +95,7 @@ class Domoticz {
     	if (action==GETDEVICES) {
 	    	params.put("type","command");
 	    	params.put("param","getplandevices");
-	    	params.put("idx",roomidx);
+	    	params.put("idx",idx);
     	}	else if (action==GETDEVICESTATUS) {
     		params.put("type","devices");
     		params.put("rid",DevicesIdx[devicecursor]);
@@ -146,7 +155,8 @@ class Domoticz {
     		url="unknown url";
         }
 		// Make the reqsetpoiuest
-       Comm.makeWebRequest(
+		Log("Calling "+url+"with params "+params);
+        Comm.makeWebRequest(
             url,
 			params,
 			options,
@@ -165,32 +175,48 @@ class Domoticz {
 				if (data["status"].equals("OK")) {
 	            	if (data["title"].equals("getplans")) {
 						if (data["result"]!=null) {
-                            Log("Getting the plan devices");
-                            /* roomItems=new [data["result"].size()];
-                            for (var i=0;i<data["result"].size();i++) {
-								System.println("Adding "+data["result"][i]["Name"]+"with index "+data["result"][i]["idx"]+" on index "+i);
-			            		roomItems[i]=new WatchUi.MenuItem(data["result"][i]["Name"],null,data["result"][i]["idx"],{});
-			            	} */
+                            Log("Getting the rooms");
 							roomItems={};
 							for (var i=0;i<data["result"].size();i++) {
 								Log("Adding "+data["result"][i]["Name"]+"with index "+data["result"][i]["idx"]+" on index "+i);
 								roomItems.put(data["result"][i]["idx"], new WatchUi.MenuItem(data["result"][i]["Name"], null, data["result"][i]["idx"],{}));
 							}
-                            roomscallback.invoke(null);
+                            _roomscallback.invoke(null);
                         } else {
-							roomscallback.invoke("invalid domoticz response");
+							_roomscallback.invoke("invalid domoticz response");
+						}
+					} else if (data["title"].equals("getdevices")) {
+						if (data["result"]!=null) {
+							Log("Getting the devices");
+							deviceItems={};
+			            	for (var i=0;i<data["result"].size();i++) {
+								Log("Adding "+data["result"][i]["Name"]+"with index "+data["result"][i]["idx"]+" on index "+i);
+								var mi=new WatchUi.MenuItem(data["result"][i]["Name"],WatchUi.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING),data["result"][i]["idx"],{});
+								deviceItems.put(data["result"][i]["idx"],mi);
+								/*
+			            		// Check if it is a device or a scene
+	       						DevicesIdx[i]=data["result"][i]["devidx"];
+	       						DevicesData[i]=Ui.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING);
+			            		if (data["result"][i]["type"]==0) {
+		       						DevicesName[i]=data["result"][i]["Name"];
+		       						DevicesType[i]=DEVICE;
+		            			} else {
+		       						DevicesName[i]=data["result"][i]["Name"].substring(8,data["result"][i]["Name"].length());
+			       					DevicesType[i]=SCENE; // can be scene or group, but this will be corrected when the def devices is loaded
+		   						}*/	
+		        			}
 						}
                     }else {
-						roomscallback.invoke("unknown domoticz response");
+						_roomscallback.invoke("unknown domoticz response");
 					}
                 }else {
-					roomscallback.invoke("Domoticz Error");
+					_roomscallback.invoke("Domoticz Error");
 				} 
             }else {
-				roomscallback.invoke("Invalid domoticz response");
+				_roomscallback.invoke("Invalid domoticz response");
 			}
        }else {
-			roomscallback.invoke("HTTP Error "+responseCode);
+			_roomscallback.invoke("HTTP Error "+responseCode);
 	   }
     }   
 }

@@ -642,7 +642,8 @@ class GarmoticzView extends WatchUi.View {
     function onReceive(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void
     {
     	Refreshing=false; // data received
-		Log(Toybox.System.println("onReceive responseCode="+responseCode+" data="+data));
+		Log("onReceive responseCode="+responseCode+" data="+data);
+		Log(data);
 
        // Check responsecode
        if (responseCode==200)
