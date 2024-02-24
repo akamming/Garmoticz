@@ -17,7 +17,7 @@ var gSettingsChanged = false;
 var fromGlance = false;
 var isTouchScreen = false;
 var exitApplication = false;
-var dz=new Domoticz();
+var dz;
 
 // Commands sent by delegate handler
 enum {
@@ -38,11 +38,6 @@ class GarmoticzApp extends Application.AppBase {
 
     // onStart() is called on application start up
     function onStart(state) {
-        if (state==null) {
-            Log("State=null");
-        } else {
-            Log("State="+state);
-        }
     }
     
 
@@ -61,6 +56,10 @@ class GarmoticzApp extends Application.AppBase {
 
      // Return the initial view of your application here
     function getInitialView() {
+        // create domoticz object.
+        dz = new Domoticz();
+
+        // check if started from Glance
         fromGlance=false;
         var sSettings=Sys.getDeviceSettings();
         if(sSettings has :isGlanceModeEnabled) {
