@@ -41,13 +41,13 @@ class Domoticz {
     public function populateRooms(callbackhandler)
     {
         _roomscallback=callbackhandler;
-        makeWebRequest(GETROOMS,null);
+        makeWebRequest(GETROOMS,null,method(:onReceiveRooms));
     }
 
 	public function populateDevices(callbackhandler, currentRoom) {
 		Log("Currentroom is "+currentRoom);
 		_devicescallback=callbackhandler;
-		makeWebRequest(GETDEVICES,currentRoom);
+		makeWebRequest(GETDEVICES,currentRoom,method(:onReceiveDevices));
 	}
 
 	function getUrl() {
@@ -68,24 +68,16 @@ class Domoticz {
 		return url;
 	}
 
-    function makeWebRequest(action,idx) {
-		// initialize vars
-		var params = {};
-		var options = {};
-		var url=getUrl();
-
-		Log("idx = "+idx);
+	function getOptions() {
+		var options;
 
 		if (App.getApp().getProperty("PROP_USERNAME").length()==0) {
-			params={};
 			options={
 				:headers => {
 					"Content-Type" => Comm.REQUEST_CONTENT_TYPE_URL_ENCODED
 				}
 			};
 		} else {
-			params={};
-			// Log("Basic "+App.getApp().getProperty("PROP_USERNAME")+":"+App.getApp().getProperty("PROP_PASSWORD"));
 			options = {
 				:responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON,
 				:headers => {
@@ -95,8 +87,30 @@ class Domoticz {
 	        };
 			
 		}
+		return options;
+	}
 
-    	// create url
+	function callUrl(url,options,params,callback) {
+		// Make the reqsetpoiuest
+		Log("Calling "+url+"with params "+params);
+        Comm.makeWebRequest(
+            url,
+			params,
+			options,
+            callback
+	     );  
+
+	}
+
+    function makeWebRequest(action,idx,callback) {
+		// initialize vars
+		var params = {};
+		var options = getOptions();
+		var url=getUrl();
+
+		Log("idx = "+idx);
+
+    	// populate parameters;
     	if (action==GETDEVICES) {
 	    	params.put("type","command");
 	    	params.put("param","getplandevices");
@@ -159,17 +173,11 @@ class Domoticz {
     	} else {
     		url="unknown url";
         }
-		// Make the reqsetpoiuest
-		Log("Calling "+url+"with params "+params);
-        Comm.makeWebRequest(
-            url,
-			params,
-			options,
-             method(:onReceive)
-	     );  
+		// Make the request
+		 callUrl(url,options,params,callback);
 	}
 
-    function onReceive(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
+    function onReceiveRooms(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
    		Log("onReceive responseCode="+responseCode+" data="+data);
        // Check responsecode
        if (responseCode==200)
@@ -183,19 +191,42 @@ class Domoticz {
                             Log("Getting the rooms");
 							roomItems={};
 							for (var i=0;i<data["result"].size();i++) {
-								Log("Adding "+data["result"][i]["Name"]+"with index "+data["result"][i]["idx"]+" on index "+i);
+								Log("Adding "+data["result"][i]["Name"]+" with index "+data["result"][i]["idx"]+" on index "+i);
 								roomItems.put(data["result"][i]["idx"], new WatchUi.MenuItem(data["result"][i]["Name"], null, data["result"][i]["idx"],{}));
 							}
                             _roomscallback.invoke(null);
                         } else {
 							_roomscallback.invoke("invalid domoticz response");
 						}
-					} else if (data["title"].equals("GetPlanDevices")) {
+                    }else {
+						_roomscallback.invoke("unknown domoticz response");
+					}
+                }else {
+					_roomscallback.invoke("Domoticz Error");
+				} 
+            }else {
+				_roomscallback.invoke("Invalid domoticz response");
+			}
+       }else {
+			_roomscallback.invoke("HTTP Error "+responseCode);
+	   }
+    }    
+	
+	function onReceiveDevices(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
+   		Log("onReceive responseCode="+responseCode+" data="+data);
+       // Check responsecode
+       if (responseCode==200)
+       {
+       		// Make sure no error is shown
+           	// ShowError=false;
+           	if (data instanceof Dictionary) {
+				if (data["status"].equals("OK")) {
+					if (data["title"].equals("GetPlanDevices")) {
 						if (data["result"]!=null) {
 							Log("Getting the devices");
 							deviceItems={};
 			            	for (var i=0;i<data["result"].size();i++) {
-								Log("Adding "+data["result"][i]["Name"]+"with index "+data["result"][i]["idx"]+" on index "+i);
+								Log("Adding "+data["result"][i]["Name"]+" with index "+data["result"][i]["idx"]+" on index "+i);
 								var mi=new WatchUi.MenuItem(data["result"][i]["Name"],WatchUi.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING),data["result"][i]["idx"],{});
 								deviceItems.put(data["result"][i]["idx"],mi);
 								/*
@@ -210,18 +241,21 @@ class Domoticz {
 			       					DevicesType[i]=SCENE; // can be scene or group, but this will be corrected when the def devices is loaded
 		   						}*/	
 		        			}
+							_devicescallback.invoke(null);
+						} else {
+							_devicescallback.invoke(WatchUi.loadResource(Rez.Strings.STATUS_ROOM_HAS_NO_DEVICES));
 						}
-                    }else {
-						_roomscallback.invoke("unknown domoticz response");
+                    } else {
+						_devicescallback.invoke(WatchUi.loadResource(Rez.Strings.STATUS_UNKNOWN_HTTP_RESPONSE));
 					}
                 }else {
-					_roomscallback.invoke("Domoticz Error");
+					_devicescallback.invoke(WatchUi.loadResource(Rez.Strings.STATUS_DOMOTICZ_ERROR));
 				} 
             }else {
-				_roomscallback.invoke("Invalid domoticz response");
+				_devicescallback.invoke(WatchUi.loadResource(Rez.Strings.STATUS_UNKNOWN_HTTP_RESPONSE));
 			}
        }else {
-			_roomscallback.invoke("HTTP Error "+responseCode);
+			_devicescallback.invoke("HTTP Error "+responseCode);
 	   }
     }   
 }
