@@ -253,6 +253,10 @@ class Domoticz {
 			}
 	   }
     }    
+
+	function onIconMenuItemDraw(idx) {
+		Log("OnIconMenuItemDraw was called for "+idx);
+	}
 	
 	function onReceiveDevices(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
    		Log("onReceive responseCode="+responseCode+" data="+data);
@@ -278,7 +282,7 @@ class Domoticz {
 								var mi=new DomoticzIconMenuItem(data["result"][i]["Name"],
 														WatchUi.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING),
 														data["result"][i]["idx"],
-														new DomoticzIcon(data["result"][i]["idx"]),
+														new DomoticzIcon(data["result"][i]["idx"],method(:onIconMenuItemDraw)),
 														{},
 														devicetype);
 								// add to menu

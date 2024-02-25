@@ -9,7 +9,7 @@ class DomoticzIconMenuItem extends Toybox.WatchUi.IconMenuItem {
 
     public var _devicetype;
     private var _icon;
-
+ 
     public function initialize(label as Lang.String or Lang.Symbol, 
                             subLabel as Lang.String or Lang.Symbol or Null, 
                             identifier, 
@@ -44,12 +44,14 @@ class DomoticzIcon extends WatchUi.Drawable {
 
 
     private var _DeviceIdx;
+    private var _callback;
 
     //! Constructor
-    public function initialize(DeviceIdx) {
+    public function initialize(DeviceIdx,callback) {
         Drawable.initialize({});
         _DeviceIdx=DeviceIdx;
         _index = 0;
+        _callback=callback;
     }
 
     //! Advance to the next color state for the drawable
@@ -73,6 +75,9 @@ class DomoticzIcon extends WatchUi.Drawable {
     //! the drawable area with that color
     //! @param dc Device Context
     public function draw(dc as Dc) as Void {
+        if (_callback!=null) {
+            _callback.invoke(_DeviceIdx);
+        }
         var color = _colors[_index];
         dc.setColor(color, color);
         dc.clear();
