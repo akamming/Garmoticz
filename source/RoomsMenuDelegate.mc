@@ -11,7 +11,6 @@ class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
     
   	function onSelect(item) {
   		currentid=item.getId();
-        Log("Item is "+currentid);
         _dz.roomItems[currentid].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_LOADING_DEVICES));
         WatchUi.requestUpdate();
         _dz.populateDevices(method(:onDevicesPopulated),currentid);
@@ -22,7 +21,6 @@ class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
         var ks=_dz.deviceItems.keys();
         for (var i=0;i<_dz.deviceItems.size();i++){
             var key=ks[i];
-            Log("Key is "+key);
             menu.addItem(_dz.deviceItems[key]);
         }
         WatchUi.pushView(menu, new DevicesMenuDelegate(_dz), WatchUi.SLIDE_IMMEDIATE);
@@ -31,7 +29,6 @@ class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
 
     function onDevicesPopulated(status)
     {
-        Log("ondevicespopulated was called with status "+status);
         if (status==null) {
             //all ok, start devices menu
             startDevicesMenu();

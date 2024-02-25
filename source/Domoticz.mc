@@ -228,7 +228,6 @@ class Domoticz {
                             Log("Getting the rooms");
 							roomItems={};
 							for (var i=0;i<data["result"].size();i++) {
-								Log("Adding "+data["result"][i]["Name"]+" with index "+data["result"][i]["idx"]+" on index "+i);
 								roomItems.put(data["result"][i]["idx"], new WatchUi.MenuItem(data["result"][i]["Name"], null, data["result"][i]["idx"],{}));
 							}
                             _roomscallback.invoke(null);

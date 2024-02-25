@@ -54,7 +54,6 @@ class InitialView extends Ui.View {
         var ks=dz.roomItems.keys();
         for (var i=0;i<dz.roomItems.size();i++){
             var key=ks[i];
-            Log("Key is "+key);
             menu.addItem(dz.roomItems[key]);
         }
         WatchUi.pushView(menu, new RoomsMenuDelegate(dz), WatchUi.SLIDE_IMMEDIATE);

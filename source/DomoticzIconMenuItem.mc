@@ -77,7 +77,7 @@ class DomoticzIcon extends WatchUi.Drawable {
         dc.setColor(color, color);
         dc.clear();
         var image = WatchUi.loadResource( Rez.Drawables.Domoticz_Logo);
-        dc.drawBitmap(dc.getWidth()/2-30,2,image);
+        dc.drawBitmap(dc.getWidth()/2-30,dc.getHeight()/2-30,image);
 
         // dc.setColor(Graphics.COLOR_BLACK,Graphics.COLOR_TRANSPARENT);
         // dc.drawText(0,0, Graphics.FONT_MEDIUM, dc.getWidth()+"\n"+dc.getHeight(), Graphics.TEXT_JUSTIFY_LEFT);
