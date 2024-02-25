@@ -33,6 +33,25 @@ class Domoticz {
 	var _roomscallback;
 	var _devicescallback;
 
+	const ConnectionErrorMessages = {
+		-1001 => Rez.Strings.ERROR_HANDSET_REQUIRES_HTTPS,
+
+		-403 => Rez.Strings.ERROR_TOO_MUCH_DATA,
+		-402 => Rez.Strings.ERROR_TOO_MUCH_DATA,
+
+		-401 => Rez.Strings.ERROR_INVALID_CONNECTION_SETTING ,
+		404 => Rez.Strings.ERROR_INVALID_CONNECTION_SETTING,
+
+		-400 => Rez.Strings.ERROR_INVALID_RESPONSE,
+
+		-300 => Rez.Strings.ERROR_NETWORK_TIMEOUT,
+
+		-104 => Rez.Strings.ERROR_BLE_CONNECTION_UNAVAILABLE,
+
+		-3 => Rez.Strings.ERROR_BLE_TIMEOUT,
+		-2 => Rez.Strings.ERROR_BLE_TIMEOUT
+	};
+
     public function initialize()
     {
         // put init code here
@@ -196,19 +215,25 @@ class Domoticz {
 							}
                             _roomscallback.invoke(null);
                         } else {
-							_roomscallback.invoke("invalid domoticz response");
+							_roomscallback.invoke(WatchUi.loadResource(Rez.Strings.STATUS_ROOM_HAS_NO_DEVICES));
 						}
                     }else {
-						_roomscallback.invoke("unknown domoticz response");
+						_roomscallback.invoke(WatchUi.loadResource(Rez.Strings.ERROR_INVALID_RESPONSE));
 					}
                 }else {
-					_roomscallback.invoke("Domoticz Error");
+					_roomscallback.invoke(WatchUi.loadResource(Rez.Strings.STATUS_DOMOTICZ_ERROR));
 				} 
             }else {
-				_roomscallback.invoke("Invalid domoticz response");
+				_roomscallback.invoke(WatchUi.loadResource(Rez.Strings.ERROR_INVALID_RESPONSE));
 			}
        }else {
-			_roomscallback.invoke("HTTP Error "+responseCode);
+			if (ConnectionErrorMessages[responseCode]==null) 
+			{
+				// assume general error
+				_roomscallback.invoke(WatchUi.loadResource(Rez.Strings.ERROR_GENERAL_CONNECTION_ERROR)+" "+responseCode);
+			} else {
+				_roomscallback.invoke(WatchUi.loadResource(ConnectionErrorMessages[responseCode]));
+			}
 	   }
     }    
 	
@@ -255,7 +280,13 @@ class Domoticz {
 				_devicescallback.invoke(WatchUi.loadResource(Rez.Strings.STATUS_UNKNOWN_HTTP_RESPONSE));
 			}
        }else {
-			_devicescallback.invoke("HTTP Error "+responseCode);
+			if (ConnectionErrorMessages[responseCode]==null) 
+			{
+				// assume general error
+				_devicescallback.invoke(WatchUi.loadResource(Rez.Strings.ERROR_GENERAL_CONNECTION_ERROR)+" "+responseCode);
+			} else {
+				_devicescallback.invoke(WatchUi.loadResource(ConnectionErrorMessages[responseCode]));
+			}
 	   }
     }   
 }
