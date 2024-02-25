@@ -46,10 +46,12 @@ enum {
 // define functions for debugging on console which is not executed in release version
 
 class Domoticz {
-    var roomItems = {};  // will contain the objects with the menu items of the rooms
-    var deviceItems = {};  // will contain the objects with the menu items of the devices
-	var _roomscallback;
-	var _devicescallback;
+    public var roomItems = {};  // will contain the objects with the menu items of the rooms
+    public var deviceItems = {};  // will contain the objects with the menu items of the devices
+	private var _roomscallback;
+	private var _devicescallback;
+
+	
 
 	const ConnectionErrorMessages = {
 		-1001 => Rez.Strings.ERROR_HANDSET_REQUIRES_HTTPS,
@@ -282,11 +284,12 @@ class Domoticz {
 								var mi=new DomoticzIconMenuItem(data["result"][i]["Name"],
 														WatchUi.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING),
 														data["result"][i]["idx"],
-														new DomoticzIcon(data["result"][i]["idx"],method(:onIconMenuItemDraw)),
+														new DomoticzIcon(data["result"][i]["idx"]),
 														{},
 														devicetype);
 								// add to menu
 								deviceItems.put(data["result"][i]["idx"],mi);
+								
 		        			}
 							_devicescallback.invoke(null);
 						} else {
