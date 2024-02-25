@@ -17,13 +17,27 @@ class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
         _dz.populateDevices(method(:onDevicesPopulated),currentid);
 	}
 
+    function startDevicesMenu() {
+        var menu = new WatchUi.Menu2({:title=>new MenuTitleDrawable("Devices")});
+        var ks=_dz.deviceItems.keys();
+        for (var i=0;i<_dz.deviceItems.size();i++){
+            var key=ks[i];
+            Log("Key is "+key);
+            menu.addItem(_dz.deviceItems[key]);
+        }
+        WatchUi.pushView(menu, new DevicesMenuDelegate(_dz), WatchUi.SLIDE_IMMEDIATE);
+    }
+
+
     function onDevicesPopulated(status)
     {
         Log("ondevicespopulated was called with status "+status);
         if (status==null) {
             //all ok, start devices menu
-            // startRoomsMenu();
-            _dz.roomItems[currentid].setSubLabel("Loaded");
+            startDevicesMenu();
+
+            // remove loading message for room
+            _dz.roomItems[currentid].setSubLabel(null);
             WatchUi.requestUpdate();
         } else {
             // show error
