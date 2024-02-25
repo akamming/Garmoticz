@@ -86,7 +86,7 @@ class Domoticz {
 	public function populateDevices(callbackhandler, currentRoom) {
 		Log("Currentroom is "+currentRoom);
 		_devicescallback=callbackhandler;
-		makeWebRequest(GETDEVICES,currentRoom,method(:onReceiveDevices));
+		makeWebRequest(GETDEVICES,currentRoom,method(:onReceiveAllDevices));
 	}
 
 	function getUrl() {
@@ -266,8 +266,87 @@ class Domoticz {
 	function onIconMenuItemDraw(idx) {
 		Log("OnIconMenuItemDraw was called for "+idx);
 	}
+
+	function getDeviceType(data) {
+		var DeviceType=DEVICE;
+		Log("data is "+ data);
+
+		if (data["Type"].equals("Group")) {
+			// it is a group
+			DeviceType=GROUP;
+		} else if (data["Type"].equals("Scene")) {
+			// it is a scene
+			DeviceType=SCENE;
+		} else {
+			// it is a device
+			if (data["SwitchType"]!=null) { // it is a switch
+				// Set switchtype and correct data if needed
+				if (data["SwitchType"].equals("On/Off")) { // switch can be controlled by user
+					DevicesType=ONOFF;
+				} else if (data["SwitchType"].equals("Selector")) {
+					DevicesType=SELECTOR;
+				} else if (["SwitchType"].equals("Dimmer")) {
+					DevicesType=DIMMER;
+				} else if (["SwitchType"].equals("Blinds Inverted")) {
+					DevicesType=INVERTEDBLINDS;
+				} else if (["SwitchType"].equals("Venetian Blinds US") or data["SwitchType"].equals("Venetian Blinds EU") or ["SwitchType"].equals("Blinds")) { // blinds
+					DevicesType=VENBLIND;
+				} else if (["SwitchType"].equals("Push On Button")) { // PushOnButton
+					DevicesType=PUSHON;
+				} else if (["SwitchType"].equals("Push Off Button")) { // PushOffButton
+					DevicesType=PUSHOFF;
+				} else if (["SubType"].equals("SetPoint")) {
+					DevicesType=SETPOINT;
+				} else {
+					// We didn't recognize the device type, so set as general unswitchable device
+					DevicesType=DEVICE;
+				}
+			} else {
+				DeviceType=DEVICE;
+			}
+		}
+		return DeviceType;
+	}
+
+	function getDeviceData(data,devicetype) {
+		var DeviceData;
+
+		// set datafield
+		if (devicetype==PUSHOFF) {
+			DeviceData=WatchUi.loadResource(Rez.Strings.PUSHOFF);
+		} else if (devicetype==PUSHON) {
+			DeviceData=WatchUi.loadResource(Rez.Strings.PUSHON);
+		} else if (devicetype==SELECTOR) {
+			DeviceData="Selector "+data["result"][0]["Data"];
+			// updateLevels(data["result"][0]["LevelNames"]);
+			// Log(Levels);
+			// DeviceData=Levels[data["result"][0]["LevelInt"]];
+		} else if (data["Data"].equals("On")) {
+			// switch is on
+			DeviceData=WatchUi.loadResource(Rez.Strings.ON);
+		} else if (data["Data"].equals("Off")) {
+			// switch is off
+			DeviceData=WatchUi.loadResource(Rez.Strings.OFF);
+		} else if (data["Data"].equals("Open")) {
+			// switch is on
+			DeviceData=WatchUi.loadResource(Rez.Strings.OPEN);
+		} else if (data["Data"].equals("Closed")) {
+			// switch is off
+			DeviceData=WatchUi.loadResource(Rez.Strings.CLOSED);
+		} else if (data["Data"].equals("Stopped")) {
+			// switch is off
+			DeviceData=WatchUi.loadResource(Rez.Strings.STOPPED);
+		} else if (data["Data"].substring(0,9).equals("Set Level")) {
+			// Log("Dimmer Level");
+			// dimmer level
+			DeviceData=data["Data"].substring(10,16);
+		} else {
+			DeviceData=data["Data"];
+		}
+		return DeviceData;
+	}
 	
-	function onReceiveDevices(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
+	function onReceiveAllDevices(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
    		Log("onReceive responseCode="+responseCode+" data="+data);
        // Check responsecode
        if (responseCode==200)
@@ -278,15 +357,19 @@ class Domoticz {
 				if (data["status"].equals("OK")) {
 					if (data["title"].equals("GetPlanDevices")) {
 						if (data["result"]!=null) {
+							Log("Hallo hallo");
 							deviceItems={};
 			            	for (var i=0;i<data["result"].size();i++) {
 								// Determine if it's a scene
-								var devicetype;
+								/* var devicetype;
 			            		if (data["result"][i]["type"]==0) {
 		       						devicetype=DEVICE;
 		            			} else {
 									devicetype=SCENE; // can be scene or group, but this will be corrected when the def devices is loaded
-		   						}
+		   						}*/
+								var devicetype=getDeviceType(data["result"][i]);
+								var devicedata=getDeviceData(data["result"][i],devicetype);
+								Log(data["result"][i]["Name"]+" is a "+devicetype);
 								// create the menuitem
 								var mi=new DomoticzIconMenuItem(data["result"][i]["Name"],
 														WatchUi.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING),
@@ -295,8 +378,7 @@ class Domoticz {
 														{},
 														devicetype);
 								// add to menu
-								deviceItems.put(data["result"][i]["idx"],mi);
-								
+								deviceItems.put(data["result"][i]["idx"],mi);						
 		        			}
 							_devicescallback.invoke(null);
 						} else {
@@ -307,15 +389,12 @@ class Domoticz {
 							deviceItems={};
 			            	for (var i=0;i<data["result"].size();i++) {
 								// Determine if it's a scene
-								var devicetype;
-			            		if (data["result"][i]["type"]=="Group") {
-		       						devicetype=SCENE;
-		            			} else {
-									devicetype=DEVICE; // can be scene or group, but this will be corrected when the def devices is loaded
-		   						}
+								var devicetype=getDeviceType(data["result"][i]);
+								var devicedata=getDeviceData(data["result"][i],devicetype);
+
 								// create the menuitem
 								var mi=new DomoticzIconMenuItem(data["result"][i]["Name"],
-														data["result"][i]["Data"],
+														devicedata,
 														data["result"][i]["idx"],
 														new DomoticzIcon(data["result"][i]["idx"]),
 														{},
