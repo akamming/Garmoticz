@@ -93,11 +93,14 @@ class InitialView extends Ui.View {
             dc.setColor(Gfx.COLOR_BLACK,Gfx.COLOR_BLACK);
             dc.clear();
             dc.setColor(Gfx.COLOR_BLUE,Gfx.COLOR_TRANSPARENT);
-            if(!fromGlance) {
-                dc.drawText(width/2,height/2,Gfx.FONT_SMALL,_status,Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
+            var dimensions=dc.getTextDimensions(_status, Gfx.FONT_SMALL);
+            var font;
+            if (dimensions[0]>dc.getWidth()) {
+                font=Gfx.FONT_XTINY;
             } else {
-                dc.drawText(width/2,height/2,Gfx.FONT_SMALL,_status,Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
+                font=Gfx.FONT_SMALL;
             }
+            dc.drawText(width/2,height/2,font,_status,Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
         }
 	}
 }

@@ -51,7 +51,7 @@ class Domoticz {
 	private var _roomscallback;
 	private var _devicescallback;
 
-	
+
 
 	const ConnectionErrorMessages = {
 		-1001 => Rez.Strings.ERROR_HANDSET_REQUIRES_HTTPS,
@@ -225,7 +225,7 @@ class Domoticz {
            	// ShowError=false;
            	if (data instanceof Dictionary) {
 				if (data["status"].equals("OK")) {
-	            	if (data["title"].equals("getplans")) {
+	            	if (data["title"].equals("getplansa")) {
 						if (data["result"]!=null) {
                             Log("Getting the rooms");
 							roomItems={};
