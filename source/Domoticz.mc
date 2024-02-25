@@ -6,7 +6,23 @@ using Toybox.System as Sys;
 using Toybox.WatchUi;
 
 
-// global vas which can be used by all classes
+// global vars which can be used by all classes
+
+
+// DeviceTypes
+enum {
+	ONOFF,
+	INVERTEDBLINDS,
+	VENBLIND,
+	PUSHON,
+	PUSHOFF,
+	GROUP,
+	SCENE,
+	DEVICE,
+	SETPOINT,
+	DIMMER,
+	SELECTOR
+}
 
 
 // commands for getwebrequest
@@ -24,6 +40,8 @@ enum {
 	SWITCHONGROUP,
 	SWITCHOFFGROUP
 }
+
+
 
 // define functions for debugging on console which is not executed in release version
 
@@ -248,23 +266,24 @@ class Domoticz {
 				if (data["status"].equals("OK")) {
 					if (data["title"].equals("GetPlanDevices")) {
 						if (data["result"]!=null) {
-							Log("Getting the devices");
 							deviceItems={};
 			            	for (var i=0;i<data["result"].size();i++) {
-								Log("Adding "+data["result"][i]["Name"]+" with index "+data["result"][i]["idx"]+" on index "+i);
-								var mi=new WatchUi.MenuItem(data["result"][i]["Name"],WatchUi.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING),data["result"][i]["idx"],{});
-								deviceItems.put(data["result"][i]["idx"],mi);
-								/*
-			            		// Check if it is a device or a scene
-	       						DevicesIdx[i]=data["result"][i]["devidx"];
-	       						DevicesData[i]=Ui.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING);
+								// Determine if it's a scene
+								var devicetype;
 			            		if (data["result"][i]["type"]==0) {
-		       						DevicesName[i]=data["result"][i]["Name"];
-		       						DevicesType[i]=DEVICE;
+		       						devicetype=DEVICE;
 		            			} else {
-		       						DevicesName[i]=data["result"][i]["Name"].substring(8,data["result"][i]["Name"].length());
-			       					DevicesType[i]=SCENE; // can be scene or group, but this will be corrected when the def devices is loaded
-		   						}*/	
+									devicetype=SCENE; // can be scene or group, but this will be corrected when the def devices is loaded
+		   						}
+								// create the menuitem
+								var mi=new DomoticzIconMenuItem(data["result"][i]["Name"],
+														WatchUi.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING),
+														data["result"][i]["idx"],
+														new DomoticzIcon(data["result"][i]["idx"]),
+														{},
+														devicetype);
+								// add to menu
+								deviceItems.put(data["result"][i]["idx"],mi);
 		        			}
 							_devicescallback.invoke(null);
 						} else {

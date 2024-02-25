@@ -28,25 +28,6 @@ var dimmerlevel;
 var MenuType;
 var monkeyVersion;
 
-
-// DeviceTypes
-enum {
-	ONOFF,
-	INVERTEDBLINDS,
-	VENBLIND,
-	PUSHON,
-	PUSHOFF,
-	GROUP,
-	SCENE,
-	DEVICE,
-	SETPOINT,
-	DIMMER,
-	SELECTOR
-}
-
-
-
-
 const BACKMENUITEM = 10000;
 const OPENMENUITEM=10001 ;
 const CLOSEMENUITEM=10002 ;
