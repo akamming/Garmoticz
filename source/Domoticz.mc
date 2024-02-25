@@ -225,7 +225,7 @@ class Domoticz {
            	// ShowError=false;
            	if (data instanceof Dictionary) {
 				if (data["status"].equals("OK")) {
-	            	if (data["title"].equals("getplansa")) {
+	            	if (data["title"].equals("getplans")) {
 						if (data["result"]!=null) {
                             Log("Getting the rooms");
 							roomItems={};
