@@ -17,10 +17,20 @@ class InitialViewDelegate extends Ui.BehaviorDelegate {
     }
       
     function onMenu() {
-		Log("onMenu called, getting rooms");
 		_mview.getrooms();
     	return true;
     }
+
+	function onTap(clickEvent) {
+		_mview.getrooms();
+    	return true;
+    }
+
+	function onSelect() {
+		_mview.getrooms();
+    	return true;
+    }
+
 
 }
 

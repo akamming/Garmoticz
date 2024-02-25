@@ -28,10 +28,10 @@ enum {
 // define functions for debugging on console which is not executed in release version
 
 class Domoticz {
-    var _roomscallback;
-	var _devicescallback;
     var roomItems = {};  // will contain the objects with the menu items of the rooms
     var deviceItems = {};  // will contain the objects with the menu items of the devices
+	var _roomscallback;
+	var _devicescallback;
 
     public function initialize()
     {
@@ -50,14 +50,9 @@ class Domoticz {
 		makeWebRequest(GETDEVICES,currentRoom);
 	}
 
-    function makeWebRequest(action,idx) {
-		// initialize vars
+	function getUrl() {
 		var url;
 		var Domoticz_Protocol;
-		var params = {};
-		var options = {};
-
-		Log("idx = "+idx);
 
 		if (App.getApp().getProperty("PROP_PROTOCOL")==0) {
 			Domoticz_Protocol="http";
@@ -70,6 +65,16 @@ class Domoticz {
 			url += App.getApp().getProperty("PROP_PATH");
 		}
 		url += "/json.htm";
+		return url;
+	}
+
+    function makeWebRequest(action,idx) {
+		// initialize vars
+		var params = {};
+		var options = {};
+		var url=getUrl();
+
+		Log("idx = "+idx);
 
 		if (App.getApp().getProperty("PROP_USERNAME").length()==0) {
 			params={};
@@ -185,7 +190,7 @@ class Domoticz {
                         } else {
 							_roomscallback.invoke("invalid domoticz response");
 						}
-					} else if (data["title"].equals("getdevices")) {
+					} else if (data["title"].equals("GetPlanDevices")) {
 						if (data["result"]!=null) {
 							Log("Getting the devices");
 							deviceItems={};

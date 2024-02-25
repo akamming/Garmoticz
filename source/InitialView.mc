@@ -9,11 +9,13 @@ class InitialView extends Ui.View {
     var dz=new Domoticz();
 	
     function initialize() {
-        if (fromGlance) {
-            _status="Hit Back to Exit";
+        // set correct message
+        var mySettings=System.getDeviceSettings();
+        if (mySettings.isTouchScreen) {
+            _status=Ui.loadResource(Rez.Strings.STATUS_TAP_SCREEN);
         } else {
-            _status="Hit Menu for Menu\nBack to Exit";
-        }
+            _status=Ui.loadResource(Rez.Strings.STATUS_PRESS_ENTER);
+        }	
 
        View.initialize();
 	}
@@ -24,6 +26,7 @@ class InitialView extends Ui.View {
 
     public function getrooms() {
         _status="Retreiving rooms";
+        Ui.requestUpdate();
         dz.populateRooms(method(:onRoomsPopulated));
     }
 	
@@ -48,9 +51,6 @@ class InitialView extends Ui.View {
 
     public function startRoomsMenu() {
         var menu = new WatchUi.Menu2({:title=>new MenuTitleDrawable("Rooms")});
-        /* for (var i=0;i<dz.roomItems.size();i++){
-            menu.addItem(dz.roomItems[i]);
-        } */
         var ks=dz.roomItems.keys();
         for (var i=0;i<dz.roomItems.size();i++){
             var key=ks[i];
@@ -62,13 +62,21 @@ class InitialView extends Ui.View {
 
     function onRoomsPopulated(status)
     {
-        _status=status;
         Log("Callback was called with status "+status);
         if (status==null) {
+            //all ok, start rooms menu
             startRoomsMenu();
-            _status="OK";
+
+            // when back from rooms menu: reset message on screen to start message 
+    		var mySettings=System.getDeviceSettings();
+            if (mySettings.isTouchScreen) {
+                _status=Ui.loadResource(Rez.Strings.STATUS_TAP_SCREEN);
+            } else {
+                _status=Ui.loadResource(Rez.Strings.STATUS_PRESS_ENTER);
+            }	
+            Ui.requestUpdate();
         } else {
-            Log("Callback was called with status "+status);
+            // show error
             _status=status;
             WatchUi.requestUpdate();
         }
