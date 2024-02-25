@@ -151,9 +151,16 @@ class Domoticz {
 
     	// populate parameters;
     	if (action==GETDEVICES) {
+			/* 
 	    	params.put("type","command");
 	    	params.put("param","getplandevices");
-	    	params.put("idx",idx);
+	    	params.put("idx",idx); */
+			params.put("type","command");
+	    	params.put("param","getdevices");
+	    	params.put("filter","all");
+			params.put("used","true");
+			params.put("favorite",0);
+			params.put("plan",idx);
     	}	else if (action==GETDEVICESTATUS) {
     		params.put("type","devices");
     		params.put("rid",DevicesIdx[devicecursor]);
@@ -290,6 +297,31 @@ class Domoticz {
 								// add to menu
 								deviceItems.put(data["result"][i]["idx"],mi);
 								
+		        			}
+							_devicescallback.invoke(null);
+						} else {
+							_devicescallback.invoke(WatchUi.loadResource(Rez.Strings.STATUS_ROOM_HAS_NO_DEVICES));
+						}
+					} else if (data["title"].equals("Devices")) { // Long answer 
+						if (data["result"]!=null) {
+							deviceItems={};
+			            	for (var i=0;i<data["result"].size();i++) {
+								// Determine if it's a scene
+								var devicetype;
+			            		if (data["result"][i]["type"]=="Group") {
+		       						devicetype=SCENE;
+		            			} else {
+									devicetype=DEVICE; // can be scene or group, but this will be corrected when the def devices is loaded
+		   						}
+								// create the menuitem
+								var mi=new DomoticzIconMenuItem(data["result"][i]["Name"],
+														data["result"][i]["Data"],
+														data["result"][i]["idx"],
+														new DomoticzIcon(data["result"][i]["idx"]),
+														{},
+														devicetype);
+								// add to menu
+								deviceItems.put(data["result"][i]["idx"],mi);
 		        			}
 							_devicescallback.invoke(null);
 						} else {

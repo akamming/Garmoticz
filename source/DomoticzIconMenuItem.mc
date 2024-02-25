@@ -74,12 +74,12 @@ class DomoticzIcon extends WatchUi.Drawable {
     //! @param dc Device Context
     public function draw(dc as Dc) as Void {
         var color = _colors[_index];
-        // dc.setColor(color, color);
-        // dc.clear();
+        dc.setColor(color, color);
+        dc.clear();
         // var image = WatchUi.loadResource( Rez.Drawables.Domoticz_Logo);
         // dc.drawBitmap(dc.getWidth()/2-30,dc.getHeight()/2-30,image);
 
-        dc.setColor(Graphics.COLOR_WHITE,Graphics.COLOR_TRANSPARENT);
-        dc.drawText(0,0, Graphics.FONT_MEDIUM, dc.getWidth()+"\n"+dc.getHeight(), Graphics.TEXT_JUSTIFY_LEFT);
+        // dc.setColor(Graphics.COLOR_WHITE,Graphics.COLOR_TRANSPARENT);
+        // dc.drawText(0,0, Graphics.FONT_MEDIUM, dc.getWidth()+"\n"+dc.getHeight(), Graphics.TEXT_JUSTIFY_LEFT);
     }
 }
