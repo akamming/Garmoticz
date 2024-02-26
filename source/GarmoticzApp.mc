@@ -63,28 +63,6 @@ class GarmoticzApp extends Application.AppBase {
             Log("Device has glance capability");
         	fromGlance=sSettings.isGlanceModeEnabled;
         }
-        fromGlance=false;
-        // for debugging purposes
-        if (fromGlance) {
-            Log("FromGlance=true"); 
-        } else {
-            Log("FromGlance=false");
-        }
-
-        /* if (fromGlance) {
-            // Old
-            Log("Started from Glance");
-            mView = new GarmoticzView();
-            return [mView, new GarmoticzViewDelegate(mView.method(:HandleCommand))];
-        } else {
-            // New
-            Log("Started without Glance");
-            mView = new InitialView();
-            return [mView, new InitialViewDelegate()];
-        }*/
-        // mView = new InitialView();
-        // return [mView, new InitialViewDelegate()];
-        //use this if you want to allow returning to the menu
         var mview=new InitialView();
         return [mview,new InitialViewDelegate(mview)];
     }

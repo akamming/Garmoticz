@@ -269,8 +269,6 @@ class Domoticz {
 
 	function getDeviceType(data) {
 		var DeviceType=DEVICE;
-		Log("data is "+ data);
-
 		if (data["Type"].equals("Group")) {
 			// it is a group
 			DeviceType=GROUP;

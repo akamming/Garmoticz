@@ -31,21 +31,9 @@ class InitialView extends Ui.View {
     }
 	
 	function onShow() {
-        if (shown) {
-            Log("Shown=true"); 
-        } else {
-            Log("Shown=false");
-        }
-        if (fromGlance) {
-            Log("fromGlance=true"); 
-        } else {
-            Log("fromGlance=false");
-        }
 		if(!shown && fromGlance) {
             getrooms();
 	 		shown=true;			
-		} else {
-            Log("Not starting menu");
         }
 	}
 

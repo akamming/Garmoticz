@@ -135,7 +135,6 @@ class GarmoticzGlanceView extends Ui.GlanceView {
   }
 
   function onUpdate(dc) {
-      Log("Onupdate called");
       dc.setColor(Graphics.COLOR_WHITE,Graphics.COLOR_TRANSPARENT);
       var Text="Domoticz";
       dc.drawText(0, 
