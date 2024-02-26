@@ -50,6 +50,7 @@ class Domoticz {
     public var deviceItems = {};  // will contain the objects with the menu items of the devices
 	private var _roomscallback;
 	private var _devicescallback;
+	private var currentDevice;
 
 
 
@@ -84,9 +85,25 @@ class Domoticz {
     }
 
 	public function populateDevices(callbackhandler, currentRoom) {
-		Log("Currentroom is "+currentRoom);
 		_devicescallback=callbackhandler;
 		makeWebRequest(GETDEVICES,currentRoom,method(:onReceiveAllDevices));
+	}
+
+	public function switchOnOffDevice(index, state) {
+		// function to switch device. state = true means "on", false means "off"
+
+		// remember device
+		currentDevice=index;
+		if (state) {
+			// we have to switch on
+			deviceItems[index].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_SWITCHING_ON));
+			WatchUi.requestUpdate();
+			makeWebRequest(SENDONCOMMAND,index,method(:onReceive));
+		} else {
+			deviceItems[index].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_SWITCHING_OFF));
+			WatchUi.requestUpdate();
+		    makeWebRequest(SENDOFFCOMMAND,index,method(:onReceive)); 
+		}
 	}
 
 	function getUrl() {
@@ -226,6 +243,38 @@ class Domoticz {
 		 callUrl(url,options,params,callback);
 	}
 
+	function onReceive(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
+   		Log("onReceive responseCode="+responseCode+" data="+data);
+       // Check responsecode
+       if (responseCode==200) {
+       		// Make sure no error is shown
+           	// ShowError=false;
+           	if (data instanceof Dictionary) {
+				if (data["status"].equals("OK")) {
+	            	if (data["title"].equals("SwitchLight")) {
+						// a scene, group of light was switched. Update the device status
+			           	deviceItems[currentDevice].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_COMMAND_EXECUTED_OK));
+                    } else {
+						deviceItems[currentDevice].setSubLabel(WatchUi.loadResource(Rez.Strings.ERROR_INVALID_RESPONSE));
+					}
+        	    } else {
+					deviceItems[currentDevice].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_DOMOTICZ_ERROR));
+				} 
+            } else {
+				deviceItems[currentDevice].setSubLabel(WatchUi.loadResource(Rez.Strings.ERROR_INVALID_RESPONSE));
+			}
+       } else {
+			if (ConnectionErrorMessages[responseCode]==null) 
+			{
+				// assume general error
+				deviceItems[currentDevice].setSubLabel(WatchUi.loadResource(Rez.Strings.ERROR_GENERAL_CONNECTION_ERROR)+" "+responseCode);
+			} else {
+				deviceItems[currentDevice].setSubLabel(WatchUi.loadResource(ConnectionErrorMessages[responseCode]));
+			}
+	   }
+	   WatchUi.requestUpdate();
+	}
+
     function onReceiveRooms(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
    		Log("onReceive responseCode="+responseCode+" data="+data);
        // Check responsecode
@@ -253,7 +302,7 @@ class Domoticz {
             }else {
 				_roomscallback.invoke(WatchUi.loadResource(Rez.Strings.ERROR_INVALID_RESPONSE));
 			}
-       }else {
+       } else {
 			if (ConnectionErrorMessages[responseCode]==null) 
 			{
 				// assume general error

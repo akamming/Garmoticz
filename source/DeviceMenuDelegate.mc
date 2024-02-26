@@ -14,12 +14,16 @@ class DevicesMenuDelegate extends WatchUi.Menu2InputDelegate {
             var devicetype=item.getDeviceType();
             if (devicetype==ONOFF) {
                 if (item.getSubLabel().equals(WatchUi.loadResource(Rez.Strings.ON))) {
+                    // switch off
                     item.setEnabled(false);
-                    item.setSubLabel(WatchUi.loadResource(Rez.Strings.OFF));
+                    item.setSubLabel(WatchUi.loadResource(Rez.Strings.OFF)); 
+                    _dz.switchOnOffDevice(item.getId(),false);
                     WatchUi.requestUpdate();
                 } else {
-                    item.setSubLabel(WatchUi.loadResource(Rez.Strings.ON));
-                    item.setEnabled(true);
+                    // switch on
+                    item.setEnabled(true); 
+                    _dz.switchOnOffDevice(item.getId(),true);
+                    item.setSubLabel(WatchUi.loadResource(Rez.Strings.ON)); 
                     WatchUi.requestUpdate();
                 }
             }
