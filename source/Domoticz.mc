@@ -271,36 +271,48 @@ class Domoticz {
 		var DeviceType=DEVICE;
 		if (data["Type"].equals("Group")) {
 			// it is a group
+			Log(data["Name"]+" is a group");
 			DeviceType=GROUP;
 		} else if (data["Type"].equals("Scene")) {
 			// it is a scene
+			Log(data["Name"]+" is a scene");
 			DeviceType=SCENE;
 		} else {
 			// it is a device
 			if (data["SwitchType"]!=null) { // it is a switch
 				// Set switchtype and correct data if needed
 				if (data["SwitchType"].equals("On/Off")) { // switch can be controlled by user
-					DevicesType=ONOFF;
+					DeviceType=ONOFF;
+					Log(data["Name"]+" is a onoff");
 				} else if (data["SwitchType"].equals("Selector")) {
-					DevicesType=SELECTOR;
+					DeviceType=SELECTOR;
+					Log(data["Name"]+" is a selector");
 				} else if (["SwitchType"].equals("Dimmer")) {
-					DevicesType=DIMMER;
+					DeviceType=DIMMER;
+					Log(data["Name"]+" is a dimmer");
 				} else if (["SwitchType"].equals("Blinds Inverted")) {
-					DevicesType=INVERTEDBLINDS;
+					DeviceType=INVERTEDBLINDS;
+					Log(data["Name"]+" is a invertedblinds");
 				} else if (["SwitchType"].equals("Venetian Blinds US") or data["SwitchType"].equals("Venetian Blinds EU") or ["SwitchType"].equals("Blinds")) { // blinds
-					DevicesType=VENBLIND;
+					DeviceType=VENBLIND;
+					Log(data["Name"]+" is a venblind");
 				} else if (["SwitchType"].equals("Push On Button")) { // PushOnButton
-					DevicesType=PUSHON;
+					DeviceType=PUSHON;
+					Log(data["Name"]+" is a pushon");
 				} else if (["SwitchType"].equals("Push Off Button")) { // PushOffButton
-					DevicesType=PUSHOFF;
+					DeviceType=PUSHOFF;
+					Log(data["Name"]+" is a pushoff");
 				} else if (["SubType"].equals("SetPoint")) {
-					DevicesType=SETPOINT;
+					DeviceType=SETPOINT;
+					Log(data["Name"]+" is a setpoint");
 				} else {
 					// We didn't recognize the device type, so set as general unswitchable device
-					DevicesType=DEVICE;
+					DeviceType=DEVICE;
+					Log(data["Name"]+" is a  generic device");
 				}
 			} else {
 				DeviceType=DEVICE;
+				Log(data["Name"]+" is a device (skipped flow)");
 			}
 		}
 		return DeviceType;
@@ -315,7 +327,7 @@ class Domoticz {
 		} else if (devicetype==PUSHON) {
 			DeviceData=WatchUi.loadResource(Rez.Strings.PUSHON);
 		} else if (devicetype==SELECTOR) {
-			DeviceData="Selector "+data["result"][0]["Data"];
+			DeviceData="Selector "+data["Data"];
 			// updateLevels(data["result"][0]["LevelNames"]);
 			// Log(Levels);
 			// DeviceData=Levels[data["result"][0]["LevelInt"]];
@@ -355,22 +367,14 @@ class Domoticz {
 				if (data["status"].equals("OK")) {
 					if (data["title"].equals("GetPlanDevices")) {
 						if (data["result"]!=null) {
-							Log("Hallo hallo");
 							deviceItems={};
 			            	for (var i=0;i<data["result"].size();i++) {
-								// Determine if it's a scene
-								/* var devicetype;
-			            		if (data["result"][i]["type"]==0) {
-		       						devicetype=DEVICE;
-		            			} else {
-									devicetype=SCENE; // can be scene or group, but this will be corrected when the def devices is loaded
-		   						}*/
 								var devicetype=getDeviceType(data["result"][i]);
 								var devicedata=getDeviceData(data["result"][i],devicetype);
 								Log(data["result"][i]["Name"]+" is a "+devicetype);
 								// create the menuitem
 								var mi=new DomoticzIconMenuItem(data["result"][i]["Name"],
-														WatchUi.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING),
+														devicedata,
 														data["result"][i]["idx"],
 														new DomoticzIcon(data["result"][i]["idx"]),
 														{},
@@ -389,14 +393,38 @@ class Domoticz {
 								// Determine if it's a scene
 								var devicetype=getDeviceType(data["result"][i]);
 								var devicedata=getDeviceData(data["result"][i],devicetype);
+								Log(data["result"][i]);
 
 								// create the menuitem
-								var mi=new DomoticzIconMenuItem(data["result"][i]["Name"],
+								var mi;
+								if (devicetype==ONOFF){
+									Log("Creating toggle for "+data["result"][i]["Name"]); 
+									Log(data["result"][i]["Name"]+"=Onoff");
+									var enabled=false;
+									if (data["result"][i]["Status"].equals("On")) {
+										enabled=true;
+										Log("Enabled=true");
+									} else {
+										Log("Enabled=false");
+
+									}
+									mi=new DomoticzToggleMenuItem(data["result"][i]["Name"],
+														devicedata,
+														data["result"][i]["idx"],
+														enabled,
+														{:alignment => WatchUi.MenuItem.MENU_ITEM_LABEL_ALIGN_LEFT},
+														devicetype,
+														[]);
+								} else {
+									Log("Creating icon for "+data["result"][i]["name"]); 
+									Log(data["result"][i]["Name"]+"=Other");
+									mi=new DomoticzIconMenuItem(data["result"][i]["Name"],
 														devicedata,
 														data["result"][i]["idx"],
 														new DomoticzIcon(data["result"][i]["idx"]),
 														{},
 														devicetype);
+								}
 								// add to menu
 								deviceItems.put(data["result"][i]["idx"],mi);
 		        			}

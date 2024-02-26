@@ -2,12 +2,38 @@ import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
+class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
+    // basically normal togglemenu item, but can store DeviceType and selector states
+    private var _devicetype;
+    private var _states;
+
+    public function initialize(_label as Lang.String or Lang.Symbol, 
+                    _subLabel as Lang.String or Lang.Symbol or { :enabled as Lang.String or Lang.Symbol or Null, :disabled as Lang.String or Lang.Symbol or Null } or Null, 
+                    _identifier, 
+                    _enabled as Lang.Boolean, 
+                    _options as { :alignment as MenuItem.Alignment, :icon as Graphics.BitmapType or WatchUi.Drawable or Lang.Symbol } or Null,
+                    devicetype as Number,
+                    states as Array) {
+
+        // initialize the extra vars
+        _devicetype=devicetype;
+        _states=states; 
+        
+        // Call the parent
+        WatchUi.ToggleMenuItem.initialize(_label,_subLabel,_identifier,_enabled,_options);
+    }
+    
+    public function getDeviceType() as Number {
+        return _devicetype;
+    }
+}
+
 
 class DomoticzIconMenuItem extends Toybox.WatchUi.IconMenuItem {
 
     // Basically a normal iconmenuitem, but can store DeviceType;
 
-    public var _devicetype;
+    private var _devicetype;
     private var _icon;
  
     public function initialize(label as Lang.String or Lang.Symbol, 
@@ -28,6 +54,10 @@ class DomoticzIconMenuItem extends Toybox.WatchUi.IconMenuItem {
 
     public function setDeviceType (devicetype as Number) {
         _devicetype=devicetype;
+    }
+
+    public function getDeviceType() as Number {
+        return _devicetype;
     }
 }
 

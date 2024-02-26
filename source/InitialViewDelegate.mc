@@ -7,10 +7,6 @@ class InitialViewDelegate extends Ui.BehaviorDelegate {
 		_mview=mview;
         BehaviorDelegate.initialize();
     
-    	// Get device capabilities
-    	var mySettings=System.getDeviceSettings();
-    	isTouchScreen=mySettings.isTouchScreen;
-    
     	// normal initialisation
         WatchUi.BehaviorDelegate.initialize();
 
@@ -30,7 +26,5 @@ class InitialViewDelegate extends Ui.BehaviorDelegate {
 		_mview.getrooms();
     	return true;
     }
-
-
 }
 

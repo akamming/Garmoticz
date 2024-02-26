@@ -13,11 +13,16 @@ class MenuTitleDrawable extends Ui.Drawable {
 
     public function draw(dc as Dc) as Void {
         var image = Ui.loadResource( Rez.Drawables.Domoticz_Logo);
-        dc.setColor(Graphics.COLOR_WHITE,Graphics.COLOR_BLACK);
-        dc.clear();
-        dc.drawBitmap(dc.getWidth()/2-30,2,image);
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-		dc.drawText(dc.getWidth()/2,dc.getHeight()/2,Graphics.FONT_MEDIUM,_title,Graphics.TEXT_JUSTIFY_CENTER);
+        if (dc.getHeight()>90) {
+            dc.setColor(Graphics.COLOR_WHITE,Graphics.COLOR_BLACK);
+            dc.clear();
+            dc.drawBitmap(dc.getWidth()/2-30,2,image);
+            dc.drawText(dc.getWidth()/2,dc.getHeight()/2,Graphics.FONT_MEDIUM,_title,Graphics.TEXT_JUSTIFY_CENTER);
+        } else {
+            dc.setColor(Graphics.COLOR_WHITE,Graphics.COLOR_BLACK);
+            dc.clear();
+            dc.drawText(dc.getWidth()/2,dc.getHeight()/4,Graphics.FONT_MEDIUM,_title,Graphics.TEXT_JUSTIFY_CENTER);
+        }
 
     }
 }
