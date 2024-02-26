@@ -11,8 +11,6 @@ class DevicesMenuDelegate extends WatchUi.Menu2InputDelegate {
     
   	function onSelect(item) {
         if (item instanceof DomoticzToggleMenuItem) {
-            var isenable=item.isEnabled();
-            Log("isenabled is "+item.isEnabled());
             var devicetype=item.getDeviceType();
             if (devicetype==ONOFF) {
                 if (item.getSubLabel().equals(WatchUi.loadResource(Rez.Strings.ON))) {

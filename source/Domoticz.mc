@@ -46,7 +46,7 @@ enum {
 // define functions for debugging on console which is not executed in release version
 
 class Domoticz {
-    public var roomItems = {};  // will contain the objects with the menu items of the rooms
+    public var roomItems as Lang.Dictionary = {};  // will contain the objects with the menu items of the rooms
     public var deviceItems = {};  // will contain the objects with the menu items of the devices
 	private var _roomscallback;
 	private var _devicescallback;
@@ -93,15 +93,15 @@ class Domoticz {
 		var url;
 		var Domoticz_Protocol;
 
-		if (App.getApp().getProperty("PROP_PROTOCOL")==0) {
+		if (App.Properties.getValue("PROP_PROTOCOL")==0) {
 			Domoticz_Protocol="http";
 		} else {
 			Domoticz_Protocol="https";
 		}
 
-		url=Domoticz_Protocol+"://"+App.getApp().getProperty("PROP_ADRESS")+":"+App.getApp().getProperty("PROP_PORT");
-		if(App.getApp().getProperty("PROP_PATH")!="") {
-			url += App.getApp().getProperty("PROP_PATH");
+		url=Domoticz_Protocol+"://"+App.Properties.getValue("PROP_ADRESS")+":"+App.Properties.getValue("PROP_PORT");
+		if(App.Properties.getValue("PROP_PATH")!="") {
+			url += App.Properties.getValue("PROP_PATH");
 		}
 		url += "/json.htm";
 		return url;
@@ -110,7 +110,7 @@ class Domoticz {
 	function getOptions() {
 		var options;
 
-		if (App.getApp().getProperty("PROP_USERNAME").length()==0) {
+		if (App.Properties.getValue("PROP_USERNAME").length()==0) {
 			options={
 				:headers => {
 					"Content-Type" => Comm.REQUEST_CONTENT_TYPE_URL_ENCODED
@@ -121,7 +121,7 @@ class Domoticz {
 				:responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON,
 				:headers => {
 					"Content-Type" => Communications.REQUEST_CONTENT_TYPE_URL_ENCODED,
-					"Authorization" => "Basic "+Su.encodeBase64(App.getApp().getProperty("PROP_USERNAME")+":"+App.getApp().getProperty("PROP_PASSWORD"))
+					"Authorization" => "Basic "+Su.encodeBase64(App.Properties.getValue("PROP_USERNAME")+":"+App.Properties.getValue("PROP_PASSWORD"))
 				}
 	        };
 			
@@ -166,7 +166,7 @@ class Domoticz {
 			params.put("plan",idx);
     	}	else if (action==GETDEVICESTATUS) {
     		params.put("type","devices");
-    		params.put("rid",DevicesIdx[devicecursor]);
+    		params.put("rid",idx);
     	}	else if (action==GETSCENESTATUS) {
     		params.put("type","scenes");
     	}	else if (action==GETROOMS) {
@@ -176,27 +176,27 @@ class Domoticz {
     	}	else if (action==SENDONCOMMAND) {
     		params.put("type","command");
     		params.put("param","switchlight");
-    		params.put("idx",DevicesIdx[devicecursor]);
+    		params.put("idx",idx);
     		params.put("switchcmd","On");
     	}	else if (action==SENDOFFCOMMAND) {
     		params.put("type","command");
     		params.put("param","switchlight");
-    		params.put("idx",DevicesIdx[devicecursor]);
+    		params.put("idx",idx);
     		params.put("switchcmd","Off");
     	}	else if (action==SENDSTOPCOMMAND) {
     		params.put("type","command");
     		params.put("param","switchlight");
-    		params.put("idx",DevicesIdx[devicecursor]);
+    		params.put("idx",idx);
     		params.put("switchcmd","Stop");
     	}	else if (action==SENDSETPOINT) {
     		params.put("type","command");
     		params.put("param","setsetpoint");
-    		params.put("idx",DevicesIdx[devicecursor]);
+    		params.put("idx",idx);
     		params.put("setpoint",setpoint);
     	}	else if (action==SENDSELECTOR) {
     		params.put("type","command");
     		params.put("param","switchlight");
-    		params.put("idx",DevicesIdx[devicecursor]);
+    		params.put("idx",idx);
 			if (dimmerlevel==0) {
 				params.put("switchcmd","Off");
 			} else {
@@ -206,18 +206,18 @@ class Domoticz {
     	}	else if (action==SENDDIMMERVALUE) {
     		params.put("type","command");
     		params.put("param","switchlight");
-    		params.put("idx",DevicesIdx[devicecursor]);
+    		params.put("idx",idx);
     		params.put("switchcmd","Set Level");
     		params.put("level",dimmerlevel);
     	}	else if (action==SWITCHOFFGROUP) {
     		params.put("type","command");
     		params.put("param","switchscene");
-    		params.put("idx",DevicesIdx[devicecursor]);
+    		params.put("idx",idx);
     		params.put("switchcmd","Off");
     	}	else if (action==SWITCHONGROUP) {
        		params.put("type","command");
     		params.put("param","switchscene");
-    		params.put("idx",DevicesIdx[devicecursor]);
+    		params.put("idx",idx);
     		params.put("switchcmd","On");
     	} else {
     		url="unknown url";
@@ -237,8 +237,6 @@ class Domoticz {
 				if (data["status"].equals("OK")) {
 	            	if (data["title"].equals("getplans")) {
 						if (data["result"]!=null) {
-                            Log("Getting the rooms");
-							roomItems={};
 							for (var i=0;i<data["result"].size();i++) {
 								roomItems.put(data["result"][i]["idx"], new WatchUi.MenuItem(data["result"][i]["Name"], null, data["result"][i]["idx"],{}));
 							}
@@ -270,7 +268,7 @@ class Domoticz {
 		Log("OnIconMenuItemDraw was called for "+idx);
 	}
 
-	function getDeviceType(data) {
+	function getDeviceType(data as Lang.Dictionary) {
 		var DeviceType=DEVICE;
 		if (data["Type"].equals("Group")) {
 			// it is a group
@@ -321,7 +319,7 @@ class Domoticz {
 		return DeviceType;
 	}
 
-	function getDeviceData(data,devicetype) {
+	function getDeviceData(data as Lang.Dictionary,devicetype as Lang.Number) {
 		var DeviceData;
 
 		// set datafield
