@@ -151,15 +151,18 @@ class Domoticz {
 
     	// populate parameters;
     	if (action==GETDEVICES) {
-			/* 
+			/*
+			// old: get just the deviceid's, maybe reuse for low mem devices 
 	    	params.put("type","command");
 	    	params.put("param","getplandevices");
 	    	params.put("idx",idx); */
+			// https://domoticz url/json.htm?type=command&param=getdevices&filter=all&used=true&favorite=0&order=[Order]&plan=<planid>
 			params.put("type","command");
 	    	params.put("param","getdevices");
 	    	params.put("filter","all");
 			params.put("used","true");
 			params.put("favorite",0);
+			params.put("order","[Order]");
 			params.put("plan",idx);
     	}	else if (action==GETDEVICESTATUS) {
     		params.put("type","devices");
@@ -357,7 +360,6 @@ class Domoticz {
 	}
 	
 	function onReceiveAllDevices(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
-   		Log("onReceive responseCode="+responseCode+" data="+data);
        // Check responsecode
        if (responseCode==200)
        {
@@ -393,20 +395,15 @@ class Domoticz {
 								// Determine if it's a scene
 								var devicetype=getDeviceType(data["result"][i]);
 								var devicedata=getDeviceData(data["result"][i],devicetype);
-								Log(data["result"][i]);
+								Log("test");
 
 								// create the menuitem
 								var mi;
 								if (devicetype==ONOFF){
-									Log("Creating toggle for "+data["result"][i]["Name"]); 
-									Log(data["result"][i]["Name"]+"=Onoff");
 									var enabled=false;
 									if (data["result"][i]["Status"].equals("On")) {
 										enabled=true;
-										Log("Enabled=true");
 									} else {
-										Log("Enabled=false");
-
 									}
 									mi=new DomoticzToggleMenuItem(data["result"][i]["Name"],
 														devicedata,

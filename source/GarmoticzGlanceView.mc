@@ -112,8 +112,6 @@ class GarmoticzGlanceView extends Ui.GlanceView {
     params.put("type","command");
     params.put("param","getversion");
 
-    Log("url="+url+",params="+params);
-
     // Make the reqsetpoiuest
     Comm.makeWebRequest(
         url,
