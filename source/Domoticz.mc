@@ -254,7 +254,7 @@ class Domoticz {
 		 callUrl(url,options,params,callback);
 	}
 
-	function updateDeviceStatus(data) {
+	function updateDeviceStatus(data as Lang.Dictionary<Lang.String,Lang.String or Lang.Number>) {
 		var devicetype=getDeviceType(data);
 		var devicedata=getDeviceData(data,devicetype);
 		var enabled = false;

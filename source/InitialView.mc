@@ -8,15 +8,23 @@ class InitialView extends Ui.View {
 	var width,height;
 	var shown=false;
     var dz=new Domoticz();
+    var monkeyVersion;
+
 	
     function initialize() {
         // set correct message
-        var mySettings=System.getDeviceSettings();
-        if (mySettings.isTouchScreen) {
-            _status=Ui.loadResource(Rez.Strings.STATUS_TAP_SCREEN);
+        monkeyVersion=Toybox.System.getDeviceSettings().monkeyVersion;
+		Log("Monkey Version is "+monkeyVersion);
+        if (monkeyVersion[0]<3) {
+            _status=Ui.loadResource(Rez.Strings.STATUS_DEVICE_TOO_OLD);
         } else {
-            _status=Ui.loadResource(Rez.Strings.STATUS_PRESS_ENTER);
-        }	
+            var mySettings=System.getDeviceSettings();
+            if (mySettings.isTouchScreen) {
+                _status=Ui.loadResource(Rez.Strings.STATUS_TAP_SCREEN);
+            } else {
+                _status=Ui.loadResource(Rez.Strings.STATUS_PRESS_ENTER);
+            }	
+        }
 
        View.initialize();
 	}
@@ -26,9 +34,13 @@ class InitialView extends Ui.View {
     }
 
     public function getrooms() {
-        _status="Retreiving rooms";
-        Ui.requestUpdate();
-        dz.populateRooms(method(:onRoomsPopulated));
+        if (monkeyVersion[0]>2) {
+            _status="Retreiving rooms";
+            Ui.requestUpdate();
+            dz.populateRooms(method(:onRoomsPopulated));
+        } else {
+            Log("Ignore, device too old");
+        }
     }
 	
 	function onShow() {
@@ -89,7 +101,12 @@ class InitialView extends Ui.View {
             } else {
                 font=Gfx.FONT_SMALL;
             }
-            dc.drawText(width/2,height/2,font,_status,Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
+            if (monkeyVersion[0]<3) {
+                dc.drawText(width/2,height*1/3,font,_status,Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
+                dc.drawText(width/2,height*1/2,Gfx.FONT_XTINY,WatchUi.loadResource(Rez.Strings.STATUS_DEVICE_TOO_OLD_2),Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
+            } else {
+                dc.drawText(width/2,height/2,font,_status,Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
+            }
         }
 	}
 }
