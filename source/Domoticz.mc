@@ -27,6 +27,7 @@ enum {
 enum {
 	GETROOMS,
 	GETDEVICES,
+	GETDEVICESLOWMEM,
 	GETDEVICESTATUS,
 	SENDONCOMMAND,
 	SENDOFFCOMMAND,
@@ -45,10 +46,11 @@ enum {
 
 class Domoticz {
     public var roomItems as Lang.Dictionary<Lang.Number,WatchUi.MenuItem> = {};  // will contain the objects with the menu items of the rooms
-    public var deviceItems as Lang.Dictionary<Lang.Number,DomoticzIconMenuItem or DomoticzToggleMenuItem> = {};  // will contain the objects with the menu items of the devices
+    public var deviceItems as Lang.Dictionary<Lang.Number,DomoticzMenuItem> = {};  // will contain the objects with the menu items of the devices
 	private var _roomscallback;
 	private var _devicescallback;
 	private var currentDevice;
+	private var currentRoom;
 	private var delayTimer;
 	private const delayTime=500; // number of milliseconds before status is requested
 
@@ -84,9 +86,10 @@ class Domoticz {
         makeWebRequest(GETROOMS,null,method(:onReceiveRooms));
     }
 
-	public function populateDevices(callbackhandler, currentRoom) {
+	public function populateDevices(callbackhandler, _currentRoom) {
+		currentRoom=_currentRoom;
 		_devicescallback=callbackhandler;
-		makeWebRequest(GETDEVICES,currentRoom,method(:onReceiveAllDevices));
+		makeWebRequest(GETDEVICES,currentRoom,method(:onReceiveDevices));
 	}
 
 	public function switchOnOffDevice(index, state) {
@@ -179,12 +182,6 @@ class Domoticz {
 
     	// populate parameters;
     	if (action==GETDEVICES) {
-			/*
-			// old: get just the deviceid's, maybe reuse for low mem devices 
-	    	params.put("type","command");
-	    	params.put("param","getplandevices");
-	    	params.put("idx",idx); */
-			// https://domoticz url/json.htm?type=command&param=getdevices&filter=all&used=true&favorite=0&order=[Order]&plan=<planid>
 			params.put("type","command");
 	    	params.put("param","getdevices");
 	    	params.put("filter","all");
@@ -192,6 +189,10 @@ class Domoticz {
 			params.put("favorite",0);
 			params.put("order","[Order]");
 			params.put("plan",idx);
+		} else if (action==GETDEVICESLOWMEM) {
+	    	params.put("type","command");
+	    	params.put("param","getplandevices");
+	    	params.put("idx",idx); 
     	}	else if (action==GETDEVICESTATUS) {
     		params.put("type","devices");
     		params.put("rid",idx);
@@ -277,9 +278,6 @@ class Domoticz {
 		// update the menuitem:
 		deviceItems[currentDevice].setLabel(data["Name"]);
 		deviceItems[currentDevice].setSubLabel(devicedata);
-		if (devicetype==ONOFF or devicetype==SELECTOR) {
-			deviceItems[currentDevice].setEnabled(enabled);
-		}
 	}
 
 	function onReceive(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
@@ -353,7 +351,7 @@ class Domoticz {
             }else {
 				_roomscallback.invoke(WatchUi.loadResource(Rez.Strings.ERROR_INVALID_RESPONSE));
 			}
-       } else {
+	   } else {
 			if (ConnectionErrorMessages[responseCode]==null) 
 			{
 				// assume general error
@@ -498,31 +496,26 @@ class Domoticz {
 		return Levels;
 	}
 
-	function onReceiveAllDevices(responseCode as Lang.Number, _data as Lang.Dictionary or Lang.String or Null) as Void {
+	function onReceiveDevices(responseCode as Lang.Number, _data as Lang.Dictionary or Lang.String or Null) as Void {
        var data=_data as Lang.Dictionary<Lang.String,Lang.Array<Lang.Dictionary>>;
 
-		Log("OnReceiveAllDevices, responsdecode "+responseCode+"data: "+data);
+		Log("OnReceiveDevices, responsdecode "+responseCode+"data: "+data);
        // Check responsecode
        if (responseCode==200)
        {
-       		// Make sure no error is shown
-           	// ShowError=false;
            	if (data instanceof Dictionary) {
 				if (data["status"].equals("OK")) {
 					if (data["title"].equals("GetPlanDevices")) {
+						Log("data is"+data);
 						if (data["result"]!=null) {
 							deviceItems={};
 			            	for (var i=0;i<data["result"].size();i++) {
-								var devicetype=getDeviceType(data["result"][i]);
-								var devicedata=getDeviceData(data["result"][i],devicetype);
-								Log(data["result"][i]["Name"]+" is a "+devicetype);
-								// create the menuitem
-								var mi=new DomoticzIconMenuItem(data["result"][i]["Name"],
-														devicedata,
+								var mi=new DomoticzMenuItem(data["result"][i]["Name"],
+														WatchUi.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING),
 														data["result"][i]["idx"],
-														new DomoticzIcon(data["result"][i]["idx"]),
 														{},
-														devicetype);
+														DEVICE,
+														[]);
 								// add to menu
 								deviceItems.put(data["result"][i]["idx"],mi);						
 		        			}
@@ -530,46 +523,27 @@ class Domoticz {
 						} else {
 							_devicescallback.invoke(WatchUi.loadResource(Rez.Strings.STATUS_ROOM_HAS_NO_DEVICES));
 						}
-					} else if (data["title"].equals("Devices")) { // Long answer 
+					} 
+					if (data["title"].equals("Devices")) { // Long answer 
 						if (data["result"]!=null) {
 							deviceItems={};
 			            	for (var i=0;i<data["result"].size();i++) {
-								// Determine if it's a scene
-								var devicetype=getDeviceType(data["result"][i]);
+								var devicetype = getDeviceType(data["result"][i]);
 								var devicedata = getDeviceData(data["result"][i],devicetype);
 								// create the menuitem
 								var mi;
-								if (devicetype==ONOFF or devicetype==SELECTOR){
-									var enabled = false;
-									var Levels = [];
-									if (devicetype==ONOFF) {
-										enabled=false;
-										if (data["result"][i]["Status"].equals("On")) {
-											enabled=true;
-										} 
-									} else if (devicetype==SELECTOR) {
-										Log(data["result"][i]);
-										Levels = getLevels(data["result"][i]["LevelNames"]);
-										devicedata=Levels[data["result"][i]["LevelInt"]];
-										if (data["result"][i]["LevelInt"]>0) {
-											enabled=true;
-										}
-									}
-									mi=new DomoticzToggleMenuItem(data["result"][i]["Name"],
-														devicedata,
-														data["result"][i]["idx"],
-														enabled,
-														{:alignment => WatchUi.MenuItem.MENU_ITEM_LABEL_ALIGN_LEFT},
-														devicetype,
-														Levels);
-								} else {
-									mi=new DomoticzIconMenuItem(data["result"][i]["Name"],
-														devicedata,
-														data["result"][i]["idx"],
-														new DomoticzIcon(data["result"][i]["idx"]),
-														{},
-														devicetype);
+								var Levels = [];
+								if (devicetype==SELECTOR) {
+									Log(data["result"][i]);
+									Levels = getLevels(data["result"][i]["LevelNames"]);
+									devicedata=Levels[data["result"][i]["LevelInt"]];
 								}
+								mi=new DomoticzMenuItem(data["result"][i]["Name"],
+													devicedata,
+													data["result"][i]["idx"],
+													{},
+													devicetype,
+													Levels);
 								// add to menu
 								deviceItems.put(data["result"][i]["idx"],mi);
 		        			}
@@ -586,7 +560,10 @@ class Domoticz {
             }else {
 				_devicescallback.invoke(WatchUi.loadResource(Rez.Strings.STATUS_UNKNOWN_HTTP_RESPONSE));
 			}
-       }else {
+	   } else if (responseCode==-403) {
+			// try again with low mem
+			makeWebRequest(GETDEVICESLOWMEM,currentRoom,method(:onReceiveDevices));
+      } else {
 			if (ConnectionErrorMessages[responseCode]==null) 
 			{
 				// assume general error

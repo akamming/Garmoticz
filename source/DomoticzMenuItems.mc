@@ -2,7 +2,34 @@ import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
+
+class DomoticzMenuItem extends Toybox.WatchUi.MenuItem {
+    // basically normal togglemenu item, but can store DeviceType and selector states
+    private var _devicetype;
+    private var _states;
+
+    public function initialize(_label as Lang.String or Lang.Symbol, 
+                    _subLabel as Lang.String or Lang.Symbol or { :enabled as Lang.String or Lang.Symbol or Null, :disabled as Lang.String or Lang.Symbol or Null } or Null, 
+                    _identifier, 
+                    _options as { :alignment as MenuItem.Alignment, :icon as Graphics.BitmapType or WatchUi.Drawable or Lang.Symbol } or Null,
+                    devicetype as Number,
+                    states as Array) {
+
+        // initialize the extra vars
+        _devicetype=devicetype;
+        _states=states; 
+        
+        // Call the parent
+        WatchUi.MenuItem.initialize(_label,_subLabel,_identifier,_options);
+    }
+    
+    public function getDeviceType() as Number {
+        return _devicetype;
+    }
+}
+
+
+/* class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
     // basically normal togglemenu item, but can store DeviceType and selector states
     private var _devicetype;
     private var _states;
@@ -27,6 +54,7 @@ class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
         return _devicetype;
     }
 }
+
 
 
 class DomoticzIconMenuItem extends Toybox.WatchUi.IconMenuItem {
@@ -112,4 +140,4 @@ class DomoticzIcon extends WatchUi.Drawable {
         // dc.setColor(Graphics.COLOR_WHITE,Graphics.COLOR_TRANSPARENT);
         // dc.drawText(0,0, Graphics.FONT_MEDIUM, dc.getWidth()+"\n"+dc.getHeight(), Graphics.TEXT_JUSTIFY_LEFT);
     }
-}
+} */
