@@ -257,10 +257,29 @@ class Domoticz {
 	function updateDeviceStatus(data) {
 		var devicetype=getDeviceType(data);
 		var devicedata=getDeviceData(data,devicetype);
+		var enabled = false;
+		if (devicetype==ONOFF or devicetype==SELECTOR){
+			var Levels = [];
+			if (devicetype==ONOFF) {
+				enabled=false;
+				if (data["Status"].equals("On")) {
+					enabled=true;
+				} 
+			} else if (devicetype==SELECTOR) {
+				Levels = getLevels(data["LevelNames"]);
+				devicedata=Levels[data["LevelInt"]];
+				if (data["LevelInt"]>0) {
+					enabled=true;
+				}
+			}
+		}
 		Log("Updating "+data["Name"]+" as a "+devicetype);
 		// update the menuitem:
 		deviceItems[currentDevice].setLabel(data["Name"]);
 		deviceItems[currentDevice].setSubLabel(devicedata);
+		if (devicetype==ONOFF or devicetype==SELECTOR) {
+			deviceItems[currentDevice].setEnabled(enabled);
+		}
 	}
 
 	function onReceive(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
@@ -283,17 +302,12 @@ class Domoticz {
 								updateDeviceStatus(data["result"][i]);
 							}
 						}
-						/* var devicetype=getDeviceType(data["result"][0]);
-						var devicedata=getDeviceData(data["result"][0],devicetype);
-						Log("Updating "+data["result"][0]["Name"]+" as a "+devicetype);
-						// update the menuitem:
-						deviceItems[currentDevice].setLabel(data["result"][0]["Name"]);
-						deviceItems[currentDevice].setSubLabel(devicedata); */
 					} else {
 						deviceItems[currentDevice].setSubLabel(WatchUi.loadResource(Rez.Strings.ERROR_INVALID_RESPONSE));
 					}
         	    } else {
 					deviceItems[currentDevice].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_DOMOTICZ_ERROR));
+					delayTimer.start(method(:getDeviceStatus),delayTime,false); // wait a bit of time before getting new state (sometimes domoticz did not yet process switched state)
 				} 
             } else {
 				deviceItems[currentDevice].setSubLabel(WatchUi.loadResource(Rez.Strings.ERROR_INVALID_RESPONSE));
