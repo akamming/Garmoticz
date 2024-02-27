@@ -80,31 +80,31 @@ class GarmoticzGlanceView extends Ui.GlanceView {
     Ui.requestUpdate();
 
 
-    if (App.getApp().getProperty("PROP_PROTOCOL")==0) {
+    if (App.Properties.getValue("PROP_PROTOCOL")==0) {
       Domoticz_Protocol="http";
     } else {
       Domoticz_Protocol="https";
     }
 
-    url=Domoticz_Protocol+"://"+App.getApp().getProperty("PROP_ADRESS")+":"+App.getApp().getProperty("PROP_PORT");
-    if(App.getApp().getProperty("PROP_PATH")!="") {
-      url += App.getApp().getProperty("PROP_PATH");
+    url=Domoticz_Protocol+"://"+App.Properties.getValue("PROP_ADRESS")+":"+App.Properties.getValue("PROP_PORT");
+    if(App.Properties.getValue("PROP_PATH")!="") {
+      url += App.Properties.getValue("PROP_PATH");
     }
     url += "/json.htm";
 
-    if (App.getApp().getProperty("PROP_USERNAME").length()==0) {
+    if (App.Properties.getValue("PROP_USERNAME").length()==0) {
       options={
         :headers => {
           "Content-Type" => Comm.REQUEST_CONTENT_TYPE_URL_ENCODED
         }
       };
     } else {
-      Log("Basic "+App.getApp().getProperty("PROP_USERNAME")+":"+App.getApp().getProperty("PROP_PASSWORD"));
+      Log("Basic "+App.Properties.getValue("PROP_USERNAME")+":"+App.Properties.getValue("PROP_PASSWORD"));
       options = {
         :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON,
         :headers => {
           "Content-Type" => Communications.REQUEST_CONTENT_TYPE_URL_ENCODED,
-          "Authorization" => "Basic "+Su.encodeBase64(App.getApp().getProperty("PROP_USERNAME")+":"+App.getApp().getProperty("PROP_PASSWORD"))
+          "Authorization" => "Basic "+Su.encodeBase64(App.Properties.getValue("PROP_USERNAME")+":"+App.Properties.getValue("PROP_PASSWORD"))
         }
       };
     }

@@ -275,8 +275,10 @@ class Domoticz {
 	   WatchUi.requestUpdate();
 	}
 
-    function onReceiveRooms(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
-   		Log("onReceive responseCode="+responseCode+" data="+data);
+    function onReceiveRooms(responseCode as Lang.Number, _data as Lang.Dictionary or Lang.String or Null) as Void {
+	   var data=_data as Lang.Dictionary<Lang.String,Lang.Array<Lang.Dictionary>>;
+
+   	   Log("onReceive responseCode="+responseCode+" data="+data);
        // Check responsecode
        if (responseCode==200)
        {
@@ -433,7 +435,9 @@ class Domoticz {
 		return Levels;
 	}
 
-	function onReceiveAllDevices(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
+	function onReceiveAllDevices(responseCode as Lang.Number, _data as Lang.Dictionary or Lang.String or Null) as Void {
+       var data=_data as Lang.Dictionary<Lang.String,Lang.Array<Lang.Dictionary>>;
+
 		Log("OnReceiveAllDevices, responsdecode "+responseCode+"data: "+data);
        // Check responsecode
        if (responseCode==200)
