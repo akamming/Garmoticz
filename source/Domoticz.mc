@@ -6,8 +6,6 @@ using Toybox.System as Sys;
 using Toybox.WatchUi;
 
 
-// global vars which can be used by all classes
-
 
 // DeviceTypes
 enum {
@@ -51,7 +49,8 @@ class Domoticz {
 	private var _roomscallback;
 	private var _devicescallback;
 	private var currentDevice;
-
+	private var delayTimer;
+	private const delayTime=500; // number of milliseconds before status is requested
 
 
 	const ConnectionErrorMessages = {
@@ -75,7 +74,8 @@ class Domoticz {
 
     public function initialize()
     {
-        // put init code here
+		// initializez timer
+        delayTimer=new Timer.Timer();
     }
 
     public function populateRooms(callbackhandler)
@@ -105,6 +105,17 @@ class Domoticz {
 		    makeWebRequest(SENDOFFCOMMAND,index,method(:onReceive)); 
 		}
 	}
+
+	function getDeviceStatus() {
+    	if (deviceItems[currentDevice].getDeviceType()==SCENE or deviceItems[currentDevice].getDeviceType()==GROUP) {
+    		// current device is a device
+    		makeWebRequest(GETSCENESTATUS,currentDevice,method(:onReceive));
+    	} else {
+    		// current device is a scene
+    		makeWebRequest(GETDEVICESTATUS,currentDevice,method(:onReceive));
+    	}
+    }
+
 
 	function getUrl() {
 		var url;
@@ -243,6 +254,15 @@ class Domoticz {
 		 callUrl(url,options,params,callback);
 	}
 
+	function updateDeviceStatus(data) {
+		var devicetype=getDeviceType(data);
+		var devicedata=getDeviceData(data,devicetype);
+		Log("Updating "+data["Name"]+" as a "+devicetype);
+		// update the menuitem:
+		deviceItems[currentDevice].setLabel(data["Name"]);
+		deviceItems[currentDevice].setSubLabel(devicedata);
+	}
+
 	function onReceive(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
    		Log("onReceive responseCode="+responseCode+" data="+data);
        // Check responsecode
@@ -254,7 +274,22 @@ class Domoticz {
 	            	if (data["title"].equals("SwitchLight")) {
 						// a scene, group of light was switched. Update the device status
 			           	deviceItems[currentDevice].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_COMMAND_EXECUTED_OK));
-                    } else {
+						// getDeviceStatus();
+						delayTimer.start(method(:getDeviceStatus),delayTime,false); // wait a bit of time before getting new state (sometimes domoticz did not yet process switched state)
+					} else if (data["title"].equals("Devices")) {
+						if (data["result"]!=null) {
+							for (var i=0;i<data["result"].size();i++)
+							{
+								updateDeviceStatus(data["result"][i]);
+							}
+						}
+						/* var devicetype=getDeviceType(data["result"][0]);
+						var devicedata=getDeviceData(data["result"][0],devicetype);
+						Log("Updating "+data["result"][0]["Name"]+" as a "+devicetype);
+						// update the menuitem:
+						deviceItems[currentDevice].setLabel(data["result"][0]["Name"]);
+						deviceItems[currentDevice].setSubLabel(devicedata); */
+					} else {
 						deviceItems[currentDevice].setSubLabel(WatchUi.loadResource(Rez.Strings.ERROR_INVALID_RESPONSE));
 					}
         	    } else {

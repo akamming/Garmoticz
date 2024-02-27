@@ -33,6 +33,11 @@ const OPENMENUITEM=10001 ;
 const CLOSEMENUITEM=10002 ;
 const STOPMENUITEM=10003 ;
 
+// global vars which can be used by all classes
+var delayTimer;
+const delayTime=500; // number of milliseconds before status is requested
+
+
 class GarmoticzView extends WatchUi.View {
 
 	// mapping of technical errors (source: https://developer.garmin.com/downloads/connect-iq/monkey-c/doc/Toybox/Communications.html) to friendly user text.
@@ -68,9 +73,6 @@ class GarmoticzView extends WatchUi.View {
 
 
 
-	// Timer to prevent too many url's when scrolling through devices
-	var delayTimer;
-	const delayTime=500; // number of milliseconds before status is requested
 
     function initialize() {
 		// parent call
