@@ -1,6 +1,7 @@
 using Toybox.WatchUi as Ui;
 using Toybox.System;
 using Toybox.Graphics as Gfx;
+using Toybox.Lang;
 
 class InitialView extends Ui.View {
     var _status;
@@ -39,7 +40,7 @@ class InitialView extends Ui.View {
 
     public function startRoomsMenu() {
         var menu = new WatchUi.Menu2({:title=>new MenuTitleDrawable("Rooms")});
-        var ks=dz.roomItems.keys();
+        var ks=dz.roomItems.keys() as Lang.Array<Lang.String or Lang.Number>;
         for (var i=0;i<dz.roomItems.size();i++){
             var key=ks[i];
             menu.addItem(dz.roomItems[key]);

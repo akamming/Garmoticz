@@ -46,8 +46,8 @@ enum {
 // define functions for debugging on console which is not executed in release version
 
 class Domoticz {
-    public var roomItems as Lang.Dictionary = {};  // will contain the objects with the menu items of the rooms
-    public var deviceItems as Lang.Dictionary = {};  // will contain the objects with the menu items of the devices
+    public var roomItems as Lang.Dictionary<Lang.Number,WatchUi.MenuItem> = {};  // will contain the objects with the menu items of the rooms
+    public var deviceItems as Lang.Dictionary<Lang.Number,DomoticzIconMenuItem or DomoticzToggleMenuItem> = {};  // will contain the objects with the menu items of the devices
 	private var _roomscallback;
 	private var _devicescallback;
 	private var currentDevice;
@@ -335,36 +335,26 @@ class Domoticz {
 				// Set switchtype and correct data if needed
 				if (data["SwitchType"].equals("On/Off")) { // switch can be controlled by user
 					DeviceType=ONOFF;
-					Log(data["Name"]+" is a onoff");
 				} else if (data["SwitchType"].equals("Selector")) {
 					DeviceType=SELECTOR;
-					Log(data["Name"]+" is a selector");
 				} else if (["SwitchType"].equals("Dimmer")) {
 					DeviceType=DIMMER;
-					Log(data["Name"]+" is a dimmer");
 				} else if (["SwitchType"].equals("Blinds Inverted")) {
 					DeviceType=INVERTEDBLINDS;
-					Log(data["Name"]+" is a invertedblinds");
 				} else if (["SwitchType"].equals("Venetian Blinds US") or data["SwitchType"].equals("Venetian Blinds EU") or ["SwitchType"].equals("Blinds")) { // blinds
 					DeviceType=VENBLIND;
-					Log(data["Name"]+" is a venblind");
 				} else if (["SwitchType"].equals("Push On Button")) { // PushOnButton
 					DeviceType=PUSHON;
-					Log(data["Name"]+" is a pushon");
 				} else if (["SwitchType"].equals("Push Off Button")) { // PushOffButton
 					DeviceType=PUSHOFF;
-					Log(data["Name"]+" is a pushoff");
 				} else if (["SubType"].equals("SetPoint")) {
 					DeviceType=SETPOINT;
-					Log(data["Name"]+" is a setpoint");
 				} else {
 					// We didn't recognize the device type, so set as general unswitchable device
 					DeviceType=DEVICE;
-					Log(data["Name"]+" is a  generic device");
 				}
 			} else {
 				DeviceType=DEVICE;
-				Log(data["Name"]+" is a device (skipped flow)");
 			}
 		}
 		return DeviceType;
@@ -375,42 +365,66 @@ class Domoticz {
 	function getDeviceData(data as Lang.Dictionary,devicetype as Lang.Number) {
 		var DeviceData;
 
+		Log(data);
+		Log("blabla");
+
 		// set datafield
-		if (devicetype==PUSHOFF) {
-			DeviceData=WatchUi.loadResource(Rez.Strings.PUSHOFF);
-		} else if (devicetype==PUSHON) {
-			DeviceData=WatchUi.loadResource(Rez.Strings.PUSHON);
-		} else if (devicetype==SELECTOR) {
-			DeviceData="Selector "+data["Data"];
-			// updateLevels(data["result"][0]["LevelNames"]);
-			// Log(Levels);
-			// DeviceData=Levels[data["result"][0]["LevelInt"]];
-		} else if (data["Data"].equals("On")) {
-			// switch is on
-			DeviceData=WatchUi.loadResource(Rez.Strings.ON);
-		} else if (data["Data"].equals("Off")) {
-			// switch is off
-			DeviceData=WatchUi.loadResource(Rez.Strings.OFF);
-		} else if (data["Data"].equals("Open")) {
-			// switch is on
-			DeviceData=WatchUi.loadResource(Rez.Strings.OPEN);
-		} else if (data["Data"].equals("Closed")) {
-			// switch is off
-			DeviceData=WatchUi.loadResource(Rez.Strings.CLOSED);
-		} else if (data["Data"].equals("Stopped")) {
-			// switch is off
-			DeviceData=WatchUi.loadResource(Rez.Strings.STOPPED);
-		} else if (data["Data"].substring(0,9).equals("Set Level")) {
-			// Log("Dimmer Level");
-			// dimmer level
-			DeviceData=data["Data"].substring(10,16);
+		if (data["SwitchType"]!=null) {
+			// some kind of switch device
+			if (devicetype==PUSHOFF) {
+				DeviceData=WatchUi.loadResource(Rez.Strings.PUSHOFF);
+			} else if (devicetype==PUSHON) {
+				DeviceData=WatchUi.loadResource(Rez.Strings.PUSHON);
+			} else if (devicetype==SELECTOR) {
+				DeviceData="Selector "+data["Data"];
+				// updateLevels(data["result"][0]["LevelNames"]);
+				// Log(Levels);
+				// DeviceData=Levels[data["result"][0]["LevelInt"]];
+			} else if (data["Data"].equals("On")) {
+				// switch is on
+				DeviceData=WatchUi.loadResource(Rez.Strings.ON);
+			} else if (data["Data"].equals("Off")) {
+				// switch is off
+				DeviceData=WatchUi.loadResource(Rez.Strings.OFF);
+			} else if (data["Data"].equals("Open")) {
+				// switch is on
+				DeviceData=WatchUi.loadResource(Rez.Strings.OPEN);
+			} else if (data["Data"].equals("Closed")) {
+				// switch is off
+				DeviceData=WatchUi.loadResource(Rez.Strings.CLOSED);
+			} else if (data["Data"].equals("Stopped")) {
+				// switch is off
+				DeviceData=WatchUi.loadResource(Rez.Strings.STOPPED);
+			} else if (data["Data"].substring(0,9).equals("Set Level")) {
+				// Log("Dimmer Level");
+				// dimmer level
+				DeviceData=data["Data"].substring(10,16);
+			} else {
+				DeviceData=data["Data"];
+			}
+		} else if (data["SubType"]!=null) {
+			if (data["SubType"].equals("kWh")) {  // kwh device: take the daily counter + usage as data
+				DeviceData=data["CounterToday"]+", "+data["Usage"];
+			} else if (data["SubType"].equals("Gas")) {  // gas device: take the daily counter as data
+				DeviceData=data["CounterToday"];
+			} else if (data["SubType"].equals("Energy")) { // Smart meter: take the daily counters for usage and delivery and add current usage
+				DeviceData=data["CounterToday"].substring(0,data["CounterToday"].length()-4)+", "+data["CounterDelivToday"]+", "+data["Usage"];
+			} else if (data["SubType"].equals("Text")) { // a text device: make sure max length=25
+				if (data["Data"].length()>25) {
+					DeviceData=data["Data"].substring(0,24);
+				} else {
+					DeviceData=data["Data"];
+				}
+			} else {
+				DeviceData=data["Data"];
+			}
 		} else {
 			DeviceData=data["Data"];
-		}
+		} 
 		return DeviceData;
 	}
 	
-	function getLevels(string) {
+	function getLevels(string) as Lang.Array<Lang.String> {
 		Levels={};
 		var location;
 		var levelvalue=-10;

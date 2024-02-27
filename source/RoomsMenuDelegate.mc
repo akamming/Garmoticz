@@ -1,4 +1,5 @@
 using Toybox.WatchUi;
+using Toybox.Lang;
 
 class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
     var _dz;
@@ -18,7 +19,7 @@ class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
 
     function startDevicesMenu() {
         var menu = new WatchUi.Menu2({:title=>new MenuTitleDrawable("Devices")});
-        var ks=_dz.deviceItems.keys();
+        var ks=_dz.deviceItems.keys()as Lang.Array<Lang.String or Lang.Number>;
         for (var i=0;i<_dz.deviceItems.size();i++){
             var key=ks[i];
             menu.addItem(_dz.deviceItems[key]);
