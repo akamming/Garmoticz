@@ -47,7 +47,7 @@ enum {
 
 class Domoticz {
     public var roomItems as Lang.Dictionary = {};  // will contain the objects with the menu items of the rooms
-    public var deviceItems = {};  // will contain the objects with the menu items of the devices
+    public var deviceItems as Lang.Dictionary = {};  // will contain the objects with the menu items of the devices
 	private var _roomscallback;
 	private var _devicescallback;
 	private var currentDevice;
@@ -368,6 +368,8 @@ class Domoticz {
 		return DeviceType;
 	}
 
+	
+
 	function getDeviceData(data as Lang.Dictionary,devicetype as Lang.Number) {
 		var DeviceData;
 
@@ -406,7 +408,33 @@ class Domoticz {
 		return DeviceData;
 	}
 	
+	function getLevels(string) {
+		Levels={};
+		var location;
+		var levelvalue=-10;
+
+		var options = {
+			:fromRepresentation => Su.REPRESENTATION_STRING_BASE64,
+			:toRepresentation => Su.REPRESENTATION_STRING_PLAIN_TEXT 
+		};
+		var plainLevelNames=Su.convertEncodedString(string, options);
+		Log("Levelnames = "+plainLevelNames);
+
+		do {
+			levelvalue+=10;
+			location = plainLevelNames.find("|");
+			if (location != null) {
+				Levels.put(levelvalue,plainLevelNames.substring(0, location));
+				plainLevelNames = plainLevelNames.substring(location + 1, string.length());
+			}
+		} while (location != null);
+		Levels.put(levelvalue,plainLevelNames);
+
+		return Levels;
+	}
+
 	function onReceiveAllDevices(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
+		Log("OnReceiveAllDevices, responsdecode "+responseCode+"data: "+data);
        // Check responsecode
        if (responseCode==200)
        {
@@ -441,16 +469,24 @@ class Domoticz {
 			            	for (var i=0;i<data["result"].size();i++) {
 								// Determine if it's a scene
 								var devicetype=getDeviceType(data["result"][i]);
-								var devicedata=getDeviceData(data["result"][i],devicetype);
-								Log("test");
-
+								var devicedata = getDeviceData(data["result"][i],devicetype);
 								// create the menuitem
 								var mi;
-								if (devicetype==ONOFF){
-									var enabled=false;
-									if (data["result"][i]["Status"].equals("On")) {
-										enabled=true;
-									} else {
+								if (devicetype==ONOFF or devicetype==SELECTOR){
+									var enabled = false;
+									var Levels = [];
+									if (devicetype==ONOFF) {
+										enabled=false;
+										if (data["result"][i]["Status"].equals("On")) {
+											enabled=true;
+										} 
+									} else if (devicetype==SELECTOR) {
+										Log(data["result"][i]);
+										Levels = getLevels(data["result"][i]["LevelNames"]);
+										devicedata=Levels[data["result"][i]["LevelInt"]];
+										if (data["result"][i]["LevelInt"]>0) {
+											enabled=true;
+										}
 									}
 									mi=new DomoticzToggleMenuItem(data["result"][i]["Name"],
 														devicedata,
@@ -458,10 +494,8 @@ class Domoticz {
 														enabled,
 														{:alignment => WatchUi.MenuItem.MENU_ITEM_LABEL_ALIGN_LEFT},
 														devicetype,
-														[]);
+														Levels);
 								} else {
-									Log("Creating icon for "+data["result"][i]["name"]); 
-									Log(data["result"][i]["Name"]+"=Other");
 									mi=new DomoticzIconMenuItem(data["result"][i]["Name"],
 														devicedata,
 														data["result"][i]["idx"],
