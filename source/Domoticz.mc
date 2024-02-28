@@ -46,7 +46,7 @@ enum {
 class Domoticz {
     public var roomItems as Lang.Dictionary<Lang.Number,WatchUi.MenuItem> = {};  // will contain the objects with the menu items of the rooms
     public var deviceItems as Lang.Dictionary<Lang.Number,DomoticzMenuItem> = {};  // will contain the objects with the menu items of the devices
-	public var deviceIDX as Lang.Array<Lang.Number> = []; // will store the idx numbers of the menu items for quick reference
+	public var deviceIDX  = []; // will store the idx numbers of the menu items for quick reference
 	private var _roomscallback;
 	private var _devicescallback;
 	private var currentDevice; // holds the current index of the menuitems
@@ -99,6 +99,7 @@ class Domoticz {
 		// remember device
 		currentDevice=index;
 		currentIDX=deviceIDX[index];
+		Log("CurrentDevice="+currentDevice+", currentIDX="+currentIDX);
 		if (state) {
 			// we have to switch on
 			deviceItems[index].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_SWITCHING_ON));
@@ -111,19 +112,23 @@ class Domoticz {
 		}
 	}
 
-	function getDeviceStatus(idx) {
-    	if (deviceItems[idx].getDeviceType()==SCENE or deviceItems[idx].getDeviceType()==GROUP) {
+	function getDeviceStatus(device) {
+		Log("getDeviceStatus("+device+")");
+
+        var idx = deviceIDX[device];
+    	if (deviceItems[device].getDeviceType()==SCENE or deviceItems[device].getDeviceType()==GROUP) {
 			Log("Device is a scene");
     		// current device is a device
     		makeWebRequest(GETSCENESTATUS,idx,method(:onReceive));
     	} else {
-			Log("Device is scene with idx "+idx);
+			Log("Device is device with idx "+idx);
     		// current device is a scene
     		makeWebRequest(GETDEVICESTATUS,idx,method(:onReceive));
     	}
     }
 
 	function getCurrentDeviceStatus() {
+		Log("currentDevice="+currentDevice);
 		getDeviceStatus(currentDevice);
 	}
 
@@ -260,10 +265,15 @@ class Domoticz {
 	}
 
 	function getMenuIndexfromDomoticzIndex(domoticzIndex as Lang.Number) {
+		Log("getMenuIndexfromDomoticzIndex("+domoticzIndex+")");
 		var menuIndex=0;
 		for (var i=0;i<deviceIDX.size();i++) {
-			if (deviceIDX[i]==domoticzIndex) {
+			// Log(i+"="+deviceIDX[i]+"comparing with "+domoticzIndex+" "+(domoticzIndex-deviceIDX[i]));
+			if (deviceIDX[i].toNumber()==domoticzIndex.toNumber()) {
+				Log("Match");
 				menuIndex=i;
+			} else {
+				Log("no match");
 			}
 		}
 		return menuIndex;
@@ -276,9 +286,10 @@ class Domoticz {
 			Levels = getLevels(data["LevelNames"]);
 			devicedata=Levels[data["LevelInt"]];
 		}
-		Log("Updating "+data["Name"]+" as a "+devicetype);
+		Log("Updating "+data["Name"]+"with idx["+data["idx"]+"] as a "+devicetype);
 		// update the menuitem:
 		var menuidx=getMenuIndexfromDomoticzIndex(data["idx"]);
+		Log("menuidx="+menuidx);
 		deviceItems[menuidx].setLabel(data["Name"]);
 		deviceItems[menuidx].setSubLabel(devicedata);
 	}
