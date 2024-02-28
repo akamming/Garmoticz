@@ -9,14 +9,14 @@ class InitialView extends Ui.View {
 	var shown=false;
     var dz=new Domoticz();
     var monkeyVersion;
-
+    const minMonkeyVersion=300;
 	
     function initialize() {
         // set correct message
         var _monkeyVersion=Toybox.System.getDeviceSettings().monkeyVersion;
-        monkeyVersion=_monkeyVersion[0]*100+_MonkeyV
+        monkeyVersion=_monkeyVersion[0]*100+_monkeyVersion[1]*10+_monkeyVersion[2];
 		Log("Monkey Version is "+monkeyVersion);
-        if (monkeyVersion[0]<3) {
+        if (monkeyVersion<minMonkeyVersion) {
             _status=Ui.loadResource(Rez.Strings.STATUS_DEVICE_TOO_OLD);
         } else {
             var mySettings=System.getDeviceSettings();
@@ -35,7 +35,7 @@ class InitialView extends Ui.View {
     }
 
     public function getrooms() {
-        if (monkeyVersion[0]>2) {
+        if (monkeyVersion>=minMonkeyVersion) {
             _status="Retreiving rooms";
             Ui.requestUpdate();
             dz.populateRooms(method(:onRoomsPopulated));
@@ -102,7 +102,7 @@ class InitialView extends Ui.View {
             } else {
                 font=Gfx.FONT_SMALL;
             }
-            if (monkeyVersion[0]<3) {
+            if (monkeyVersion<=minMonkeyVersion) {
                 dc.drawText(width/2,height*1/3,font,_status,Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
                 dc.drawText(width/2,height*1/2,Gfx.FONT_XTINY,WatchUi.loadResource(Rez.Strings.STATUS_DEVICE_TOO_OLD_2),Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
             } else {
