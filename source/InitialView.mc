@@ -13,7 +13,8 @@ class InitialView extends Ui.View {
 	
     function initialize() {
         // set correct message
-        monkeyVersion=Toybox.System.getDeviceSettings().monkeyVersion;
+        var _monkeyVersion=Toybox.System.getDeviceSettings().monkeyVersion;
+        monkeyVersion=_monkeyVersion[0]*100+_MonkeyV
 		Log("Monkey Version is "+monkeyVersion);
         if (monkeyVersion[0]<3) {
             _status=Ui.loadResource(Rez.Strings.STATUS_DEVICE_TOO_OLD);
