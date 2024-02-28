@@ -46,9 +46,11 @@ enum {
 class Domoticz {
     public var roomItems as Lang.Dictionary<Lang.Number,WatchUi.MenuItem> = {};  // will contain the objects with the menu items of the rooms
     public var deviceItems as Lang.Dictionary<Lang.Number,DomoticzMenuItem> = {};  // will contain the objects with the menu items of the devices
+	public var deviceIDX as Lang.Array<Lang.Number> = []; // will store the idx numbers of the menu items for quick reference
 	private var _roomscallback;
 	private var _devicescallback;
-	private var currentDevice;
+	private var currentDevice; // holds the current index of the menuitems
+	private var currentIDX; // holds the current index of the domoticz device (or scene/group)
 	private var currentRoom;
 	private var delayTimer;
 	private const delayTime=500; // number of milliseconds before status is requested
@@ -96,15 +98,16 @@ class Domoticz {
 
 		// remember device
 		currentDevice=index;
+		currentIDX=deviceIDX[index];
 		if (state) {
 			// we have to switch on
 			deviceItems[index].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_SWITCHING_ON));
 			WatchUi.requestUpdate();
-			makeWebRequest(SENDONCOMMAND,index,method(:onReceive));
+			makeWebRequest(SENDONCOMMAND,currentIDX,method(:onReceive));
 		} else {
 			deviceItems[index].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_SWITCHING_OFF));
 			WatchUi.requestUpdate();
-		    makeWebRequest(SENDOFFCOMMAND,index,method(:onReceive)); 
+		    makeWebRequest(SENDOFFCOMMAND,currentIDX,method(:onReceive)); 
 		}
 	}
 
@@ -256,6 +259,16 @@ class Domoticz {
 		 callUrl(url,options,params,callback);
 	}
 
+	function getMenuIndexfromDomoticzIndex(domoticzIndex as Lang.Number) {
+		var menuIndex=0;
+		for (var i=0;i<deviceIDX.size();i++) {
+			if (deviceIDX[i]==domoticzIndex) {
+				menuIndex=i;
+			}
+		}
+		return menuIndex;
+	}
+
 	function updateDeviceStatus(data as Lang.Dictionary<Lang.String,Lang.String or Lang.Number>) {
 		var devicetype=getDeviceType(data);
 		var devicedata=getDeviceData(data,devicetype);
@@ -265,9 +278,9 @@ class Domoticz {
 		}
 		Log("Updating "+data["Name"]+" as a "+devicetype);
 		// update the menuitem:
-		deviceItems[currentDevice].setLabel(data["Name"]);
-		deviceItems[currentDevice].setSubLabel(devicedata);
-		// s
+		var menuidx=getMenuIndexfromDomoticzIndex(data["idx"]);
+		deviceItems[menuidx].setLabel(data["Name"]);
+		deviceItems[menuidx].setSubLabel(devicedata);
 	}
 
 	function onReceive(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
@@ -497,6 +510,7 @@ class Domoticz {
 					if (data["title"].equals("Devices")) { // Long answer 
 						if (data["result"]!=null) {
 							deviceItems={};
+							deviceIDX=new [data["result"].size()];
 			            	for (var i=0;i<data["result"].size();i++) {
 								var devicetype = getDeviceType(data["result"][i]);
 								var devicedata = getDeviceData(data["result"][i],devicetype);
@@ -508,14 +522,15 @@ class Domoticz {
 									Levels = getLevels(data["result"][i]["LevelNames"]);
 									devicedata=Levels[data["result"][i]["LevelInt"]];
 								}
+								deviceIDX[i]=data["result"][i]["idx"];
 								mi=new DomoticzMenuItem(data["result"][i]["Name"],
 													devicedata,
-													data["result"][i]["idx"],
+													i,
 													{},
 													devicetype,
 													Levels);
 								// add to menu
-								deviceItems.put(data["result"][i]["idx"],mi);
+								deviceItems.put(i,mi);
 		        			}
 							_devicescallback.invoke(null);
 						} else {
