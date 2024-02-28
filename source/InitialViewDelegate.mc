@@ -11,7 +11,7 @@ class InitialViewDelegate extends Ui.BehaviorDelegate {
         WatchUi.BehaviorDelegate.initialize();
 
     }
-      
+
     function onMenu() {
 		_mview.getrooms();
     	return true;

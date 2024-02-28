@@ -4,6 +4,7 @@ using Toybox.Graphics as Gfx;
 using Toybox.Lang;
 
 class InitialView extends Ui.View {
+    hidden var mView;
     var _status;
 	var width,height;
 	var shown=false;
@@ -40,7 +41,9 @@ class InitialView extends Ui.View {
             Ui.requestUpdate();
             dz.populateRooms(method(:onRoomsPopulated));
         } else {
-            Log("Ignore, device too old");
+            Log("Startin old inteface");
+            mView=new GarmoticzView();
+            Ui.pushView(mView, new GarmoticzViewDelegate(mView.method(:HandleCommand)), Ui.SLIDE_LEFT);
         }
     }
 	
