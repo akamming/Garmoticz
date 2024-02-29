@@ -20,20 +20,29 @@ class DevicesMenuDelegate extends WatchUi.Menu2InputDelegate {
                 } else {
                     _dz.switchOnOffDevice(item.getId(),true);
                 }
-                WatchUi.requestUpdate();
+            } if (devicetype==PUSHON) {
+                _dz.switchOnOffDevice(item.getId(),true);
+            } if (devicetype==PUSHOFF) {
+                _dz.switchOnOffDevice(item.getId(),false);
+            } else if (devicetype==INVERTEDBLINDS) {
+                if (item.getSubLabel().equals(WatchUi.loadResource(Rez.Strings.CLOSED))) {
+                    _dz.switchOnOffDevice(item.getId(),true);
+                } else {
+                    _dz.switchOnOffDevice(item.getId(),false);
+                }
             } else if (devicetype==GROUP) {
                 if (item.getSubLabel().equals(WatchUi.loadResource(Rez.Strings.ON))) {
                     _dz.switchOnOffGroup(item.getId(),false);
                 } else {
                     _dz.switchOnOffGroup(item.getId(),true);
                 }
-                WatchUi.requestUpdate();
             } else if (devicetype==SCENE) {
                 _dz.switchOnOffGroup(item.getId(),true);
-                WatchUi.requestUpdate();
             } else {
                 Log("on select called, but no action available for device");
             }
+            WatchUi.requestUpdate();
+
         } else {
             Log("Weird instance of menuitem");
         }

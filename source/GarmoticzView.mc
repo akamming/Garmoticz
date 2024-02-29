@@ -289,6 +289,7 @@ class GarmoticzView extends WatchUi.View {
 
 		} else if (status.equals("ShowDeviceState") or status.equals("ShowDevice")) {
 			// check if we have to flip a switch
+			
 			if (DevicesType[devicecursor]==ONOFF) {
 				// Device is a switchable device
 

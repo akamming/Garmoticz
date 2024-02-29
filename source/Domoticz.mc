@@ -434,17 +434,17 @@ class Domoticz {
 					DeviceType=ONOFF;
 				} else if (data["SwitchType"].equals("Selector")) {
 					DeviceType=SELECTOR;
-				} else if (["SwitchType"].equals("Dimmer")) {
+				} else if (data["SwitchType"].equals("Dimmer")) {
 					DeviceType=DIMMER;
-				} else if (["SwitchType"].equals("Blinds Inverted")) {
+				} else if (data["SwitchType"].equals("Blinds Inverted")) {
 					DeviceType=INVERTEDBLINDS;
-				} else if (["SwitchType"].equals("Venetian Blinds US") or data["SwitchType"].equals("Venetian Blinds EU") or ["SwitchType"].equals("Blinds")) { // blinds
+				} else if (data["SwitchType"].equals("Venetian Blinds US") or data["SwitchType"].equals("Venetian Blinds EU") or ["SwitchType"].equals("Blinds")) { // blinds
 					DeviceType=VENBLIND;
-				} else if (["SwitchType"].equals("Push On Button")) { // PushOnButton
+				} else if (data["SwitchType"].equals("Push On Button")) { // PushOnButton
 					DeviceType=PUSHON;
-				} else if (["SwitchType"].equals("Push Off Button")) { // PushOffButton
+				} else if (data["SwitchType"].equals("Push Off Button")) { // PushOffButton
 					DeviceType=PUSHOFF;
-				} else if (["SubType"].equals("SetPoint")) {
+				} else if (data["SubType"].equals("SetPoint")) {
 					DeviceType=SETPOINT;
 				} else {
 					// We didn't recognize the device type, so set as general unswitchable device
