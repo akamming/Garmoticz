@@ -10,24 +10,19 @@ class InitialView extends Ui.View {
 	var shown=false;
     var dz=new Domoticz();
     var monkeyVersion;
-    const minMonkeyVersion=300;
+    const minMonkeyVersion=320;
 	
     function initialize() {
         // set correct message
         var _monkeyVersion=Toybox.System.getDeviceSettings().monkeyVersion;
         monkeyVersion=_monkeyVersion[0]*100+_monkeyVersion[1]*10+_monkeyVersion[2];
 		Log("Monkey Version is "+monkeyVersion);
-        if (monkeyVersion<minMonkeyVersion) {
-            _status=Ui.loadResource(Rez.Strings.STATUS_DEVICE_TOO_OLD);
+        var mySettings=System.getDeviceSettings();
+        if (mySettings.isTouchScreen) {
+            _status=Ui.loadResource(Rez.Strings.STATUS_TAP_SCREEN);
         } else {
-            var mySettings=System.getDeviceSettings();
-            if (mySettings.isTouchScreen) {
-                _status=Ui.loadResource(Rez.Strings.STATUS_TAP_SCREEN);
-            } else {
-                _status=Ui.loadResource(Rez.Strings.STATUS_PRESS_ENTER);
-            }	
-        }
-
+            _status=Ui.loadResource(Rez.Strings.STATUS_PRESS_ENTER);
+        }	
        View.initialize();
 	}
 
@@ -97,20 +92,19 @@ class InitialView extends Ui.View {
         } else {
             dc.setColor(Gfx.COLOR_BLACK,Gfx.COLOR_BLACK);
             dc.clear();
-            dc.setColor(Gfx.COLOR_BLUE,Gfx.COLOR_TRANSPARENT);
-            var dimensions=dc.getTextDimensions(_status, Gfx.FONT_SMALL);
+            dc.setColor(Gfx.COLOR_WHITE,Gfx.COLOR_TRANSPARENT);
+            // load logo
+            var image = Ui.loadResource( Rez.Drawables.Domoticz_Logo);
+            dc.drawBitmap(dc.getWidth()/2-30,2,image);
+
             var font;
-            if (dimensions[0]>dc.getWidth()) {
+            if (dc.getTextWidthInPixels(_status, Gfx.FONT_SMALL)>dc.getWidth()) {
                 font=Gfx.FONT_XTINY;
             } else {
                 font=Gfx.FONT_SMALL;
             }
-            if (monkeyVersion<=minMonkeyVersion) {
-                dc.drawText(width/2,height*1/3,font,_status,Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
-                dc.drawText(width/2,height*1/2,Gfx.FONT_XTINY,WatchUi.loadResource(Rez.Strings.STATUS_DEVICE_TOO_OLD_2),Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
-            } else {
-                dc.drawText(width/2,height/2,font,_status,Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
-            }
+            dc.drawText(width/2, height*5/16, Gfx.FONT_MEDIUM, "Garmoticz", Gfx.TEXT_JUSTIFY_CENTER);
+            dc.drawText(width/2,height/2,font,_status,Gfx.TEXT_JUSTIFY_CENTER|Gfx.TEXT_JUSTIFY_VCENTER);
         }
 	}
 }
