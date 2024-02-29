@@ -13,16 +13,17 @@ class DevicesMenuDelegate extends WatchUi.Menu2InputDelegate {
         if (item instanceof DomoticzMenuItem) {
             Log("onSelect called for "+item.getLabel()+", of type "+item.getDeviceType());
             var devicetype=item.getDeviceType();
+
             if (devicetype==ONOFF) {
                 if (item.getSubLabel().equals(WatchUi.loadResource(Rez.Strings.ON))) {
-                    item.setSubLabel(WatchUi.loadResource(Rez.Strings.OFF)); 
                     _dz.switchOnOffDevice(item.getId(),false);
                     WatchUi.requestUpdate();
                 } else {
                     _dz.switchOnOffDevice(item.getId(),true);
-                    item.setSubLabel(WatchUi.loadResource(Rez.Strings.ON)); 
                     WatchUi.requestUpdate();
                 }
+            } else if (devicetype==SCENE) {
+                //
             } else {
                 Log("on select called, but no action available for device");
             }

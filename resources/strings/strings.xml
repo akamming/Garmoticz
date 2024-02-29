@@ -36,8 +36,6 @@
     <string id="STATUS_COMMAND_EXECUTED_OK">Command OK</string>
     <string id="STATUS_PRESS_ENTER">Press Enter to Start</string>
     <string id="STATUS_TAP_SCREEN">Tap Screen to Start</string>
-    <string id="STATUS_DEVICE_TOO_OLD">App requires IQ 3.0</string>
-    <string id="STATUS_DEVICE_TOO_OLD_2">Press enter or touch screen\nto start legacy interface</string>
     
     <string id="ON">On</string>
     <string id="OFF">Off</string>
