@@ -111,6 +111,25 @@ class Domoticz {
 		}
 	}
 
+	public function switchOnOffGroup(index, state) {
+		// function to switch group or scene. state = true means "on", false means "off"
+
+		// remember device
+		currentDevice=index;
+		currentIDX=deviceIDX[index];
+		if (state) {
+			// we have to switch on
+			deviceItems[index].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_SWITCHING_ON));
+			WatchUi.requestUpdate();
+			makeWebRequest(SWITCHONGROUP,currentIDX,method(:onReceive));
+		} else {
+			deviceItems[index].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_SWITCHING_OFF));
+			WatchUi.requestUpdate();
+		    makeWebRequest(SWITCHOFFGROUP,currentIDX,method(:onReceive)); 
+		}
+	}
+
+
 	function getDeviceStatus(device) {
 
         var idx = deviceIDX[device];
@@ -257,7 +276,7 @@ class Domoticz {
 		 callUrl(url,options,params,callback);
 	}
 
-	function getMenuIndexfromDomoticzIndex(domoticzIndex as Lang.Number) {
+	function getMenuIndexfromDomoticzIndexforDevice(domoticzIndex as Lang.Number) {
 		var menuIndex=null;
 		for (var i=0;i<deviceIDX.size();i++) {
 			if (deviceItems[i].getDeviceType()!=SCENE and deviceItems[i].getDeviceType()!=GROUP and deviceIDX[i].toNumber()==domoticzIndex.toNumber()) {
@@ -267,6 +286,17 @@ class Domoticz {
 		return menuIndex;
 	}
 
+	function getMenuIndexfromDomoticzIndexforGroupOrScene(domoticzIndex as Lang.Number) {
+		var menuIndex=null;
+		for (var i=0;i<deviceIDX.size();i++) {
+			if ((deviceItems[i].getDeviceType()==SCENE or deviceItems[i].getDeviceType()==GROUP) and deviceIDX[i].toNumber()==domoticzIndex.toNumber()) {
+				menuIndex=i;
+			}
+		}
+		return menuIndex;
+	}
+
+
 	function updateDeviceStatus(data as Lang.Dictionary<Lang.String,Lang.String or Lang.Number>) {
 		var devicetype=getDeviceType(data);
 		var devicedata=getDeviceData(data,devicetype);
@@ -275,7 +305,25 @@ class Domoticz {
 			devicedata=Levels[data["LevelInt"]];
 		}
 		// update the menuitem:
-		var menuidx=getMenuIndexfromDomoticzIndex(data["idx"]);
+		var menuidx=getMenuIndexfromDomoticzIndexforDevice(data["idx"]);
+		if (menuidx!=null) {
+			deviceItems[menuidx].setLabel(data["Name"]);
+			deviceItems[menuidx].setSubLabel(devicedata);
+		}
+	}
+
+	function updateSceneOrGroupStatus(data as Lang.Dictionary<Lang.String,Lang.String or Lang.Number>) {
+		var devicedata;
+		if (data["Status"].equals("On")) {
+			devicedata=WatchUi.loadResource(Rez.Strings.ON);
+		} else if (data["Status"].equals("Off")) {
+			devicedata=WatchUi.loadResource(Rez.Strings.OFF);
+		} else if (data["Status"].equals("Mixed")) {
+			devicedata=WatchUi.loadResource(Rez.Strings.MIXED);
+		} else {
+			devicedata=data["Status"];
+		}
+		var menuidx=getMenuIndexfromDomoticzIndexforGroupOrScene(data["idx"]);
 		if (menuidx!=null) {
 			deviceItems[menuidx].setLabel(data["Name"]);
 			deviceItems[menuidx].setSubLabel(devicedata);
@@ -290,7 +338,7 @@ class Domoticz {
            	// ShowError=false;  
            	if (data instanceof Dictionary) {
 				if (data["status"].equals("OK")) {
-	            	if (data["title"].equals("SwitchLight")) {
+	            	if (data["title"].equals("SwitchLight") or data["title"].equals("SwitchScene")) {
 						// a scene, group of light was switched. Update the device status
 			           	deviceItems[currentDevice].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_COMMAND_EXECUTED_OK));
 						delayTimer.start(method(:getCurrentDeviceStatus),delayTime,false); // wait a bit of time before getting new state (sometimes domoticz did not yet process switched state)
@@ -299,6 +347,13 @@ class Domoticz {
 							for (var i=0;i<data["result"].size();i++)
 							{
 								updateDeviceStatus(data["result"][i]);
+							}
+						}
+					} else if (data["title"].equals("getscenes")) {
+						if (data["result"]!=null) {
+							for (var i=0;i<data["result"].size();i++)
+							{
+								updateSceneOrGroupStatus(data["result"][i]);
 							}
 						}
 					} else {

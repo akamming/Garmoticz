@@ -17,13 +17,20 @@ class DevicesMenuDelegate extends WatchUi.Menu2InputDelegate {
             if (devicetype==ONOFF) {
                 if (item.getSubLabel().equals(WatchUi.loadResource(Rez.Strings.ON))) {
                     _dz.switchOnOffDevice(item.getId(),false);
-                    WatchUi.requestUpdate();
                 } else {
                     _dz.switchOnOffDevice(item.getId(),true);
-                    WatchUi.requestUpdate();
                 }
+                WatchUi.requestUpdate();
+            } else if (devicetype==GROUP) {
+                if (item.getSubLabel().equals(WatchUi.loadResource(Rez.Strings.ON))) {
+                    _dz.switchOnOffGroup(item.getId(),false);
+                } else {
+                    _dz.switchOnOffGroup(item.getId(),true);
+                }
+                WatchUi.requestUpdate();
             } else if (devicetype==SCENE) {
-                //
+                _dz.switchOnOffGroup(item.getId(),true);
+                WatchUi.requestUpdate();
             } else {
                 Log("on select called, but no action available for device");
             }
