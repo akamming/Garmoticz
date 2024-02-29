@@ -99,7 +99,6 @@ class Domoticz {
 		// remember device
 		currentDevice=index;
 		currentIDX=deviceIDX[index];
-		Log("CurrentDevice="+currentDevice+", currentIDX="+currentIDX);
 		if (state) {
 			// we have to switch on
 			deviceItems[index].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_SWITCHING_ON));
@@ -113,22 +112,18 @@ class Domoticz {
 	}
 
 	function getDeviceStatus(device) {
-		Log("getDeviceStatus("+device+")");
 
         var idx = deviceIDX[device];
     	if (deviceItems[device].getDeviceType()==SCENE or deviceItems[device].getDeviceType()==GROUP) {
-			Log("Device is a scene");
     		// current device is a device
     		makeWebRequest(GETSCENESTATUS,idx,method(:onReceive));
     	} else {
-			Log("Device is device with idx "+idx);
     		// current device is a scene
     		makeWebRequest(GETDEVICESTATUS,idx,method(:onReceive));
     	}
     }
 
 	function getCurrentDeviceStatus() {
-		Log("currentDevice="+currentDevice);
 		getDeviceStatus(currentDevice);
 	}
 
@@ -190,8 +185,6 @@ class Domoticz {
 		var params = {};
 		var options = getOptions();
 		var url=getUrl();
-
-		Log("idx = "+idx);
 
     	// populate parameters;
     	if (action==GETDEVICES) {
@@ -265,15 +258,10 @@ class Domoticz {
 	}
 
 	function getMenuIndexfromDomoticzIndex(domoticzIndex as Lang.Number) {
-		Log("getMenuIndexfromDomoticzIndex("+domoticzIndex+")");
-		var menuIndex=0;
+		var menuIndex=null;
 		for (var i=0;i<deviceIDX.size();i++) {
-			// Log(i+"="+deviceIDX[i]+"comparing with "+domoticzIndex+" "+(domoticzIndex-deviceIDX[i]));
 			if (deviceItems[i].getDeviceType()!=SCENE and deviceItems[i].getDeviceType()!=GROUP and deviceIDX[i].toNumber()==domoticzIndex.toNumber()) {
-				Log("Match");
 				menuIndex=i;
-			} else {
-				Log("no match");
 			}
 		}
 		return menuIndex;
@@ -286,12 +274,12 @@ class Domoticz {
 			Levels = getLevels(data["LevelNames"]);
 			devicedata=Levels[data["LevelInt"]];
 		}
-		Log("Updating "+data["Name"]+"with idx["+data["idx"]+"] as a "+devicetype);
 		// update the menuitem:
 		var menuidx=getMenuIndexfromDomoticzIndex(data["idx"]);
-		Log("menuidx="+menuidx);
-		deviceItems[menuidx].setLabel(data["Name"]);
-		deviceItems[menuidx].setSubLabel(devicedata);
+		if (menuidx!=null) {
+			deviceItems[menuidx].setLabel(data["Name"]);
+			deviceItems[menuidx].setSubLabel(devicedata);
+		}
 	}
 
 	function onReceive(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
@@ -375,19 +363,13 @@ class Domoticz {
 	   }
     }    
 
-	function onIconMenuItemDraw(idx) {
-		Log("OnIconMenuItemDraw was called for "+idx);
-	}
-
 	function getDeviceType(data as Lang.Dictionary) {
 		var DeviceType=DEVICE;
 		if (data["Type"].equals("Group")) {
 			// it is a group
-			Log(data["Name"]+" is a group");
 			DeviceType=GROUP;
 		} else if (data["Type"].equals("Scene")) {
 			// it is a scene
-			Log(data["Name"]+" is a scene");
 			DeviceType=SCENE;
 		} else {
 			// it is a device
@@ -425,8 +407,7 @@ class Domoticz {
 	function getDeviceData(data as Lang.Dictionary,devicetype as Lang.Number) {
 		var DeviceData;
 
-		Log(data);
-		Log("blabla");
+		// Log(data);
 
 		// set datafield
 		if (data["SwitchType"]!=null) {
@@ -494,7 +475,6 @@ class Domoticz {
 			:toRepresentation => Su.REPRESENTATION_STRING_PLAIN_TEXT 
 		};
 		var plainLevelNames=Su.convertEncodedString(string, options);
-		Log("Levelnames = "+plainLevelNames);
 
 		do {
 			levelvalue+=10;
@@ -529,7 +509,6 @@ class Domoticz {
 								var mi;
 								var Levels = [];
 								if (devicetype==SELECTOR) {
-									Log(data["result"][i]);
 									Levels = getLevels(data["result"][i]["LevelNames"]);
 									devicedata=Levels[data["result"][i]["LevelInt"]];
 								}
