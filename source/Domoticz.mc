@@ -269,7 +269,7 @@ class Domoticz {
 		var menuIndex=0;
 		for (var i=0;i<deviceIDX.size();i++) {
 			// Log(i+"="+deviceIDX[i]+"comparing with "+domoticzIndex+" "+(domoticzIndex-deviceIDX[i]));
-			if (deviceIDX[i].toNumber()==domoticzIndex.toNumber()) {
+			if (deviceItems[i].getDeviceType()!=SCENE and deviceItems[i].getDeviceType()!=GROUP and deviceIDX[i].toNumber()==domoticzIndex.toNumber()) {
 				Log("Match");
 				menuIndex=i;
 			} else {
