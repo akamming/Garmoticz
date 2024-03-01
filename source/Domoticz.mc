@@ -46,11 +46,11 @@ enum {
 class Domoticz {
     public var roomItems as Lang.Dictionary<Lang.Number,WatchUi.MenuItem> = {};  // will contain the objects with the menu items of the rooms
     public var deviceItems as Lang.Dictionary<Lang.Number,DomoticzMenuItem> = {};  // will contain the objects with the menu items of the devices
-	public var deviceIDX  = []; // will store the idx numbers of the menu items for quick reference
+	public var deviceIDX  as Lang.Array<Lang.Number> = []; // will store the idx numbers of the menu items for quick reference
 	private var _roomscallback;
 	private var _devicescallback;
 	private var currentDevice; // holds the current index of the menuitems
-	private var currentIDX; // holds the current index of the domoticz device (or scene/group)
+	private var currentIDX as Lang.Number=0; // holds the current index of the domoticz device (or scene/group)
 	private var currentRoom;
 	private var delayTimer;
 	private const delayTime=500; // number of milliseconds before status is requested
@@ -93,7 +93,7 @@ class Domoticz {
 		makeWebRequest(GETDEVICES,currentRoom,method(:onReceiveDevices));
 	}
 
-	public function switchOnOffDevice(index, state) {
+	public function switchOnOffDevice(index as Lang.Number, state) {
 		// function to switch device. state = true means "on", false means "off"
 
 		// remember device
@@ -330,7 +330,9 @@ class Domoticz {
 		}
 	}
 
-	function onReceive(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void {
+	function onReceive(responseCode as Lang.Number, _data as Lang.Dictionary or Lang.String or Null) as Void {
+	    var data=_data as Lang.Dictionary<Lang.String,Lang.Array<Lang.Dictionary>>;
+
    		Log("onReceive responseCode="+responseCode+" data="+data);
        // Check responsecode
        if (responseCode==200) {
