@@ -4,6 +4,7 @@ using Toybox.Lang;
 class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
     var _dz;
     var currentid;
+    var _progressBar;
 
     function initialize(dz as Domoticz) {
         _dz=dz;
@@ -11,9 +12,11 @@ class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
     }
     
   	function onSelect(item) {
-  		currentid=item.getId();
-        _dz.roomItems[currentid].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_LOADING_DEVICES));
-        WatchUi.requestUpdate();
+        currentid=item.getId();
+        
+		_progressBar = new WatchUi.ProgressBar(WatchUi.loadResource(Rez.Strings.STATUS_LOADING_DEVICES), null);
+        WatchUi.pushView(_progressBar, new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_DOWN);	
+
         _dz.populateDevices(method(:onDevicesPopulated),currentid);
 	}
 
@@ -30,6 +33,10 @@ class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
 
     function onDevicesPopulated(status)
     {
+        // slide down the progress bar
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+
+        // process status
         if (status==null) {
             //all ok, start devices menu
             startDevicesMenu();
@@ -49,9 +56,7 @@ class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
         WatchUi.popView(WatchUi.SLIDE_DOWN);
         if (fromGlance) {
             exitApplication=true;
-            Log("Exitapplication=true");
         } else {
-            Log("Exitapplication=false");
         }
     }
     
