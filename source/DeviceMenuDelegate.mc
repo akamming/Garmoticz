@@ -10,7 +10,7 @@ class DevicesMenuDelegate extends WatchUi.Menu2InputDelegate {
     }
     
   	function onSelect(item) {
-        if (item instanceof DomoticzMenuItem) {
+        if (item instanceof DomoticzMenuItem or item instanceof DomoticzToggleMenuItem) {
             Log("onSelect called for "+item.getLabel()+", of type "+item.getDeviceType());
             var devicetype=item.getDeviceType();
 

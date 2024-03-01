@@ -29,7 +29,7 @@ class DomoticzMenuItem extends Toybox.WatchUi.MenuItem {
 }
 
 
-/* class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
+class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
     // basically normal togglemenu item, but can store DeviceType and selector states
     private var _devicetype;
     private var _states;
@@ -53,8 +53,7 @@ class DomoticzMenuItem extends Toybox.WatchUi.MenuItem {
     public function getDeviceType() as Number {
         return _devicetype;
     }
-}
-
+} 
 
 
 class DomoticzIconMenuItem extends Toybox.WatchUi.IconMenuItem {
@@ -89,7 +88,7 @@ class DomoticzIconMenuItem extends Toybox.WatchUi.IconMenuItem {
     }
 }
 
-
+/*
 //! This is the custom Icon drawable. It fills the icon space with a color
 //! to demonstrate its extents. It changes color each time the next state is
 //! triggered, which is done when the item is selected in this application.

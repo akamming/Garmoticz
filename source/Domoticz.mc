@@ -45,7 +45,7 @@ enum {
 
 class Domoticz {
     public var roomItems as Lang.Dictionary<Lang.Number,WatchUi.MenuItem> = {};  // will contain the objects with the menu items of the rooms
-    public var deviceItems as Lang.Dictionary<Lang.Number,DomoticzMenuItem> = {};  // will contain the objects with the menu items of the devices
+    public var deviceItems as Lang.Dictionary<Lang.Number,DomoticzMenuItem or DomoticzToggleMenuItem or DomoticzIconMenuItem> = {};  // will contain the objects with the menu items of the devices
 	public var deviceIDX  as Lang.Array<Lang.Number> = []; // will store the idx numbers of the menu items for quick reference
 	private var _roomscallback;
 	private var _devicescallback;
@@ -309,6 +309,15 @@ class Domoticz {
 		if (menuidx!=null) {
 			deviceItems[menuidx].setLabel(data["Name"]);
 			deviceItems[menuidx].setSubLabel(devicedata);
+			
+			if (devicetype==ONOFF or devicetype==GROUP) {
+				// we have to update the toggle as well
+				var enabled=true;
+				if (devicedata.equals(WatchUi.loadResource(Rez.Strings.OFF))) {
+					enabled=false;
+				}
+				deviceItems[menuidx].setEnabled(enabled);
+			}
 		}
 	}
 
@@ -578,12 +587,27 @@ class Domoticz {
 									devicedata=Levels[data["result"][i]["LevelInt"]];
 								}
 								deviceIDX[i]=data["result"][i]["idx"];
-								mi=new DomoticzMenuItem(data["result"][i]["Name"],
-													devicedata,
-													i,
-													{},
-													devicetype,
-													Levels);
+								if (devicetype==ONOFF or devicetype==GROUP or devicetype==DIMMER) {
+									var enabled=true;
+									if (devicedata.equals(WatchUi.loadResource(Rez.Strings.OFF))) {
+										enabled=false;
+										Log(data["result"][i]["Name"]+" is off");
+									}
+									mi=new DomoticzToggleMenuItem(data["result"][i]["Name"],
+														devicedata,
+														i,
+														enabled,
+														{ :alignment => WatchUi.MenuItem.MENU_ITEM_LABEL_ALIGN_RIGHT },
+														devicetype,
+														Levels);
+								} else {
+									mi=new DomoticzMenuItem(data["result"][i]["Name"],
+														devicedata,
+														i,
+														{ :alignment => WatchUi.MenuItem.MENU_ITEM_LABEL_ALIGN_RIGHT },
+														devicetype,
+														Levels);
+								}
 								// add to menu
 								deviceItems.put(i,mi);
 		        			}
