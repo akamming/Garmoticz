@@ -7,8 +7,13 @@
     <string id="title_adress">IP Adress or Domainname</string>
     <string id="title_path">Path (for example: /domoticz)</string>
     <string id="title_port">port number</string>
+    <string id="title_interface">interface</string>
     <string id="HTTP">HTTP</string>
     <string id="HTTPS">HTTPS</string>
+    <string id="LEGACY">Use Legacy interface</string>
+    <string id="EXPERIMENTAL">Use Experimental interface</string>
+    <string id="AUTO">Let the app decide</string>
+    
     
     <string id="ERROR_GENERAL_CONNECTION_ERROR">Connection Error</string>
     <string id="ERROR_INVALID_CONNECTION_SETTING">Invalid connection settings</string>

@@ -2,6 +2,7 @@ using Toybox.WatchUi as Ui;
 using Toybox.System;
 using Toybox.Graphics as Gfx;
 using Toybox.Lang;
+using Toybox.Application as App;
 
 class InitialView extends Ui.View {
     hidden var mView;
@@ -11,6 +12,7 @@ class InitialView extends Ui.View {
     var dz=new Domoticz();
     var monkeyVersion;
     const minMonkeyVersion=320;
+    var interfaceToUse;
 	
     function initialize() {
         // set correct message
@@ -23,7 +25,25 @@ class InitialView extends Ui.View {
         } else {
             _status=Ui.loadResource(Rez.Strings.STATUS_PRESS_ENTER);
         }	
-       View.initialize();
+
+        // decide on interface
+        interfaceToUse = App.Properties.getValue("PROP_INTERFACE");
+        if (interfaceToUse==2 and monkeyVersion<minMonkeyVersion) {
+            // new interface not available on old devices
+            _status="ConnectIQ 3.2 required";
+            interfaceToUse=1;
+        } else if (interfaceToUse==3) {
+            // interface set to auto, determine what to use
+            if (monkeyVersion>=minMonkeyVersion) {
+                // we are on the right connectiq level, use experimental interface
+                interfaceToUse=2;
+            } else {
+                // device too old: use legacy interface
+                interfaceToUse=1;
+            }
+        }
+
+        View.initialize(); 
 	}
 
     function HandleCommand (data) {
@@ -31,12 +51,12 @@ class InitialView extends Ui.View {
     }
 
     public function getrooms() {
-        if (monkeyVersion>=minMonkeyVersion) {
+        if (interfaceToUse==2) {
             _status="Retreiving rooms";
             Ui.requestUpdate();
             dz.populateRooms(method(:onRoomsPopulated));
         } else {
-            Log("Startin old inteface");
+            Log("Starting old inteface");
             mView=new GarmoticzView();
             Ui.pushView(mView, new GarmoticzViewDelegate(mView.method(:HandleCommand)), Ui.SLIDE_LEFT);
         }

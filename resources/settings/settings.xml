@@ -6,6 +6,7 @@
 		<property id="PROP_ADRESS" type="string"></property>
 		<property id="PROP_PATH" type="string"></property>
 		<property id="PROP_PORT" type="number">443</property>
+		<property id="PROP_INTERFACE" type="number">1</property>
 	</properties>
 	<settings>
 		<setting propertyKey="@Properties.PROP_USERNAME" title="@Strings.title_username">
@@ -27,6 +28,13 @@
 		</setting>
 		<setting propertyKey="@Properties.PROP_PORT" title="@Strings.title_port">
 			<settingConfig type="numeric" required="true"></settingConfig>
+		</setting>
+		<setting propertyKey="@Properties.PROP_INTERFACE" title="@Strings.title_interface">
+			<settingConfig type="list" required="true">
+				<listEntry value="1">@Strings.LEGACY</listEntry>
+				<listEntry value="2">@Strings.EXPERIMENTAL</listEntry>
+				<listEntry value="3">@Strings.AUTO</listEntry>
+			</settingConfig>
 		</setting>
 	</settings>
 </resources>
