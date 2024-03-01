@@ -464,8 +464,6 @@ class Domoticz {
 	function getDeviceData(data as Lang.Dictionary,devicetype as Lang.Number) {
 		var DeviceData;
 
-		// Log(data);
-
 		// set datafield
 		if (data["SwitchType"]!=null) {
 			// some kind of switch device
@@ -499,6 +497,16 @@ class Domoticz {
 				DeviceData=data["Data"].substring(10,16);
 			} else {
 				DeviceData=data["Data"];
+			}
+		} else if (devicetype==GROUP or devicetype==SCENE) {
+			if (data["Status"].equals("On")) {
+				DeviceData=WatchUi.loadResource(Rez.Strings.ON);
+			} else if (data["Status"].equals("Off")) {
+				DeviceData=WatchUi.loadResource(Rez.Strings.OFF);
+			} else if (data["Status"].equals("Mixed")) {
+				DeviceData=WatchUi.loadResource(Rez.Strings.MIXED);
+			} else {
+				DeviceData=data["Status"];
 			}
 		} else if (data["SubType"]!=null) {
 			if (data["SubType"].equals("kWh")) {  // kwh device: take the daily counter + usage as data
