@@ -94,6 +94,16 @@ class Domoticz {
 		makeWebRequest(GETDEVICES,currentRoom,method(:onReceiveDevices));
 	}
 
+	public function setLevelDevice(index as Lang.Number, Level as Lang.Number) {
+		Log("setLevelDevice("+index+","+Level);
+		dimmerlevel=Level;
+		currentDevice=index;
+		currentIDX=deviceIDX[index];
+		deviceItems[index].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_SWITCHING_ON));
+		WatchUi.requestUpdate();
+		makeWebRequest(SENDDIMMERVALUE,currentIDX,method(:onReceive));
+	}
+
 	public function switchOnOffDevice(index as Lang.Number, state) {
 		// function to switch device. state = true means "on", false means "off"
 

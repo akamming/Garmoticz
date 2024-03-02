@@ -13,5 +13,13 @@ class DimmerMenuDelegate extends WatchUi.Menu2InputDelegate {
     
     function onSelect(item) {
         Log(item.getId()+" was selected for "+_id);
+        if (item.getId() == 0 ) {
+            _dz.switchOnOffDevice(_id,false);
+
+        } else {
+            var level=item.getId() as Lang.Number;
+            _dz.setLevelDevice(_id,level);
+        }
+        WatchUi.popView(WatchUi.SLIDE_UP);
     }
 }

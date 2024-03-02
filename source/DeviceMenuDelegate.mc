@@ -38,15 +38,25 @@ class DevicesMenuDelegate extends WatchUi.Menu2InputDelegate {
                 }
             } else if (devicetype==SCENE) {
                 _dz.switchOnOffGroup(item.getId(),true);
-            } else if (devicetype==DIMMER) {
-                Log(item.getLabel());
-                var dimmermenu = new WatchUi.Menu2({:title => new MenuTitleDrawable(item.getLabel())});
+            } else if (devicetype==DIMMER) { 
+                var currentval;
+                if (item.getSubLabel().equals(WatchUi.loadResource(Rez.Strings.OFF))) {
+                    currentval=0;
+                } else if (item.getSubLabel().equals(WatchUi.loadResource(Rez.Strings.ON))) {
+                    currentval=10;
+                } else {
+                    currentval=(item.getSubLabel().substring(0,3).toNumber()+4)/10;
+                    Log("currentval of "+item.getSubLabel().substring(0,3)+" is "+currentval);
+                }
+                var dimmermenu = new WatchUi.Menu2({:title => new MenuTitleDrawable(item.getLabel()),
+                                                    :focus => currentval});
                 dimmermenu.addItem(new MenuItem(WatchUi.loadResource(Rez.Strings.OFF),null,0,{}));
-        		for (var i=10;i<101;i+=10) {
+                for (var i=10;i<101;i+=10) {
                     dimmermenu.addItem(new MenuItem(i+"%",null,i,{}));
                 }
                 var delegate=new DimmerMenuDelegate(_dz,item.getId());
                 WatchUi.pushView(dimmermenu,delegate,WatchUi.SLIDE_UP);
+                // }
             } else {
                 Log("on select called, but no action available for device");
             } 
