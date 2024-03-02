@@ -4,7 +4,7 @@ import Toybox.WatchUi;
 
 
 class DomoticzMenuItem extends Toybox.WatchUi.MenuItem {
-    // basically normal togglemenu item, but can store DeviceType and selector states
+    // basically normal menu item, but can store DeviceType and selector states
     private var _devicetype;
     private var _states;
 
