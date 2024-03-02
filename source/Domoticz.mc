@@ -95,7 +95,6 @@ class Domoticz {
 	}
 
 	public function setLevelDevice(index as Lang.Number, Level as Lang.Number) {
-		Log("setLevelDevice("+index+","+Level);
 		dimmerlevel=Level;
 		currentDevice=index;
 		currentIDX=deviceIDX[index];
@@ -320,8 +319,11 @@ class Domoticz {
 		if (menuidx!=null) {
 			deviceItems[menuidx].setLabel(data["Name"]);
 			deviceItems[menuidx].setSubLabel(devicedata);
+			if (devicetype==SELECTOR) {
+				// we have to update the levels as well
+				deviceItems[menuidx].setLevels(Levels);
+			}
 			
-			// if (devicetype==ONOFF or devicetype==GROUP or devicetype==DIMMER) {
 			if (toggleDeviceTypes.indexOf(devicetype)>=0) { 
 				// we have to update the toggle as well
 				var enabled=true;

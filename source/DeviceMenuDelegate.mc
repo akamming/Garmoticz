@@ -56,7 +56,26 @@ class DevicesMenuDelegate extends WatchUi.Menu2InputDelegate {
                 }
                 var delegate=new DimmerMenuDelegate(_dz,item.getId());
                 WatchUi.pushView(dimmermenu,delegate,WatchUi.SLIDE_UP);
-                // }
+            } else if (devicetype==SELECTOR) {
+                var Levels=item.getLevels();
+                var currentval=0;
+                for (var i=0;i<Levels.size();i++) {
+                    Log(Levels[i*10]+","+item.getSubLabel());
+                    if (Levels[i*10].equals(item.getSubLabel())) {
+                        currentval=i*10;
+                    }
+                }
+                if (currentval==null) {
+                    currentval=0;
+                }
+                var selectorMenu=new WatchUi.Menu2({:title => new MenuTitleDrawable(item.getLabel()),
+                                                    :focus => currentval/10});
+                for (var i=0;i<Levels.size();i++) {
+                    // add menu item
+                    selectorMenu.addItem(new MenuItem(Levels[i*10],null,i*10,{}));
+                }
+                var delegate=new SelectorMenuDelegate(_dz,item.getId());
+                WatchUi.pushView(selectorMenu,delegate,WatchUi.SLIDE_UP);
             } else {
                 Log("on select called, but no action available for device");
             } 

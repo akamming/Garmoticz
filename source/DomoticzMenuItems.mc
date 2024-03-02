@@ -6,18 +6,18 @@ import Toybox.WatchUi;
 class DomoticzMenuItem extends Toybox.WatchUi.MenuItem {
     // basically normal menu item, but can store DeviceType and selector states
     private var _devicetype;
-    private var _states;
+    private var _levels;
 
     public function initialize(_label as Lang.String or Lang.Symbol, 
                     _subLabel as Lang.String or Lang.Symbol or { :enabled as Lang.String or Lang.Symbol or Null, :disabled as Lang.String or Lang.Symbol or Null } or Null, 
                     _identifier, 
                     _options as { :alignment as MenuItem.Alignment, :icon as Graphics.BitmapType or WatchUi.Drawable or Lang.Symbol } or Null,
                     devicetype as Number,
-                    states as Array) {
+                    levels as Array) {
 
         // initialize the extra vars
         _devicetype=devicetype;
-        _states=states; 
+        _levels=levels; 
         
         // Call the parent
         WatchUi.MenuItem.initialize(_label,_subLabel,_identifier,_options);
@@ -26,13 +26,23 @@ class DomoticzMenuItem extends Toybox.WatchUi.MenuItem {
     public function getDeviceType() as Number {
         return _devicetype;
     }
+
+    public function setLevels(levels as Array) {
+        _levels=levels;
+    }
+
+    public function getLevels() {
+        return _levels;
+    }
+
+
 }
 
 
 class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
     // basically normal togglemenu item, but can store DeviceType and selector states
     private var _devicetype;
-    private var _states;
+    private var _levels;
 
 
     public function initialize(_label as Lang.String or Lang.Symbol, 
@@ -41,13 +51,13 @@ class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
                     _enabled as Lang.Boolean, 
                     _options as { :alignment as MenuItem.Alignment, :icon as Graphics.BitmapType or WatchUi.Drawable or Lang.Symbol } or Null,
                     devicetype as Number,
-                    states as Array) {
+                    levels as Array) {
 
         Log("domoticiconmenuitem called");
 
         // initialize the extra vars
         _devicetype=devicetype;
-        _states=states; 
+        _levels=levels; 
         
         // Call the parent
         WatchUi.ToggleMenuItem.initialize(_label,_subLabel,_identifier,_enabled,_options);
@@ -56,6 +66,15 @@ class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
     public function getDeviceType() as Number {
         return _devicetype;
     }
+
+    public function setLevels(levels as Array) {
+        _levels=levels;
+    }
+
+    public function getLevels() {
+        return _levels;
+    }
+
 } 
 
 
