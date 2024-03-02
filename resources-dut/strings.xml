@@ -36,7 +36,7 @@
     <string id="STATUS_COMMAND_EXECUTED_OK">Commando uitgevoerd</string>
     <string id="STATUS_PRESS_ENTER">Druk op Enter om te starten</string>
     <string id="STATUS_TAP_SCREEN">Tik op scherm voor start</string>
-        
+
     <string id="ON">Aan</string>
     <string id="OFF">Uit</string>
     <string id="MIXED">Gemixt</string>    

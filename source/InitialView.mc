@@ -70,7 +70,7 @@ class InitialView extends Ui.View {
 	}
 
     public function startRoomsMenu() {
-        var menu = new WatchUi.Menu2({:title=>new MenuTitleDrawable("Rooms")});
+        var menu = new WatchUi.Menu2({:title=>new MenuTitleDrawable(WatchUi.loadResource(Rez.Strings.ROOMS))});
         var ks=dz.roomItems.keys() as Lang.Array<Lang.String or Lang.Number>;
         for (var i=0;i<dz.roomItems.size();i++){
             var key=ks[i];

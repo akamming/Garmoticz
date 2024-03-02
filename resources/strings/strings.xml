@@ -41,7 +41,7 @@
     <string id="STATUS_COMMAND_EXECUTED_OK">Command OK</string>
     <string id="STATUS_PRESS_ENTER">Press Enter to Start</string>
     <string id="STATUS_TAP_SCREEN">Tap Screen to Start</string>
-    
+
     <string id="ON">On</string>
     <string id="OFF">Off</string>
     <string id="MIXED">Mixed</string>

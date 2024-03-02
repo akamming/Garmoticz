@@ -60,7 +60,6 @@ class GarmoticzApp extends Application.AppBase {
         fromGlance=false;
         var sSettings=Sys.getDeviceSettings();
         if(sSettings has :isGlanceModeEnabled) {
-            Log("Device has glance capability");
         	fromGlance=sSettings.isGlanceModeEnabled;
         }
         var mview=new InitialView();

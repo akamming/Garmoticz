@@ -4,6 +4,7 @@ using Toybox.Lang;
 class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
     var _dz;
     var currentid;
+    var currentRoomName;
     var _progressBar;
 
     function initialize(dz as Domoticz) {
@@ -13,6 +14,7 @@ class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
     
   	function onSelect(item) {
         currentid=item.getId();
+        currentRoomName=item.getLabel();
         
 		_progressBar = new WatchUi.ProgressBar(WatchUi.loadResource(Rez.Strings.STATUS_LOADING_DEVICES), null);
         WatchUi.pushView(_progressBar, new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_DOWN);	
@@ -21,7 +23,7 @@ class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
 	}
 
     function startDevicesMenu() {
-        var menu = new WatchUi.Menu2({:title=>new MenuTitleDrawable("Devices")});
+        var menu = new WatchUi.Menu2({:title=>new MenuTitleDrawable(currentRoomName)});
         var ks=_dz.deviceItems.keys()as Lang.Array<Lang.String or Lang.Number>;
         for (var i=0;i<_dz.deviceItems.size();i++){
             var key=ks[i];
