@@ -45,7 +45,7 @@ enum {
 
 class Domoticz {
     public var roomItems as Lang.Dictionary<Lang.Number,WatchUi.MenuItem> = {};  // will contain the objects with the menu items of the rooms
-    public var deviceItems as Lang.Dictionary<Lang.Number,DomoticzMenuItem or DomoticzToggleMenuItem or DomoticzIconMenuItem> = {};  // will contain the objects with the menu items of the devices
+    public var deviceItems as Lang.Dictionary<Lang.Number,DomoticzMenuItem or DomoticzToggleMenuItem> = {};  // will contain the objects with the menu items of the devices
 	public var deviceIDX  as Lang.Array<Lang.Number> = []; // will store the idx numbers of the menu items for quick reference
 	private var _roomscallback;
 	private var _devicescallback;
@@ -54,6 +54,7 @@ class Domoticz {
 	private var currentRoom;
 	private var delayTimer;
 	private const delayTime=500; // number of milliseconds before status is requested
+	private const toggleDeviceTypes=[ONOFF,GROUP,DIMMER]; // These devicetypes will get a toggle in the menu
 
 
 	const ConnectionErrorMessages = {
@@ -310,7 +311,8 @@ class Domoticz {
 			deviceItems[menuidx].setLabel(data["Name"]);
 			deviceItems[menuidx].setSubLabel(devicedata);
 			
-			if (devicetype==ONOFF or devicetype==GROUP) {
+			// if (devicetype==ONOFF or devicetype==GROUP or devicetype==DIMMER) {
+			if (toggleDeviceTypes.indexOf(devicetype)>=0) { 
 				// we have to update the toggle as well
 				var enabled=true;
 				if (devicedata.equals(WatchUi.loadResource(Rez.Strings.OFF))) {
@@ -587,7 +589,8 @@ class Domoticz {
 									devicedata=Levels[data["result"][i]["LevelInt"]];
 								}
 								deviceIDX[i]=data["result"][i]["idx"];
-								if (devicetype==ONOFF or devicetype==GROUP or devicetype==DIMMER) {
+								// if (devicetype==ONOFF or devicetype==GROUP or devicetype==DIMMER) {
+								if (toggleDeviceTypes.indexOf(devicetype)>=0) {
 									var enabled=true;
 									if (devicedata.equals(WatchUi.loadResource(Rez.Strings.OFF))) {
 										enabled=false;

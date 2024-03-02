@@ -34,6 +34,7 @@ class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
     private var _devicetype;
     private var _states;
 
+
     public function initialize(_label as Lang.String or Lang.Symbol, 
                     _subLabel as Lang.String or Lang.Symbol or { :enabled as Lang.String or Lang.Symbol or Null, :disabled as Lang.String or Lang.Symbol or Null } or Null, 
                     _identifier, 
@@ -41,6 +42,8 @@ class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
                     _options as { :alignment as MenuItem.Alignment, :icon as Graphics.BitmapType or WatchUi.Drawable or Lang.Symbol } or Null,
                     devicetype as Number,
                     states as Array) {
+
+        Log("domoticiconmenuitem called");
 
         // initialize the extra vars
         _devicetype=devicetype;
@@ -56,6 +59,7 @@ class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
 } 
 
 
+/*
 class DomoticzIconMenuItem extends Toybox.WatchUi.IconMenuItem {
 
     // Basically a normal iconmenuitem, but can store DeviceType;
@@ -88,7 +92,7 @@ class DomoticzIconMenuItem extends Toybox.WatchUi.IconMenuItem {
     }
 }
 
-/*
+
 //! This is the custom Icon drawable. It fills the icon space with a color
 //! to demonstrate its extents. It changes color each time the next state is
 //! triggered, which is done when the item is selected in this application.
@@ -131,10 +135,10 @@ class DomoticzIcon extends WatchUi.Drawable {
     //! @param dc Device Context
     public function draw(dc as Dc) as Void {
         var color = _colors[_index];
-        dc.setColor(color, color);
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.clear();
-        // var image = WatchUi.loadResource( Rez.Drawables.Domoticz_Logo);
-        // dc.drawBitmap(dc.getWidth()/2-30,dc.getHeight()/2-30,image);
+        var image = WatchUi.loadResource( Rez.Drawables.SensorIcon);
+        dc.drawBitmap(dc.getWidth()/2-30,dc.getHeight()/2-30,image);
 
         // dc.setColor(Graphics.COLOR_WHITE,Graphics.COLOR_TRANSPARENT);
         // dc.drawText(0,0, Graphics.FONT_MEDIUM, dc.getWidth()+"\n"+dc.getHeight(), Graphics.TEXT_JUSTIFY_LEFT);
