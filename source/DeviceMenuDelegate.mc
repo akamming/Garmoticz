@@ -11,9 +11,7 @@ class DevicesMenuDelegate extends WatchUi.Menu2InputDelegate {
     
   	function onSelect(item) {
         if (item instanceof DomoticzMenuItem or item instanceof DomoticzToggleMenuItem) {
-            Log("onSelect called for "+item.getLabel()+", of type "+item.getDeviceType());
             var devicetype=item.getDeviceType();
-
             if (devicetype==ONOFF) {
                 if (item.getSubLabel().equals(WatchUi.loadResource(Rez.Strings.ON))) {
                     _dz.switchOnOffDevice(item.getId(),false);
@@ -46,7 +44,6 @@ class DevicesMenuDelegate extends WatchUi.Menu2InputDelegate {
                     currentval=10;
                 } else {
                     currentval=(item.getSubLabel().substring(0,3).toNumber()+4)/10;
-                    Log("currentval of "+item.getSubLabel().substring(0,3)+" is "+currentval);
                 }
                 var dimmermenu = new WatchUi.Menu2({:title => new MenuTitleDrawable(item.getLabel()),
                                                     :focus => currentval});
@@ -57,25 +54,35 @@ class DevicesMenuDelegate extends WatchUi.Menu2InputDelegate {
                 var delegate=new DimmerMenuDelegate(_dz,item.getId());
                 WatchUi.pushView(dimmermenu,delegate,WatchUi.SLIDE_UP);
             } else if (devicetype==SELECTOR) {
-                var Levels=item.getLevels();
-                var currentval=0;
-                for (var i=0;i<Levels.size();i++) {
-                    Log(Levels[i*10]+","+item.getSubLabel());
-                    if (Levels[i*10].equals(item.getSubLabel())) {
-                        currentval=i*10;
+                if (WatchUi has :ActionMenu) {
+                    var Levels=item.getLevels();
+                    var selectorMenu=new WatchUi.ActionMenu({});
+                    for (var i=0;i<Levels.size();i++) {
+                        // add menu item
+                        selectorMenu.addItem(new ActionMenuItem({:label => Levels[i*10]},i*10));
                     }
+                    var delegate=new SelectorActionMenuDelegate(_dz,item.getId());
+                    WatchUi.showActionMenu(selectorMenu,delegate);
+                } else {
+                    var Levels=item.getLevels();
+                    var currentval=0;
+                    for (var i=0;i<Levels.size();i++) {
+                        if (Levels[i*10].equals(item.getSubLabel())) {
+                            currentval=i*10;
+                        }
+                    }
+                    if (currentval==null) {
+                        currentval=0;
+                    }
+                    var selectorMenu=new WatchUi.Menu2({:title => new MenuTitleDrawable(item.getLabel()),
+                                                        :focus => currentval/10});
+                    for (var i=0;i<Levels.size();i++) {
+                        // add menu item
+                        selectorMenu.addItem(new MenuItem(Levels[i*10],null,i*10,{}));
+                    }
+                    var delegate=new SelectorMenuDelegate(_dz,item.getId());
+                    WatchUi.pushView(selectorMenu,delegate,WatchUi.SLIDE_UP);
                 }
-                if (currentval==null) {
-                    currentval=0;
-                }
-                var selectorMenu=new WatchUi.Menu2({:title => new MenuTitleDrawable(item.getLabel()),
-                                                    :focus => currentval/10});
-                for (var i=0;i<Levels.size();i++) {
-                    // add menu item
-                    selectorMenu.addItem(new MenuItem(Levels[i*10],null,i*10,{}));
-                }
-                var delegate=new SelectorMenuDelegate(_dz,item.getId());
-                WatchUi.pushView(selectorMenu,delegate,WatchUi.SLIDE_UP);
             } else {
                 Log("on select called, but no action available for device");
             } 

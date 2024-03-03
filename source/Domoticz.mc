@@ -496,9 +496,6 @@ class Domoticz {
 				DeviceData=WatchUi.loadResource(Rez.Strings.PUSHON);
 			} else if (devicetype==SELECTOR) {
 				DeviceData="Selector "+data["Data"];
-				// updateLevels(data["result"][0]["LevelNames"]);
-				// Log(Levels);
-				// DeviceData=Levels[data["result"][0]["LevelInt"]];
 			} else if (data["Data"].equals("On")) {
 				// switch is on
 				DeviceData=WatchUi.loadResource(Rez.Strings.ON);
@@ -515,8 +512,6 @@ class Domoticz {
 				// switch is off
 				DeviceData=WatchUi.loadResource(Rez.Strings.STOPPED);
 			} else if (data["Data"].substring(0,9).equals("Set Level")) {
-				// Log("Dimmer Level");
-				// dimmer level
 				DeviceData=data["Data"].substring(10,16);
 			} else {
 				DeviceData=data["Data"];
@@ -606,7 +601,6 @@ class Domoticz {
 									var enabled=true;
 									if (devicedata.equals(WatchUi.loadResource(Rez.Strings.OFF))) {
 										enabled=false;
-										Log(data["result"][i]["Name"]+" is off");
 									}
 									mi=new DomoticzToggleMenuItem(data["result"][i]["Name"],
 														devicedata,

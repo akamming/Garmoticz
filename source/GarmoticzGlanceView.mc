@@ -32,7 +32,6 @@ class GarmoticzGlanceView extends Ui.GlanceView {
   function onReceive(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void
   {
     Refreshing=false; // data received
-    // Log(Toybox.System.println("onReceive responseCode="+responseCode+" data="+data));
     Log("onReceive responseCode="+responseCode+" data="+data);
 
     // Check responsecode
@@ -99,7 +98,6 @@ class GarmoticzGlanceView extends Ui.GlanceView {
         }
       };
     } else {
-      Log("Basic "+App.Properties.getValue("PROP_USERNAME")+":"+App.Properties.getValue("PROP_PASSWORD"));
       options = {
         :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON,
         :headers => {

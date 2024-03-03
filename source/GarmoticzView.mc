@@ -502,7 +502,6 @@ class GarmoticzView extends WatchUi.View {
 			:toRepresentation => Su.REPRESENTATION_STRING_PLAIN_TEXT 
 		};
 		var plainLevelNames=Su.convertEncodedString(string, options);
-		Log("Levelnames = "+plainLevelNames);
 
 		do {
 			levelvalue+=10;
@@ -543,7 +542,6 @@ class GarmoticzView extends WatchUi.View {
 			};
 		} else {
 			params={};
-			// Log("Basic "+App.getApp().getProperty("PROP_USERNAME")+":"+App.getApp().getProperty("PROP_PASSWORD"));
 			options = {
 				:responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON,
 				:headers => {
@@ -627,7 +625,6 @@ class GarmoticzView extends WatchUi.View {
     {
     	Refreshing=false; // data received
 		Log("onReceive responseCode="+responseCode+" data="+data);
-		Log(data);
 
        // Check responsecode
        if (responseCode==200)
@@ -711,7 +708,6 @@ class GarmoticzView extends WatchUi.View {
 									} else if (DevicesType[i]==SELECTOR) {
 	       								DevicesData[i]="Selector "+data["result"][0]["Data"];
 										updateLevels(data["result"][0]["LevelNames"]);
-										Log(Levels);
 										DevicesData[i]=Levels[data["result"][0]["LevelInt"]];
 									} else if (data["result"][0]["Data"].equals("On")) {
 	       								// switch is on
@@ -729,8 +725,6 @@ class GarmoticzView extends WatchUi.View {
 	       								// switch is off
 	       								DevicesData[i]=Ui.loadResource(Rez.Strings.STOPPED);
        								} else if (data["result"][0]["Data"].substring(0,9).equals("Set Level")) {
-       									// Log("Dimmer Level");
-       									// dimmer level
        									DevicesData[i]=data["result"][0]["Data"].substring(10,16);
        								} else {
        									DevicesData[i]=data["result"][0]["Data"];

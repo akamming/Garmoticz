@@ -53,8 +53,6 @@ class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
                     devicetype as Number,
                     levels as Array) {
 
-        Log("domoticiconmenuitem called");
-
         // initialize the extra vars
         _devicetype=devicetype;
         _levels=levels; 

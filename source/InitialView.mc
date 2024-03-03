@@ -56,7 +56,6 @@ class InitialView extends Ui.View {
             Ui.requestUpdate();
             dz.populateRooms(method(:onRoomsPopulated));
         } else {
-            Log("Starting old inteface");
             mView=new GarmoticzView();
             Ui.pushView(mView, new GarmoticzViewDelegate(mView.method(:HandleCommand)), Ui.SLIDE_LEFT);
         }
@@ -81,7 +80,6 @@ class InitialView extends Ui.View {
 
     function onRoomsPopulated(status)
     {
-        Log("Callback was called with status "+status);
         if (status==null) {
             //all ok, start rooms menu
             startRoomsMenu();
