@@ -149,8 +149,7 @@ class Domoticz {
 		}
 	}
 
-
-	function getDeviceStatus(device) {
+	public function getDeviceStatus(device) {
 
         var idx = deviceIDX[device];
     	if (deviceItems[device].getDeviceType()==SCENE or deviceItems[device].getDeviceType()==GROUP) {

@@ -105,7 +105,10 @@ class DevicesMenuDelegate extends WatchUi.Menu2InputDelegate {
                 // and push view
                 WatchUi.pushView(setpointmenu,delegate,WatchUi.SLIDE_UP); 
             } else {
-                Log("on select called, but no action available for device");
+                // no specific action, so update the status
+                item.setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_DEVICE_STATUS_LOADING));
+                WatchUi.requestUpdate();
+                _dz.getDeviceStatus(item.getId());
             } 
             WatchUi.requestUpdate();
 
