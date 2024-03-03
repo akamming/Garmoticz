@@ -15,8 +15,8 @@ var roomidx=0;
 var deviceidx=0;
 var devicetype;
 var status="Fetching Rooms";
-var RoomsIdx;
-var RoomsName;
+var RoomsIdx as Lang.Array<Lang.String> = [];
+var RoomsName as Lang.Array<Lang.String> = [];
 var DevicesName as Lang.Array<Lang.String> = [];
 var DevicesIdx as Lang.Array<Lang.Number> = [];
 var DevicesData as Lang.Array<Lang.String> = [];
@@ -449,8 +449,8 @@ class GarmoticzView extends WatchUi.View {
 		} else if (status.equals("ShowRooms")) {
 			// room selected, fetch devices
 			devicecursor=0;
-			RoomsIdx=null;
-			RoomsName=null;
+			RoomsIdx=[];
+			RoomsName=[];
 			status="Fetching Devices";
 			// Ui.requestUpdate();
 		}
@@ -662,8 +662,13 @@ class GarmoticzView extends WatchUi.View {
         					SetDeviceCursor();
 
 	        			} else {
-	        				status="Error";
+	        				status="Fetching Rooms";
 	        				StatusText=Ui.loadResource(Rez.Strings.STATUS_ROOM_HAS_NO_DEVICES);
+							// reset all values
+							devicecursor=0;
+							deviceidx=0;
+							roomcursor=0;
+							roomidx=0;
 	        				ErrorCode=0;
         				}
 	    			} else if (data["title"].equals("Devices")) {

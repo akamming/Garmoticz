@@ -27,7 +27,7 @@ class InitialView extends Ui.View {
         }	
 
         // decide on interface
-        interfaceToUse = App.Properties.getValue("PROP_INTERFACE");
+        interfaceToUse = App.getApp().getProperty("PROP_INTERFACE");
         if (interfaceToUse==2 and monkeyVersion<minMonkeyVersion) {
             // new interface not available on old devices
             _status="ConnectIQ 3.2 required";

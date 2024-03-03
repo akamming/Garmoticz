@@ -27,11 +27,11 @@ class DomoticzMenuItem extends Toybox.WatchUi.MenuItem {
         return _devicetype;
     }
 
-    public function setLevels(levels as Array) {
+    public function setLevels(levels as Lang.Array<Lang.String>) {
         _levels=levels;
     }
 
-    public function getLevels() {
+    public function getLevels() as Lang.Array<Lang.String> {
         return _levels;
     }
 
@@ -51,7 +51,7 @@ class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
                     _enabled as Lang.Boolean, 
                     _options as { :alignment as MenuItem.Alignment, :icon as Graphics.BitmapType or WatchUi.Drawable or Lang.Symbol } or Null,
                     devicetype as Number,
-                    levels as Array) {
+                    levels as Lang.Array<Lang.String>) {
 
         // initialize the extra vars
         _devicetype=devicetype;
@@ -65,11 +65,11 @@ class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
         return _devicetype;
     }
 
-    public function setLevels(levels as Array) {
+    public function setLevels(levels as Lang.Array<Lang.String>) {
         _levels=levels;
     }
 
-    public function getLevels() {
+    public function getLevels() as Lang.Array<Lang.String> {
         return _levels;
     }
 
