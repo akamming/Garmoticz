@@ -1,5 +1,5 @@
 <strings>
-    <string id="AppName">Garmoticz</string>
+    <string id="AppName">Garmoticz Legacy</string>
 
     <string id="title_username">Username</string>
     <string id="title_password">Password</string>
@@ -21,7 +21,7 @@
 
     <string id="STATUS_ROOM_HAS_NO_DEVICES">Room has no devices</string>
     <string id="STATUS_NO_ROOMPLAN_CONFIGURED">No roomplans configured</string>
-    <string id="STATUS_NO_SCENESORGROUPS">No scenes/groups></string>
+    <string id="STATUS_NO_SCENESORGROUPS">No scenes/groups</string>
     <string id="STATUS_UNKNOWN_HTTP_RESPONSE">Unknown HTTP Response</string>
     <string id="STATUS_DOMOTICZ_ERROR">Domoticz Error: </string>
     <string id="STATUS_NOT_PARSABLE">Not Parsable (Proxy?)</string>
