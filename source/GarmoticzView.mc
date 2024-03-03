@@ -84,6 +84,9 @@ class GarmoticzView extends WatchUi.View {
 		monkeyVersion=Toybox.System.getDeviceSettings().monkeyVersion;
 		Log("Monkey Version is "+monkeyVersion);
 
+		ResetApplication();
+
+		/*
      	// Load the last known vales of the cursor
         var app = Application.getApp();
         devicecursor = app.getProperty("devicecursor");
@@ -189,7 +192,7 @@ class GarmoticzView extends WatchUi.View {
 	        	// status="Start Screen";
 	        	ResetApplication();
 	        }
-        }
+        } */
     }
 
     // Handle Command from Delegate view
@@ -464,7 +467,7 @@ class GarmoticzView extends WatchUi.View {
 		   		roomcursor=i;
 		   }
 		}
-		roomidx=RoomsIdx[roomcursor];
+		roomidx=RoomsIdx[0];
 	}
 
 	 // Set the cursor at the saved value (or set to 0 if we cannot find it)
@@ -621,8 +624,9 @@ class GarmoticzView extends WatchUi.View {
 	}
 
     // Receive the data from the web request
-    function onReceive(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void
+    function onReceive(responseCode as Lang.Number, _data as Lang.Dictionary or Lang.String or Null) as Void
     {
+		var data=_data as Lang.Dictionary<Lang.String,Lang.Array<Lang.Dictionary>>;
     	Refreshing=false; // data received
 		Log("onReceive responseCode="+responseCode+" data="+data);
 
@@ -1041,6 +1045,8 @@ class GarmoticzView extends WatchUi.View {
     // state of this View here. This includes freeing resources from
     // memory.
     function onHide() {
+		View.onHide();
+		/*
         var app=Application.getApp();
 
 		// if there are devices: Save them for faster startup
@@ -1063,6 +1069,6 @@ class GarmoticzView extends WatchUi.View {
         	}
         } else {
 	        app.setProperty("status", "Fetching Rooms");
-        }
+        } */
     }
 }

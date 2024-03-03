@@ -10,7 +10,7 @@ class InitialView extends Ui.View {
 	var width,height;
 	var shown=false;
     var dz=new Domoticz();
-    var monkeyVersion;
+    var monkeyVersion as Lang.Number;
     const minMonkeyVersion=320;
     var interfaceToUse;
 	
