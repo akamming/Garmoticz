@@ -83,6 +83,27 @@ class DevicesMenuDelegate extends WatchUi.Menu2InputDelegate {
                     var delegate=new SelectorMenuDelegate(_dz,item.getId());
                     WatchUi.pushView(selectorMenu,delegate,WatchUi.SLIDE_UP);
                 }
+            } else if (devicetype==SETPOINT) { 
+                var currentval=0;
+                // make sure currentval is a number round to 0.5
+                for (var i=0.0;i<=100;i+=0.5) {
+                    if (i<=item.getSubLabel().toFloat()) {
+                        currentval=i;
+                    }
+                }
+                // now determine currentfocus
+                var currentfocus=20;
+
+                // now setup menu
+                var setpointmenu = new WatchUi.Menu2({:title => new MenuTitleDrawable(item.getLabel()),
+                                                    :focus => currentfocus});
+                for (var i=currentval-10;i<=currentval+10;i+=0.5) {
+                    setpointmenu.addItem(new MenuItem(i.format("%3.1f"),null,i,{}));
+                }
+                var delegate=new SetpointMenuDelegate(_dz,item.getId());
+
+                // and push view
+                WatchUi.pushView(setpointmenu,delegate,WatchUi.SLIDE_UP); 
             } else {
                 Log("on select called, but no action available for device");
             } 

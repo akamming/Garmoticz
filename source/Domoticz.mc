@@ -53,6 +53,8 @@ class Domoticz {
 	private var currentIDX as Lang.Number=0; // holds the current index of the domoticz device (or scene/group)
 	private var currentRoom;
 	private var delayTimer;
+	private var setpoint;
+	private var dimmerlevel;
 	private const delayTime=500; // number of milliseconds before status is requested
 	private const toggleDeviceTypes=[ONOFF,GROUP,DIMMER]; // These devicetypes will get a toggle in the menu
 
@@ -98,11 +100,19 @@ class Domoticz {
 		dimmerlevel=Level;
 		currentDevice=index;
 		currentIDX=deviceIDX[index];
-		deviceItems[index].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_SWITCHING_ON));
+		deviceItems[index].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_SENDING_COMMAND));
 		WatchUi.requestUpdate();
 		makeWebRequest(SENDDIMMERVALUE,currentIDX,method(:onReceive));
 	}
 
+	public function sendSetpoint(index as Lang.Number, Setpoint as Lang.Float) {
+		setpoint=Setpoint;
+		currentDevice=index;
+		currentIDX=deviceIDX[index];
+		deviceItems[index].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_SENDING_COMMAND));
+		WatchUi.requestUpdate();
+		makeWebRequest(SENDSETPOINT,currentIDX,method(:onReceive));
+	}
 	public function switchOnOffDevice(index as Lang.Number, state) {
 		// function to switch device. state = true means "on", false means "off"
 
@@ -363,8 +373,10 @@ class Domoticz {
            	// ShowError=false;  
            	if (data instanceof Dictionary) {
 				if (data["status"].equals("OK")) {
-	            	if (data["title"].equals("SwitchLight") or data["title"].equals("SwitchScene")) {
-						// a scene, group of light was switched. Update the device status
+	            	if (data["title"].equals("SwitchLight") or 
+						data["title"].equals("SwitchScene") or
+						data["title"].equals("SetSetpoint")) {
+						// a setpoint, scene, group, dimmer of light was switched. Update the device status
 			           	deviceItems[currentDevice].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_COMMAND_EXECUTED_OK));
 						delayTimer.start(method(:getCurrentDeviceStatus),delayTime,false); // wait a bit of time before getting new state (sometimes domoticz did not yet process switched state)
 					} else if (data["title"].equals("Devices")) {
@@ -451,6 +463,9 @@ class Domoticz {
 		} else if (data["Type"].equals("Scene")) {
 			// it is a scene
 			DeviceType=SCENE;
+		} else if (data["Type"].equals("Setpoint")) {
+			// it is a setpoint
+			DeviceType=SETPOINT;
 		} else {
 			// it is a device
 			if (data["SwitchType"]!=null) { // it is a switch
@@ -469,8 +484,6 @@ class Domoticz {
 					DeviceType=PUSHON;
 				} else if (data["SwitchType"].equals("Push Off Button")) { // PushOffButton
 					DeviceType=PUSHOFF;
-				} else if (data["SubType"].equals("SetPoint")) {
-					DeviceType=SETPOINT;
 				} else {
 					// We didn't recognize the device type, so set as general unswitchable device
 					DeviceType=DEVICE;
