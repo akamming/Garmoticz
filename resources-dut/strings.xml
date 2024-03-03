@@ -7,9 +7,13 @@
     <string id="title_adress">IP Adres of Domeinnaam</string>
     <string id="title_path">pad (bijvoorbeeld: /domoticz)</string>
     <string id="title_port">poort nummer</string>
+    <string id="title_interface">Gebrikersinterface</string>
     <string id="HTTP">HTTP</string>
     <string id="HTTPS">HTTPS</string>
-    
+    <string id="LEGACY">Gebruik de Legacy interface</string>
+    <string id="EXPERIMENTAL">Gebruik de Experimentele interface</string>
+    <string id="AUTO">Laat de app kiezen</string>
+     
     <string id="ERROR_GENERAL_CONNECTION_ERROR">Algemene verbindingsfout</string>
     <string id="ERROR_INVALID_CONNECTION_SETTING">Foute connectie instellingen</string>
     <string id="ERROR_HANDSET_REQUIRES_HTTPS">Handset vereist HTTPS</string>
