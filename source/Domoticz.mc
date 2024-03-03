@@ -359,6 +359,15 @@ class Domoticz {
 		if (menuidx!=null) {
 			deviceItems[menuidx].setLabel(data["Name"]);
 			deviceItems[menuidx].setSubLabel(devicedata);
+
+			if (deviceItems[menuidx] instanceof DomoticzToggleMenuItem) { 
+				// we have to update the toggle as well
+				var enabled=true;
+				if (devicedata.equals(WatchUi.loadResource(Rez.Strings.OFF))) {
+					enabled=false;
+				}
+				deviceItems[menuidx].setEnabled(enabled);
+			}
 		}
 	}
 
