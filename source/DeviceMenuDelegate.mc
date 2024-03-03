@@ -18,9 +18,9 @@ class DevicesMenuDelegate extends WatchUi.Menu2InputDelegate {
                 } else {
                     _dz.switchOnOffDevice(item.getId(),true);
                 }
-            } if (devicetype==PUSHON) {
+            } else if (devicetype==PUSHON) {
                 _dz.switchOnOffDevice(item.getId(),true);
-            } if (devicetype==PUSHOFF) {
+            } else if (devicetype==PUSHOFF) {
                 _dz.switchOnOffDevice(item.getId(),false);
             } else if (devicetype==INVERTEDBLINDS) {
                 if (item.getSubLabel().equals(WatchUi.loadResource(Rez.Strings.CLOSED))) {

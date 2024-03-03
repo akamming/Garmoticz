@@ -55,7 +55,7 @@ class Domoticz {
 	private var delayTimer;
 	private var setpoint;
 	private var dimmerlevel;
-	private const delayTime=500; // number of milliseconds before status is requested
+	private const delayTime=1000; // number of milliseconds before status is requested
 	private const toggleDeviceTypes=[ONOFF,GROUP,DIMMER]; // These devicetypes will get a toggle in the menu
 
 
@@ -234,12 +234,15 @@ class Domoticz {
 			params.put("order","[Order]");
 			params.put("plan",idx);
     	}	else if (action==GETDEVICESTATUS) {
-    		params.put("type","devices");
+    		params.put("type","command");
+    		params.put("param","getdevices");
     		params.put("rid",idx);
     	}	else if (action==GETSCENESTATUS) {
-    		params.put("type","scenes");
+			params.put("type","command");
+    		params.put("param","getscenes");
     	}	else if (action==GETROOMS) {
-    		params.put("type","plans");
+			params.put("type","command");
+    		params.put("param","getplans");
     		params.put("order","Order");
     		params.put("used","true");
     	}	else if (action==SENDONCOMMAND) {
@@ -340,6 +343,7 @@ class Domoticz {
 					enabled=false;
 				}
 				deviceItems[menuidx].setEnabled(enabled);
+
 			}
 		}
 	}
@@ -405,6 +409,7 @@ class Domoticz {
 						deviceItems[currentDevice].setSubLabel(WatchUi.loadResource(Rez.Strings.ERROR_INVALID_RESPONSE));
 					}
         	    } else {
+					Log("not ok, "+data);
 					deviceItems[currentDevice].setSubLabel(WatchUi.loadResource(Rez.Strings.STATUS_DOMOTICZ_ERROR));
 					delayTimer.start(method(:getCurrentDeviceStatus),delayTime,false); // wait a bit of time before getting new state (sometimes domoticz did not yet process switched state)
 				} 
