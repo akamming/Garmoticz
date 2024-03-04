@@ -31,7 +31,6 @@ class GarmoticzGlanceView extends Ui.GlanceView {
   // Receive the data from the web request
   function onReceive(responseCode as Lang.Number, data as Lang.Dictionary or Lang.String or Null) as Void
   {
-    Refreshing=false; // data received
     Log("onReceive responseCode="+responseCode+" data="+data);
 
     // Check responsecode

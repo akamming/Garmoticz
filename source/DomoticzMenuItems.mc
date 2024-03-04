@@ -27,11 +27,11 @@ class DomoticzMenuItem extends Toybox.WatchUi.MenuItem {
         return _devicetype;
     }
 
-    public function setLevels(levels as Lang.Array<Lang.String>) {
+    public function setLevels(levels as Lang.Dictionary) {
         _levels=levels;
     }
 
-    public function getLevels() as Lang.Array<Lang.String> {
+    public function getLevels() as Lang.Dictionary {
         return _levels;
     }
 
@@ -65,11 +65,11 @@ class DomoticzToggleMenuItem extends Toybox.WatchUi.ToggleMenuItem {
         return _devicetype;
     }
 
-    public function setLevels(levels as Lang.Array<Lang.String>) {
+    public function setLevels(levels as Lang.Dictionary) {
         _levels=levels;
     }
 
-    public function getLevels() as Lang.Array<Lang.String> {
+    public function getLevels() as Lang.Dictionary {
         return _levels;
     }
 

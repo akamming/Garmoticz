@@ -56,8 +56,9 @@ class InitialView extends Ui.View {
             Ui.requestUpdate();
             dz.populateRooms(method(:onRoomsPopulated));
         } else {
-            mView=new GarmoticzView();
-            Ui.pushView(mView, new GarmoticzViewDelegate(mView.method(:HandleCommand)), Ui.SLIDE_LEFT);
+            _status="Interface no longer available";
+            Ui.requestUpdate();
+
         }
     }
 	

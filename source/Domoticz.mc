@@ -322,28 +322,22 @@ class Domoticz {
 	function updateDeviceStatus(data as Lang.Dictionary<Lang.String,Lang.String or Lang.Number>) {
 		var devicetype=getDeviceType(data);
 		var devicedata=getDeviceData(data,devicetype);
-		if (devicetype==SELECTOR) {
-			Levels = getLevels(data["LevelNames"]);
-			devicedata=Levels[data["LevelInt"]];
-		}
-		// update the menuitem:
 		var menuidx=getMenuIndexfromDomoticzIndexforDevice(data["idx"]);
 		if (menuidx!=null) {
+			if (devicetype==SELECTOR) {
+				var Levels = getLevels(data["LevelNames"]);
+				deviceItems[menuidx].setLevels(Levels);
+				devicedata=Levels[data["LevelInt"]];
+			}
 			deviceItems[menuidx].setLabel(data["Name"]);
 			deviceItems[menuidx].setSubLabel(devicedata);
-			if (devicetype==SELECTOR) {
-				// we have to update the levels as well
-				deviceItems[menuidx].setLevels(Levels);
-			}
 			
 			if (toggleDeviceTypes.indexOf(devicetype)>=0) { 
-				// we have to update the toggle as well
 				var enabled=true;
 				if (devicedata.equals(WatchUi.loadResource(Rez.Strings.OFF))) {
 					enabled=false;
 				}
 				deviceItems[menuidx].setEnabled(enabled);
-
 			}
 		}
 	}
@@ -574,8 +568,8 @@ class Domoticz {
 		return DeviceData;
 	}
 	
-	function getLevels(string) as Lang.Array<Lang.String> {
-		Levels={};
+	function getLevels(string) as Lang.Dictionary {
+		var Levels={};
 		var location;
 		var levelvalue=-10;
 
