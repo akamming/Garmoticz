@@ -26,8 +26,7 @@ class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
         var menu = new WatchUi.Menu2({:title=>new MenuTitleDrawable(currentRoomName)});
         var ks=_dz.deviceItems.keys()as Lang.Array<Lang.String or Lang.Number>;
         for (var i=0;i<_dz.deviceItems.size();i++){
-            var key=ks[i];
-            menu.addItem(_dz.deviceItems[key]);
+            menu.addItem(_dz.deviceItems[ks[i]]);
         }
         WatchUi.pushView(menu, new DevicesMenuDelegate(_dz), WatchUi.SLIDE_IMMEDIATE);
     }
