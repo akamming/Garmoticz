@@ -55,7 +55,7 @@ class Domoticz {
 	private var delayTimer;
 	private var setpoint;
 	private var dimmerlevel;
-	private const delayTime=1000; // number of milliseconds before status is requested
+	private const delayTime=500; // number of milliseconds before status is requested
 	private const toggleDeviceTypes=[ONOFF,GROUP,DIMMER]; // These devicetypes will get a toggle in the menu
 
 
