@@ -27,6 +27,7 @@ enum {
 enum {
 	GETROOMS,
 	GETDEVICES,
+	GETPLANDEVICES,
 	GETDEVICESTATUS,
 	SENDONCOMMAND,
 	SENDOFFCOMMAND,
@@ -55,6 +56,7 @@ class Domoticz {
 	private var delayTimer;
 	private var setpoint;
 	private var dimmerlevel;
+	private var lowmemory = false; // used to find out if retrieving devices should be done 1 by one, or just the entire list at once
 	private const delayTime=500; // number of milliseconds before status is requested
 	private const toggleDeviceTypes=[ONOFF,GROUP,DIMMER]; // These devicetypes will get a toggle in the menu
 
@@ -91,6 +93,7 @@ class Domoticz {
     }
 
 	public function populateDevices(callbackhandler, _currentRoom) {
+		lowmemory=false; // try first to get the full list!
 		currentRoom=_currentRoom;
 		_devicescallback=callbackhandler;
 		makeWebRequest(GETDEVICES,currentRoom,method(:onReceiveDevices));
@@ -233,6 +236,10 @@ class Domoticz {
 			params.put("favorite",0);
 			params.put("order","[Order]");
 			params.put("plan",idx);
+		} else if (action==GETPLANDEVICES) {
+			params.put("type","command");
+	    	params.put("param","getplandevices");
+	    	params.put("idx",idx);
     	}	else if (action==GETDEVICESTATUS) {
     		params.put("type","command");
     		params.put("param","getdevices");
@@ -592,53 +599,62 @@ class Domoticz {
 		return Levels;
 	}
 
+	function MenuItemFromData(data,i) {
+		var devicetype = getDeviceType(data);
+		var devicedata = getDeviceData(data,devicetype);
+		// create the menuitem
+		var mi;
+		var Levels = [];
+		if (devicetype==SELECTOR) {
+			Levels = getLevels(data["LevelNames"]);
+			devicedata=Levels[data["LevelInt"]];
+		}
+		// deviceIDX[i]=data["result"][i]["idx"];
+		// if (devicetype==ONOFF or devicetype==GROUP or devicetype==DIMMER) {
+		if (toggleDeviceTypes.indexOf(devicetype)>=0) {
+			var enabled=true;
+			if (devicedata.equals(WatchUi.loadResource(Rez.Strings.OFF))) {
+				enabled=false;
+			}
+			mi=new DomoticzToggleMenuItem(data["Name"],
+								devicedata,
+								i,
+								enabled,
+								{ :alignment => WatchUi.MenuItem.MENU_ITEM_LABEL_ALIGN_RIGHT },
+								devicetype,
+								Levels);
+		} else {
+			mi=new DomoticzMenuItem(data["Name"],
+								devicedata,
+								i,
+								{ :alignment => WatchUi.MenuItem.MENU_ITEM_LABEL_ALIGN_RIGHT },
+								devicetype,
+								Levels);
+		}
+		return mi;
+	}
+
 	function onReceiveDevices(responseCode as Lang.Number, _data as Lang.Dictionary or Lang.String or Null) as Void {
        var data=_data as Lang.Dictionary<Lang.String,Lang.Array<Lang.Dictionary>>;
 
-		Log("OnReceiveDevices, responsdecode "+responseCode+"data: "+data);
+	   Log("OnReceiveDevices, responsdecode "+responseCode+"data: "+data);
        // Check responsecode
        if (responseCode==200)
        {
            	if (data instanceof Dictionary) {
 				if (data["status"].equals("OK")) {
-					if (data["title"].equals("Devices")) { // Long answer 
+					if (data["title"].equals("GetPlanDevices")) { // Short answer 
+						if (data["result"]!=null) { 
+						} else {
+							_devicescallback.invoke(WatchUi.loadResource(Rez.Strings.STATUS_ROOM_HAS_NO_DEVICES));
+						}
+					} else if (data["title"].equals("Devices")) { // Long answer 
 						if (data["result"]!=null) {
 							deviceItems={};
 							deviceIDX=new [data["result"].size()];
 			            	for (var i=0;i<data["result"].size();i++) {
-								var devicetype = getDeviceType(data["result"][i]);
-								var devicedata = getDeviceData(data["result"][i],devicetype);
-								// create the menuitem
-								var mi;
-								var Levels = [];
-								if (devicetype==SELECTOR) {
-									Levels = getLevels(data["result"][i]["LevelNames"]);
-									devicedata=Levels[data["result"][i]["LevelInt"]];
-								}
 								deviceIDX[i]=data["result"][i]["idx"];
-								// if (devicetype==ONOFF or devicetype==GROUP or devicetype==DIMMER) {
-								if (toggleDeviceTypes.indexOf(devicetype)>=0) {
-									var enabled=true;
-									if (devicedata.equals(WatchUi.loadResource(Rez.Strings.OFF))) {
-										enabled=false;
-									}
-									mi=new DomoticzToggleMenuItem(data["result"][i]["Name"],
-														devicedata,
-														i,
-														enabled,
-														{ :alignment => WatchUi.MenuItem.MENU_ITEM_LABEL_ALIGN_RIGHT },
-														devicetype,
-														Levels);
-								} else {
-									mi=new DomoticzMenuItem(data["result"][i]["Name"],
-														devicedata,
-														i,
-														{ :alignment => WatchUi.MenuItem.MENU_ITEM_LABEL_ALIGN_RIGHT },
-														devicetype,
-														Levels);
-								}
-								// add to menu
-								deviceItems.put(i,mi);
+								deviceItems.put(i,MenuItemFromData(data["result"][i],i));
 		        			}
 							_devicescallback.invoke(null);
 						} else {
@@ -653,12 +669,14 @@ class Domoticz {
             }else {
 				_devicescallback.invoke(WatchUi.loadResource(Rez.Strings.STATUS_UNKNOWN_HTTP_RESPONSE));
 			}
-      } else {
+        } else if (responseCode==-402 or responseCode==-403) {
+			makeWebRequest(GETPLANDEVICES,currentRoom,method(:onReceiveDevices));
+		} else {
 			if (ConnectionErrorMessages[responseCode]==null) 
 			{
 				// assume general error
 				_devicescallback.invoke(WatchUi.loadResource(Rez.Strings.ERROR_GENERAL_CONNECTION_ERROR)+" "+responseCode);
-			} else {
+			} else { 
 				_devicescallback.invoke(WatchUi.loadResource(ConnectionErrorMessages[responseCode]));
 			}
 	   }
