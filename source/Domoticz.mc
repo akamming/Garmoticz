@@ -58,6 +58,7 @@ class Domoticz {
 	private var dimmerlevel;
 	private var lowmemory = false; // used to find out if retrieving devices should be done 1 by one, or just the entire list at once
 	private const delayTime=500; // number of milliseconds before status is requested
+	private const delayTime=1000; // number of milliseconds before status is requested
 	private const toggleDeviceTypes=[ONOFF,GROUP,DIMMER]; // These devicetypes will get a toggle in the menu
 
 
