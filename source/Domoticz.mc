@@ -56,9 +56,7 @@ class Domoticz {
 	private var delayTimer;
 	private var setpoint;
 	private var dimmerlevel;
-	private var lowmemory = false; // used to find out if retrieving devices should be done 1 by one, or just the entire list at once
 	private const delayTime=500; // number of milliseconds before status is requested
-	private const delayTime=1000; // number of milliseconds before status is requested
 	private const toggleDeviceTypes=[ONOFF,GROUP,DIMMER]; // These devicetypes will get a toggle in the menu
 
 
@@ -94,7 +92,6 @@ class Domoticz {
     }
 
 	public function populateDevices(callbackhandler, _currentRoom) {
-		lowmemory=false; // try first to get the full list!
 		currentRoom=_currentRoom;
 		_devicescallback=callbackhandler;
 		makeWebRequest(GETDEVICES,currentRoom,method(:onReceiveDevices));
@@ -644,12 +641,7 @@ class Domoticz {
        {
            	if (data instanceof Dictionary) {
 				if (data["status"].equals("OK")) {
-					if (data["title"].equals("GetPlanDevices")) { // Short answer 
-						if (data["result"]!=null) { 
-						} else {
-							_devicescallback.invoke(WatchUi.loadResource(Rez.Strings.STATUS_ROOM_HAS_NO_DEVICES));
-						}
-					} else if (data["title"].equals("Devices")) { // Long answer 
+					if (data["title"].equals("Devices")) { // Long answer 
 						if (data["result"]!=null) {
 							deviceItems={};
 							deviceIDX=new [data["result"].size()];
@@ -670,8 +662,6 @@ class Domoticz {
             }else {
 				_devicescallback.invoke(WatchUi.loadResource(Rez.Strings.STATUS_UNKNOWN_HTTP_RESPONSE));
 			}
-        } else if (responseCode==-402 or responseCode==-403) {
-			makeWebRequest(GETPLANDEVICES,currentRoom,method(:onReceiveDevices));
 		} else {
 			if (ConnectionErrorMessages[responseCode]==null) 
 			{
