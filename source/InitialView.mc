@@ -9,6 +9,7 @@ class InitialView extends Ui.View {
     var _status;
 	var width,height;
 	var shown=false;
+    var _progressBar;
     var dz=new Domoticz();
 	
     function initialize() {
@@ -24,8 +25,11 @@ class InitialView extends Ui.View {
 	}
 
     public function getrooms() {
-        _status="Retreiving rooms";
-        Ui.requestUpdate();
+        // _status="Retreiving rooms";
+        // Ui.requestUpdate();
+        _progressBar = new WatchUi.ProgressBar(WatchUi.loadResource(Rez.Strings.STATUS_LOADING_ROOMS), null);
+        WatchUi.pushView(_progressBar, new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_DOWN);	
+
         dz.populateRooms(method(:onRoomsPopulated));
     }
 	
@@ -47,6 +51,10 @@ class InitialView extends Ui.View {
 
     function onRoomsPopulated(status)
     {
+        // slide down the progress bar
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+
+        // handle the logic
         if (status==null) {
             //all ok, start rooms menu
             startRoomsMenu();
