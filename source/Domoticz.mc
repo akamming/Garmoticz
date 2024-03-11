@@ -635,7 +635,7 @@ class Domoticz {
 	function onReceiveDevices(responseCode as Lang.Number, _data as Lang.Dictionary or Lang.String or Null) as Void {
        var data=_data as Lang.Dictionary<Lang.String,Lang.Array<Lang.Dictionary>>;
 
-	   Log("OnReceiveDevices, responsdecode "+responseCode+"data: "+data);
+	   // Log("OnReceiveDevices, responsdecode "+responseCode+"data: "+data);
        // Check responsecode
        if (responseCode==200)
        {

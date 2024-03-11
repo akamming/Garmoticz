@@ -18,6 +18,7 @@
     <string id="ERROR_NETWORK_TIMEOUT">Network Timeout</string>
     <string id="ERROR_TOO_MUCH_DATA">Response too big</string> 
     <string id="ERROR_INVALID_RESPONSE">Invalid HTTP response (Proxy?)</string> 
+    <string id="ERROR_USE_LEGACY">Not enough memory\nTry downloading\nDomoticz for Garmin Legacy\n</string>
 
     <string id="STATUS_ROOM_HAS_NO_DEVICES">Room has no devices</string>
     <string id="STATUS_NO_ROOMPLAN_CONFIGURED">No roomplans configured</string>
@@ -37,6 +38,7 @@
     <string id="STATUS_COMMAND_EXECUTED_OK">Command OK</string>
     <string id="STATUS_PRESS_ENTER">Press Enter to Start</string>
     <string id="STATUS_TAP_SCREEN">Tap Screen to Start</string>
+
 
     <string id="ON">On</string>
     <string id="OFF">Off</string>

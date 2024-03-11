@@ -48,6 +48,11 @@ class RoomsMenuDelegate extends WatchUi.Menu2InputDelegate {
         } else {
             // show error
             _dz.roomItems[currentid].setSubLabel(status);
+            if (status.equals(WatchUi.loadResource(Rez.Strings.ERROR_TOO_MUCH_DATA))) {
+                // show message that user can use the old version of the app
+                var mview=new ErrorView(WatchUi.loadResource(Rez.Strings.ERROR_USE_LEGACY));
+                WatchUi.pushView(mview, new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_DOWN);
+            }
             WatchUi.requestUpdate();
         }
     }

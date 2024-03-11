@@ -18,10 +18,11 @@
     <string id="ERROR_NETWORK_TIMEOUT">Netwerk Timeout</string>
     <string id="ERROR_TOO_MUCH_DATA">Te veel data</string> 
     <string id="ERROR_INVALID_RESPONSE">rare HTTP response (Proxy?)</string> 
+    <string id="ERROR_USE_LEGACY">Niet genoeg geheugen\nDownload\nDomoticz for Garmin Legacy\n</string>
 
     <string id="STATUS_ROOM_HAS_NO_DEVICES">Geen apparaten ingesteld</string>
     <string id="STATUS_NO_ROOMPLAN_CONFIGURED">Geen ruimtes ingesteld</string>
-    <string id="STATUS_NO_SCENESORGROUPS">Geen scenes of groepen></string>
+    <string id="STATUS_NO_SCENESORGROUPS">Geen scenes of groepen</string>
     <string id="STATUS_UNKNOWN_HTTP_RESPONSE">onbekend HTTP antwoord</string>
     <string id="STATUS_DOMOTICZ_ERROR">Domoticz fout: </string>
     <string id="STATUS_NOT_PARSABLE">Antwoord niet leesbaar</string>
